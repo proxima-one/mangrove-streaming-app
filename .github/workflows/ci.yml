@@ -1,0 +1,34 @@
+name: ci
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          #cache: 'yarn'
+
+      - name: "Setup npm" # Add our registry to npm config
+        run: |
+          npm set @proxima-one:registry=https://npm.pkg.github.com
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.CI_NPM_TOKEN }}"
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: yarn test
+
+      - name: Build Docker image
+        run: |
+          DOCKER_BUILDKIT=1 docker build --file ./deployment/Dockerfile --target prod --progress=plain --secret id=npmrc,src=$HOME/.npmrc .
