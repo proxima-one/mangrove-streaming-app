@@ -9,6 +9,7 @@ export type MangroveEvent = (
   | OfferWritten
   | OfferRetracted
   | OrderCompleted
+  | OracleStateUpdated
 ) & {
   tx: eth.TransactionRef;
   mangroveId: core.MangroveId; //support multiple instances in the same event stream
@@ -69,4 +70,10 @@ export interface OrderCompleted {
   takerGave: eth.UInt;
   penalty: eth.UInt;
   takenOffers: core.TakenOffer[];
+}
+
+export interface OracleStateUpdated {
+  type: 'OracleStateUpdated';
+
+  state: core.OracleState;
 }

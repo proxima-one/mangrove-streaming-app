@@ -32,6 +32,10 @@ export interface TakenOffer {
   failReason?: OfferFailReason;
 }
 
+export interface OracleState {
+  gasprice?: eth.UInt;
+}
+
 export type OfferId = number;
 export type MangroveId = eth.Address;
 export type OfferFailReason =
