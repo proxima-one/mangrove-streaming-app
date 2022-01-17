@@ -1,7 +1,6 @@
 import * as proxima from "@proxima-one/proxima-core";
-import * as input from "../input";
+import * as model from "@/model";
 import * as _ from "lodash";
-import { OfferListKey } from "../offerList";
 
 export class TakerAggregate {
   private _state: State;
@@ -15,9 +14,9 @@ export class TakerAggregate {
   }
 
   public updateApproval(
-    poolKey: OfferListKey,
+    poolKey: model.OfferListKey,
     spender: proxima.eth.Address,
-    amount: input.eth.UInt
+    amount: model.eth.UInt
   ) {
     this._state = {
       approvals: updateApproval(
@@ -37,13 +36,13 @@ export interface State {
   approvals: Approvals;
 }
 
-type Approvals = Record<string, Record<string, input.eth.UInt>>;
+type Approvals = Record<string, Record<string, model.eth.UInt>>;
 
 export function updateApproval(
   approvals: Approvals,
-  poolKey: OfferListKey,
+  poolKey: model.OfferListKey,
   spender: proxima.eth.Address,
-  amount: input.eth.UInt
+  amount: model.eth.UInt
 ): Approvals {
   return _.merge({}, approvals, {
     [poolKey.toString()]: {

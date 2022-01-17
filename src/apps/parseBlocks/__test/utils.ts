@@ -60,11 +60,8 @@ export function parseParams(
 }
 
 export const events = (
-  events: model.input.events.MangroveEvent[]
-): Omit<
-  Success<model.input.events.MangroveEvent[], LogParserContext>,
-  "ctx"
-> => {
+  events: model.events.MangroveEvent[]
+): Omit<Success<model.events.MangroveEvent[], LogParserContext>, "ctx"> => {
   return {
     success: true,
     value: events,

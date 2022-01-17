@@ -1,36 +1,35 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./dist",
     "lib": [
       "ES2019"
     ],
+    "incremental": false,
+    "declaration": true,
+    "declarationMap": true,
     "resolveJsonModule": true,
     "target": "ES2019",
     "module": "commonjs",
     "moduleResolution": "node",
-    "jsx": "react",
     "strict": true,
-    "declaration": true,
-    "declarationMap": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "downlevelIteration": true,
-    "baseUrl": "/",
+    "baseUrl": "./",
     "paths": {
       "@/*": [
-        "*/src"
+        "./src/*"
       ]
     }
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
+    "node_modules"
   ]
 }

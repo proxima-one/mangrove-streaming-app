@@ -23,7 +23,7 @@
     "lint": "eslint . --ext .ts",
     "prepublishOnly": "yarn build",
     "prebuild": "yarn clean && yarn format && yarn lint && echo Using TypeScript && tsc --version",
-    "build": "tsc --pretty",
+    "build": "tsc --project tsconfig.build.json --pretty",
     "test": "jest --passWithNoTests",
     "coverage": "jest --coverage",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",

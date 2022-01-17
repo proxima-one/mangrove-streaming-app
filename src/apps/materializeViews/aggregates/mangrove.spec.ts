@@ -1,6 +1,6 @@
 import * as proxima from "@proxima-one/proxima-core";
+import * as model from "@/model";
 import { MangroveAggregate, MangroveId, updateParams } from "./mangrove";
-import * as input from "../input";
 
 describe("MangroveAggregate", () => {
   const addr = proxima.eth.Address.fromHexString(
@@ -9,7 +9,7 @@ describe("MangroveAggregate", () => {
 
   let sut: MangroveAggregate;
   describe("handle MangroveParamsUpdated event", () => {
-    let paramsUpdate: input.core.MangroveParams;
+    let paramsUpdate: model.core.MangroveParams;
     let act: () => void;
 
     beforeEach(() => {

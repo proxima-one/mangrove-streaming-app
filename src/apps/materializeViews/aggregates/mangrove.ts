@@ -1,6 +1,7 @@
 import * as proxima from "@proxima-one/proxima-core";
 import * as _ from "lodash";
-import * as input from "../input";
+
+import * as model from "@/model";
 
 export class MangroveAggregate {
   private _state: State;
@@ -13,7 +14,7 @@ export class MangroveAggregate {
     this._state = state ?? { params: {} };
   }
 
-  public handleParamsUpdated(paramsUpdate: input.core.MangroveParams) {
+  public handleParamsUpdated(paramsUpdate: model.core.MangroveParams) {
     this._state = {
       params: updateParams(this._state.params, paramsUpdate),
     };
@@ -21,13 +22,13 @@ export class MangroveAggregate {
 }
 
 export interface State {
-  params: input.core.MangroveParams;
+  params: model.core.MangroveParams;
 }
 
 export function updateParams(
-  params: input.core.MangroveParams,
-  paramsUpdate: input.core.MangroveParams
-): input.core.MangroveParams {
+  params: model.core.MangroveParams,
+  paramsUpdate: model.core.MangroveParams
+): model.core.MangroveParams {
   return _.merge({}, params, paramsUpdate); // merge doesn't override undefined values from event
 }
 
