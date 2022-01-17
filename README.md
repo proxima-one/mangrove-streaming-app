@@ -38,3 +38,8 @@ export PROXIMA_APP_CONFIG_PATH="<local path to your config file>"
 - `yarn lint` to run linter
 - `yarn start` to run proxima-app-runtime cli
 - `yarn start:app <app> <args>` to start apps
+
+Start `parse-blocks` (replace `--id` and `--namespace` arguments to run app in isolated environment) :
+```
+yarn start:app parse-blocks --id ivandev-mangrove-parse-blocks --source-db kafka-main-prod --source-streams polygon-mumbai-block-index --target-db kafka-dev --app-args '{"addresses": {"mangrove": "0xD27139C60ED051b65c3AEe193BCABFfa1067D243"},"blockIndexer": "remote-polygon-mumbai","network": "polygon-mumbai","startBlock": "23600562","outputStream": "mangrove-events.v1", "initialOffset": "23718950"}'
+```

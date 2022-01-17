@@ -1,8 +1,8 @@
 import * as proxima from '@proxima-one/proxima-core';
-import * as model from "../../model";
-import * as abi from "./abi";
-import * as _ from "lodash";
-import { parseMangroveEvents } from "./mangroveLogsParser";
+import * as model from '../../model';
+import * as abi from './abi';
+import * as _ from 'lodash';
+import { parseMangroveEvents } from './mangroveLogsParser';
 
 const mangroveLogsParser = parseMangroveEvents();
 
@@ -22,20 +22,20 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
 
       // expect contractEvents from multiple Mangrove instances
       const groupedMangroveEvents = _.chain(tx.contractEvents.mangrove)
-        .groupBy(x => x.payload.address.toHexString())
+        .groupBy((x) => x.payload.address.toHexString())
         .map((values, key) => {
           return {
             mangroveId: key,
             events: values,
-            index: values[0].index
+            index: values[0].index,
           };
         })
-        .orderBy(x => x.index)
+        .orderBy((x) => x.index)
         .value();
 
       const mappedEvents: model.input.events.InputEvent[] = [];
 
-      for (const {mangroveId, events} of groupedMangroveEvents) {
+      for (const { mangroveId, events } of groupedMangroveEvents) {
         const parseResult = mangroveLogsParser({
           txHash: tx.original.data.hash,
           index: 0,
@@ -45,13 +45,17 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         if (!parseResult.success)
           throw new Error(`Parse Mangrove Logs failed: ${parseResult.reason}`);
 
-        mappedEvents.push(...parseResult.value.map(ev => _.assign({}, ev, {
-          tx: txRef,
-          mangroveId
-        })));
+        mappedEvents.push(
+          ...parseResult.value.map((ev) =>
+            _.assign({}, ev, {
+              tx: txRef,
+              mangroveId,
+            })
+          )
+        );
       }
 
       return mappedEvents;
-    }
-  }
+    },
+  },
 });

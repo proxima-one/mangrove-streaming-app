@@ -2,7 +2,7 @@ import * as proxima from '@proxima-one/proxima-core';
 import * as input from './input';
 import { strict as assert } from 'assert';
 
-export class PoolKey {
+export class OfferListKey {
   public constructor(
     public readonly inboundToken: proxima.eth.Address,
     public readonly outboundToken: proxima.eth.Address
@@ -12,19 +12,19 @@ export class PoolKey {
     return `${this.inboundToken.toHexString()}-${this.outboundToken.toHexString()}`;
   }
 
-  public static fromPool(pool: input.core.Pool) {
-    return new PoolKey(
+  public static fromOfferList(pool: input.core.OfferList) {
+    return new OfferListKey(
       proxima.eth.Address.fromHexString(pool.inboundToken),
       proxima.eth.Address.fromHexString(pool.outboundToken)
     );
   }
 
-  public static parse(value: string): PoolKey {
+  public static parse(value: string): OfferListKey {
     const parts = value.split('-');
 
     assert(parts.length == 2);
 
-    return new PoolKey(
+    return new OfferListKey(
       proxima.eth.Address.fromHexString(parts[0]),
       proxima.eth.Address.fromHexString(parts[1])
     );
