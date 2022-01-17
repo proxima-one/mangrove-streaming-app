@@ -3,7 +3,9 @@ import * as proxima from '@proxima-one/proxima-core';
 import * as _ from 'lodash';
 import { any, failure, many, map, Parser, success } from './parser';
 
-export const parseMangroveEvents = (): LogParser<model.input.events.MangroveEvent[]> =>
+export const parseMangroveEvents = (): LogParser<
+  model.input.events.MangroveEvent[]
+> =>
   map(
     many(
       any([
@@ -124,8 +126,8 @@ export const parseMangroveParamsEvents = () =>
               log.name == MangroveParamsEvents.NewMgv
                 ? false
                 : log.name == 'Kill'
-                  ? true
-                  : undefined,
+                ? true
+                : undefined,
           },
         },
       ];
@@ -211,8 +213,7 @@ export const parseOrderExecutionEvents = (opts: {
 
     const takenOffersResult = parseTakenOffers()(ctx);
     if (!takenOffersResult.success) {
-      if (!opts.allowEmptyOrder)
-        return failure(ctx, 'no taken offers');
+      if (!opts.allowEmptyOrder) return failure(ctx, 'no taken offers');
     }
 
     const orderCompletedResult = parseOrderCompletedLog()(
@@ -222,7 +223,9 @@ export const parseOrderExecutionEvents = (opts: {
       return failure(ctx, 'no OrderComplete log');
 
     const log = orderCompletedResult.value;
-    const takenOffers = takenOffersResult.value;
+    const takenOffers = takenOffersResult.success
+      ? takenOffersResult.value
+      : [];
 
     return success(orderCompletedResult.ctx, [
       {
