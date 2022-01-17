@@ -1,0 +1,15 @@
+{
+  "name": "consume-domain-events",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@proximaone/stream-client-js": "^0.2.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.4.0"
+  },
+  "scripts": {
+    "start": "ts-node index.ts"
+  }
+}
