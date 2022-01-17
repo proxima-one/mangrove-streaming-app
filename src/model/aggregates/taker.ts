@@ -1,7 +1,7 @@
 import * as proxima from '@proxima-one/proxima-core';
 import * as input from '../input';
 import * as _ from 'lodash';
-import { PoolKey } from '../pool';
+import { OfferListKey } from '../offerList';
 
 export class TakerAggregate {
   private _state: State;
@@ -15,7 +15,7 @@ export class TakerAggregate {
   }
 
   public updateApproval(
-    poolKey: PoolKey,
+    poolKey: OfferListKey,
     spender: proxima.eth.Address,
     amount: input.eth.UInt
   ) {
@@ -41,7 +41,7 @@ type Approvals = Record<string, Record<string, input.eth.UInt>>;
 
 export function updateApproval(
   approvals: Approvals,
-  poolKey: PoolKey,
+  poolKey: OfferListKey,
   spender: proxima.eth.Address,
   amount: input.eth.UInt
 ): Approvals {

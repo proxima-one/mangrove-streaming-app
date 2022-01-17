@@ -1,24 +1,25 @@
 import * as eth from './eth';
 import * as core from './core';
 
-export type MangroveEvent = (
-  | TakerApprovalUpdated
-  | MakerBalanceUpdated
-  | PoolParamsUpdated
-  | MangroveParamsUpdated
-  | OfferWritten
-  | OfferRetracted
-  | OrderCompleted
-) & {
+export type InputEvent = MangroveEvent & {
   tx: eth.TransactionRef;
   mangroveId: core.MangroveId; //support multiple instances in the same event stream
 };
+
+export type MangroveEvent =
+  | TakerApprovalUpdated
+  | MakerBalanceUpdated
+  | OfferListParamsUpdated
+  | MangroveParamsUpdated
+  | OfferWritten
+  | OfferRetracted
+  | OrderCompleted;
 
 export interface TakerApprovalUpdated {
   type: 'TakerApprovalUpdated';
 
   owner: eth.Address;
-  pool: core.Pool;
+  offerList: core.OfferList;
   spender: eth.Address;
   amount: eth.UInt;
 }
@@ -26,17 +27,15 @@ export interface TakerApprovalUpdated {
 export interface MakerBalanceUpdated {
   type: 'MakerBalanceUpdated';
 
-  maker: eth.Address;
+  maker: core.MakerId;
   amountChange: eth.Int;
 }
 
-export interface PoolParamsUpdated {
-  type: 'PoolParamsUpdated';
+export interface OfferListParamsUpdated {
+  type: 'OfferListParamsUpdated';
 
-  pool: core.Pool;
-  active?: boolean;
-  fee?: eth.UInt;
-  gasbase?: eth.UInt;
+  offerList: core.OfferList;
+  params: core.OfferListParams;
 }
 
 export interface MangroveParamsUpdated {
@@ -48,25 +47,33 @@ export interface MangroveParamsUpdated {
 export interface OfferWritten {
   type: 'OfferWritten';
 
-  pool: core.Pool;
+  offerList: core.OfferList;
   offer: core.Offer;
-  maker: eth.Address;
+  maker: core.MakerId;
 }
 
 export interface OfferRetracted {
   type: 'OfferRetracted';
 
-  pool: core.Pool;
+  offerList: core.OfferList;
   offerId: core.OfferId;
 }
 
 export interface OrderCompleted {
   type: 'OrderCompleted';
 
-  pool: core.Pool;
-  taker: eth.Address;
+  id: core.OrderId;
+  offerList: core.OfferList;
+  taker: core.TakerId;
   takerGot: eth.UInt;
   takerGave: eth.UInt;
   penalty: eth.UInt;
   takenOffers: core.TakenOffer[];
 }
+
+//
+// export interface OracleStateUpdated {
+//   type: 'OracleStateUpdated';
+//
+//   state: core.OracleState;
+// }

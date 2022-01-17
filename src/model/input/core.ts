@@ -1,8 +1,15 @@
 import * as eth from './eth';
 
-export interface Pool {
+export interface OfferList {
   inboundToken: eth.Address;
   outboundToken: eth.Address;
+}
+
+export interface OfferListParams {
+  active?: boolean;
+  fee?: eth.UInt;
+  gasbase?: eth.UInt;
+  density?: eth.UInt;
 }
 
 export interface Offer {
@@ -30,8 +37,16 @@ export interface TakenOffer {
   takerWants: eth.UInt;
   takerGives: eth.UInt;
   failReason?: OfferFailReason;
+  posthookFailed?: boolean;
 }
 
+export interface OracleState {
+  gasprice?: eth.UInt;
+}
+
+export type MakerId = string;
+export type TakerId = string;
+export type OrderId = string;
 export type OfferId = number;
 export type MangroveId = eth.Address;
 export type OfferFailReason =

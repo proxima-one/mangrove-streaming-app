@@ -6,11 +6,7 @@ export const mangrove = [
         name: 'governance',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'gasprice',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'gasprice', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'gasmax',
@@ -95,12 +91,7 @@ export const mangrove = [
     name: 'Debit',
     type: 'event',
   },
-  {
-    anonymous: false,
-    inputs: [],
-    name: 'Kill',
-    type: 'event',
-  },
+  { anonymous: false, inputs: [], name: 'Kill', type: 'event' },
   {
     anonymous: false,
     inputs: [],
@@ -269,12 +260,7 @@ export const mangrove = [
         name: 'gasreq',
         type: 'uint256',
       },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
+      { indexed: false, internalType: 'uint256', name: 'id', type: 'uint256' },
       {
         indexed: false,
         internalType: 'uint256',
@@ -508,12 +494,7 @@ export const mangrove = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'bool',
-        name: 'value',
-        type: 'bool',
-      },
+      { indexed: false, internalType: 'bool', name: 'value', type: 'bool' },
     ],
     name: 'SetNotify',
     type: 'event',
@@ -521,12 +502,7 @@ export const mangrove = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'bool',
-        name: 'value',
-        type: 'bool',
-      },
+      { indexed: false, internalType: 'bool', name: 'value', type: 'bool' },
     ],
     name: 'SetUseOracle',
     type: 'event',
@@ -547,56 +523,32 @@ export const mangrove = [
   {
     inputs: [],
     name: 'DOMAIN_SEPARATOR',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'PERMIT_TYPEHASH',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'fee',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'fee', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'density',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'offer_gasbase',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'offer_gasbase', type: 'uint256' },
     ],
     name: 'activate',
     outputs: [],
@@ -605,21 +557,13 @@ export const mangrove = [
   },
   {
     inputs: [
+      { internalType: 'address', name: '', type: 'address' },
       {
         internalType: 'address',
         name: '',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+      { internalType: 'address', name: '', type: 'address' },
       {
         internalType: 'address',
         name: '',
@@ -627,33 +571,19 @@ export const mangrove = [
       },
     ],
     name: 'allowances',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: 'spender',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'spender', type: 'address' },
       {
         internalType: 'uint256',
         name: 'value',
@@ -661,42 +591,20 @@ export const mangrove = [
       },
     ],
     name: 'approve',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'balanceOf',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
@@ -704,23 +612,13 @@ export const mangrove = [
       },
     ],
     name: 'best',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
@@ -729,11 +627,7 @@ export const mangrove = [
     ],
     name: 'config',
     outputs: [
-      {
-        internalType: 'Global.t',
-        name: '_global',
-        type: 'uint256',
-      },
+      { internalType: 'Global.t', name: '_global', type: 'uint256' },
       {
         internalType: 'Local.t',
         name: '_local',
@@ -745,11 +639,7 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
@@ -765,31 +655,19 @@ export const mangrove = [
             name: 'monitor',
             type: 'address',
           },
-          {
-            internalType: 'bool',
-            name: 'useOracle',
-            type: 'bool',
-          },
+          { internalType: 'bool', name: 'useOracle', type: 'bool' },
           {
             internalType: 'bool',
             name: 'notify',
             type: 'bool',
           },
-          {
-            internalType: 'uint256',
-            name: 'gasprice',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'gasprice', type: 'uint256' },
           {
             internalType: 'uint256',
             name: 'gasmax',
             type: 'uint256',
           },
-          {
-            internalType: 'bool',
-            name: 'dead',
-            type: 'bool',
-          },
+          { internalType: 'bool', name: 'dead', type: 'bool' },
         ],
         internalType: 'struct GlobalStruct',
         name: 'global',
@@ -797,41 +675,25 @@ export const mangrove = [
       },
       {
         components: [
-          {
-            internalType: 'bool',
-            name: 'active',
-            type: 'bool',
-          },
+          { internalType: 'bool', name: 'active', type: 'bool' },
           {
             internalType: 'uint256',
             name: 'fee',
             type: 'uint256',
           },
-          {
-            internalType: 'uint256',
-            name: 'density',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'density', type: 'uint256' },
           {
             internalType: 'uint256',
             name: 'offer_gasbase',
             type: 'uint256',
           },
-          {
-            internalType: 'bool',
-            name: 'lock',
-            type: 'bool',
-          },
+          { internalType: 'bool', name: 'lock', type: 'bool' },
           {
             internalType: 'uint256',
             name: 'best',
             type: 'uint256',
           },
-          {
-            internalType: 'uint256',
-            name: 'last',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'last', type: 'uint256' },
         ],
         internalType: 'struct LocalStruct',
         name: 'local',
@@ -843,11 +705,7 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
@@ -868,41 +726,25 @@ export const mangrove = [
             name: 'outbound_tkn',
             type: 'address',
           },
-          {
-            internalType: 'address',
-            name: 'inbound_tkn',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'inbound_tkn', type: 'address' },
           {
             internalType: 'uint256',
             name: 'offerId',
             type: 'uint256',
           },
-          {
-            internalType: 'Offer.t',
-            name: 'offer',
-            type: 'uint256',
-          },
+          { internalType: 'Offer.t', name: 'offer', type: 'uint256' },
           {
             internalType: 'uint256',
             name: 'wants',
             type: 'uint256',
           },
-          {
-            internalType: 'uint256',
-            name: 'gives',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'gives', type: 'uint256' },
           {
             internalType: 'OfferDetail.t',
             name: 'offerDetail',
             type: 'uint256',
           },
-          {
-            internalType: 'Global.t',
-            name: 'global',
-            type: 'uint256',
-          },
+          { internalType: 'Global.t', name: 'global', type: 'uint256' },
           {
             internalType: 'Local.t',
             name: 'local',
@@ -913,31 +755,15 @@ export const mangrove = [
         name: 'sor',
         type: 'tuple',
       },
-      {
-        internalType: 'address',
-        name: 'taker',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'taker', type: 'address' },
     ],
     name: 'flashloan',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'gasused',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'gasused', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'maker',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: 'maker', type: 'address' }],
     name: 'fund',
     outputs: [],
     stateMutability: 'payable',
@@ -953,32 +779,14 @@ export const mangrove = [
   {
     inputs: [],
     name: 'governance',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'Offer.t',
-        name: 'offer',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'Offer.t', name: 'offer', type: 'uint256' }],
     name: 'isLive',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'pure',
     type: 'function',
   },
@@ -991,11 +799,7 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
@@ -1003,92 +807,54 @@ export const mangrove = [
       },
     ],
     name: 'locked',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'takerWants',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'takerWants', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'takerGives',
         type: 'uint256',
       },
-      {
-        internalType: 'bool',
-        name: 'fillWants',
-        type: 'bool',
-      },
+      { internalType: 'bool', name: 'fillWants', type: 'bool' },
     ],
     name: 'marketOrder',
     outputs: [
+      { internalType: 'uint256', name: '', type: 'uint256' },
       {
         internalType: 'uint256',
         name: '',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: '', type: 'uint256' },
     ],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'takerWants',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'takerWants', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'takerGives',
         type: 'uint256',
       },
-      {
-        internalType: 'bool',
-        name: 'fillWants',
-        type: 'bool',
-      },
+      { internalType: 'bool', name: 'fillWants', type: 'bool' },
       {
         internalType: 'address',
         name: 'taker',
@@ -1097,139 +863,75 @@ export const mangrove = [
     ],
     name: 'marketOrderFor',
     outputs: [
-      {
-        internalType: 'uint256',
-        name: 'takerGot',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'takerGot', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'takerGave',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'bounty',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'bounty', type: 'uint256' },
     ],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'wants',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'wants', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'gives',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'gasreq',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'gasreq', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'gasprice',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'pivotId',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'pivotId', type: 'uint256' },
     ],
     name: 'newOffer',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'nonces',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
+      { internalType: 'address', name: '', type: 'address' },
       {
         internalType: 'address',
         name: '',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: '', type: 'uint256' },
     ],
     name: 'offerDetails',
-    outputs: [
-      {
-        internalType: 'OfferDetail.t',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'OfferDetail.t', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'offerId',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'offerId', type: 'uint256' },
     ],
     name: 'offerInfo',
     outputs: [
@@ -1240,21 +942,13 @@ export const mangrove = [
             name: 'prev',
             type: 'uint256',
           },
-          {
-            internalType: 'uint256',
-            name: 'next',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'next', type: 'uint256' },
           {
             internalType: 'uint256',
             name: 'wants',
             type: 'uint256',
           },
-          {
-            internalType: 'uint256',
-            name: 'gives',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'gives', type: 'uint256' },
         ],
         internalType: 'struct OfferStruct',
         name: 'offer',
@@ -1262,21 +956,13 @@ export const mangrove = [
       },
       {
         components: [
-          {
-            internalType: 'address',
-            name: 'maker',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'maker', type: 'address' },
           {
             internalType: 'uint256',
             name: 'gasreq',
             type: 'uint256',
           },
-          {
-            internalType: 'uint256',
-            name: 'offer_gasbase',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'offer_gasbase', type: 'uint256' },
           {
             internalType: 'uint256',
             name: 'gasprice',
@@ -1293,80 +979,46 @@ export const mangrove = [
   },
   {
     inputs: [
+      { internalType: 'address', name: '', type: 'address' },
       {
         internalType: 'address',
         name: '',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: '', type: 'uint256' },
     ],
     name: 'offers',
-    outputs: [
-      {
-        internalType: 'Offer.t',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'Offer.t', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'owner', type: 'address' },
       {
         internalType: 'address',
         name: 'spender',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'value', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'deadline',
         type: 'uint256',
       },
-      {
-        internalType: 'uint8',
-        name: 'v',
-        type: 'uint8',
-      },
+      { internalType: 'uint8', name: 'v', type: 'uint8' },
       {
         internalType: 'bytes32',
         name: 'r',
         type: 'bytes32',
       },
-      {
-        internalType: 'bytes32',
-        name: 's',
-        type: 'bytes32',
-      },
+      { internalType: 'bytes32', name: 's', type: 'bytes32' },
     ],
     name: 'permit',
     outputs: [],
@@ -1375,21 +1027,13 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'offerId',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'offerId', type: 'uint256' },
       {
         internalType: 'bool',
         name: 'deprovision',
@@ -1397,33 +1041,19 @@ export const mangrove = [
       },
     ],
     name: 'retractOffer',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'provision',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'provision', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'density',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'density', type: 'uint256' },
     ],
     name: 'setDensity',
     outputs: [],
@@ -1432,21 +1062,13 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'fee',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'fee', type: 'uint256' },
     ],
     name: 'setFee',
     outputs: [],
@@ -1455,21 +1077,13 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'offer_gasbase',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'offer_gasbase', type: 'uint256' },
     ],
     name: 'setGasbase',
     outputs: [],
@@ -1477,26 +1091,14 @@ export const mangrove = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'gasmax',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'gasmax', type: 'uint256' }],
     name: 'setGasmax',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'gasprice',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'gasprice', type: 'uint256' }],
     name: 'setGasprice',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -1504,11 +1106,7 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'governanceAddress',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'governanceAddress', type: 'address' },
     ],
     name: 'setGovernance',
     outputs: [],
@@ -1516,39 +1114,21 @@ export const mangrove = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'monitor',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: 'monitor', type: 'address' }],
     name: 'setMonitor',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'bool',
-        name: 'notify',
-        type: 'bool',
-      },
-    ],
+    inputs: [{ internalType: 'bool', name: 'notify', type: 'bool' }],
     name: 'setNotify',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'bool',
-        name: 'useOracle',
-        type: 'bool',
-      },
-    ],
+    inputs: [{ internalType: 'bool', name: 'useOracle', type: 'bool' }],
     name: 'setUseOracle',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -1556,11 +1136,7 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'vaultAddress',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'vaultAddress', type: 'address' },
     ],
     name: 'setVault',
     outputs: [],
@@ -1569,21 +1145,13 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256[4][]',
-        name: 'targets',
-        type: 'uint256[4][]',
-      },
+      { internalType: 'uint256[4][]', name: 'targets', type: 'uint256[4][]' },
       {
         internalType: 'bool',
         name: 'fillWants',
@@ -1592,21 +1160,13 @@ export const mangrove = [
     ],
     name: 'snipes',
     outputs: [
+      { internalType: 'uint256', name: '', type: 'uint256' },
       {
         internalType: 'uint256',
         name: '',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: '', type: 'uint256' },
       {
         internalType: 'uint256',
         name: '',
@@ -1618,49 +1178,29 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256[4][]',
-        name: 'targets',
-        type: 'uint256[4][]',
-      },
+      { internalType: 'uint256[4][]', name: 'targets', type: 'uint256[4][]' },
       {
         internalType: 'bool',
         name: 'fillWants',
         type: 'bool',
       },
-      {
-        internalType: 'address',
-        name: 'taker',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'taker', type: 'address' },
     ],
     name: 'snipesFor',
     outputs: [
-      {
-        internalType: 'uint256',
-        name: 'successes',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'successes', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'takerGot',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'takerGave',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'takerGave', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'bounty',
@@ -1672,41 +1212,25 @@ export const mangrove = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'outbound_tkn',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'outbound_tkn', type: 'address' },
       {
         internalType: 'address',
         name: 'inbound_tkn',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'wants',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'wants', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'gives',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'gasreq',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'gasreq', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'gasprice',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'pivotId',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'pivotId', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'offerId',
@@ -1721,37 +1245,16 @@ export const mangrove = [
   {
     inputs: [],
     name: 'vault',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
     name: 'withdraw',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: 'noRevert',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: 'noRevert', type: 'bool' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
-  {
-    stateMutability: 'payable',
-    type: 'receive',
-  },
+  { stateMutability: 'payable', type: 'receive' },
 ];
