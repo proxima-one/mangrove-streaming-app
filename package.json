@@ -19,7 +19,7 @@
   "types": "dist/index",
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
-    "format": "prettier --write \"{src,__tests__}/**/*.ts\" --single-quote --trailing-comma es5",
+    "format": "prettier --write \"{src,__tests__}/**/*.ts\"",
     "lint": "eslint . --ext .ts",
     "prepublishOnly": "yarn build",
     "prebuild": "yarn clean && yarn format && yarn lint && echo Using TypeScript && tsc --version",

@@ -1,6 +1,6 @@
-import * as proxima from '@proxima-one/proxima-core';
-import * as _ from 'lodash';
-import * as input from '../input';
+import * as proxima from "@proxima-one/proxima-core";
+import * as _ from "lodash";
+import * as input from "../input";
 
 export class MangroveAggregate {
   private _state: State;

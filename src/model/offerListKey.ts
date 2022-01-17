@@ -1,6 +1,6 @@
-import * as proxima from '@proxima-one/proxima-core';
-import * as input from './input';
-import { strict as assert } from 'assert';
+import * as proxima from "@proxima-one/proxima-core";
+import * as core from "./core";
+import { strict as assert } from "assert";
 
 export class OfferListKey {
   public constructor(
@@ -12,7 +12,7 @@ export class OfferListKey {
     return `${this.inboundToken.toHexString()}-${this.outboundToken.toHexString()}`;
   }
 
-  public static fromOfferList(pool: input.core.OfferList) {
+  public static fromOfferList(pool: core.OfferList) {
     return new OfferListKey(
       proxima.eth.Address.fromHexString(pool.inboundToken),
       proxima.eth.Address.fromHexString(pool.outboundToken)
@@ -20,7 +20,7 @@ export class OfferListKey {
   }
 
   public static parse(value: string): OfferListKey {
-    const parts = value.split('-');
+    const parts = value.split("-");
 
     assert(parts.length == 2);
 

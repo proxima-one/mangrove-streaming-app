@@ -1,4 +1,4 @@
-import * as eth from './eth';
+import * as eth from "./eth";
 
 export interface OfferList {
   inboundToken: eth.Address;
@@ -50,7 +50,7 @@ export type OrderId = string;
 export type OfferId = number;
 export type MangroveId = eth.Address;
 export type OfferFailReason =
-  | 'mgv/makerRevert'
-  | 'mgv/makerAbort'
-  | 'mgv/makerTransferFail'
-  | 'mgv/makerReceiveFail';
+  | "mgv/makerRevert"
+  | "mgv/makerAbort"
+  | "mgv/makerTransferFail"
+  | "mgv/makerReceiveFail";

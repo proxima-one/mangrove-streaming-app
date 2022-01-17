@@ -1,1 +1,1 @@
-export * from './parseBlocksApp';
+export * from "./parseBlocksApp";

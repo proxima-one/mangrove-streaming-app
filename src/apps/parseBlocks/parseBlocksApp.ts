@@ -1,8 +1,8 @@
-import * as proxima from '@proxima-one/proxima-core';
-import * as model from '../../model';
-import * as abi from './abi';
-import * as _ from 'lodash';
-import { parseMangroveEvents } from './mangroveLogsParser';
+import * as proxima from "@proxima-one/proxima-core";
+import * as model from "../../model";
+import * as abi from "./abi";
+import * as _ from "lodash";
+import { parseMangroveEvents } from "./mangroveLogsParser";
 
 const mangroveLogsParser = parseMangroveEvents();
 
@@ -33,7 +33,7 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         .orderBy((x) => x.index)
         .value();
 
-      const mappedEvents: model.input.events.InputEvent[] = [];
+      const mappedEvents: model.events.InputEvent[] = [];
 
       for (const { mangroveId, events } of groupedMangroveEvents) {
         const parseResult = mangroveLogsParser({

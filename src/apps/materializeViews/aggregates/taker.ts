@@ -1,7 +1,7 @@
-import * as proxima from '@proxima-one/proxima-core';
-import * as input from '../input';
-import * as _ from 'lodash';
-import { OfferListKey } from '../offerList';
+import * as proxima from "@proxima-one/proxima-core";
+import * as input from "../input";
+import * as _ from "lodash";
+import { OfferListKey } from "../offerList";
 
 export class TakerAggregate {
   private _state: State;
