@@ -210,7 +210,10 @@ export const parseOrderExecutionEvents = (opts: {
     const txHash = ctx.txHash;
 
     const takenOffersResult = parseTakenOffers()(ctx);
-    if (!takenOffersResult.success) return failure(ctx, 'no taken offers');
+    if (!takenOffersResult.success) {
+      if (!opts.allowEmptyOrder)
+        return failure(ctx, 'no taken offers');
+    }
 
     const orderCompletedResult = parseOrderCompletedLog()(
       takenOffersResult.ctx
@@ -300,7 +303,7 @@ const parsePosthookFailed =
         log.requireParam('offerId').asNumber() == requestedOfferId
           ? true
           : `offerId doesn't match`,
-      (log) => true
+      () => true
     );
 
 const parseOfferSuccess = () =>
@@ -339,7 +342,7 @@ export function parseLogs<T>(
   nameOrNames: string | string[],
   mapFunc: (log: proxima.eth.ContractEventPayload) => T
 ): LogParser<T> {
-  return parseLogsIf<T>(nameOrNames, (_) => true, mapFunc);
+  return parseLogsIf<T>(nameOrNames, () => true, mapFunc);
 }
 
 export function parseLogsIf<T>(
