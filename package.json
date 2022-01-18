@@ -34,7 +34,8 @@
   "dependencies": {
     "@proxima-one/proxima-app-runtime": "^0.2.0-beta.6",
     "@proxima-one/proxima-core": "^0.1.5-beta.7",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "module-alias": "^2.2.2"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
@@ -57,5 +58,8 @@
   },
   "jest": {
     "preset": "<rootDir>/"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }
