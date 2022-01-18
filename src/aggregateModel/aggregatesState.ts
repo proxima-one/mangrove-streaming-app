@@ -9,6 +9,7 @@ export class AggregatesState implements AggregateStateStore {
   // to allow fast rollbacks
   stackSize = 10 as const;
 
+  // TODO: dynamic stackSize for aggregates, track state version to differ rollbacks from 0 state
   public constructor(
     public readonly aggregates: Record<
       string,
