@@ -19,11 +19,11 @@
   "types": "dist/index",
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
-    "format": "prettier --write \"{src,__tests__}/**/*.ts\" --single-quote --trailing-comma es5",
+    "format": "prettier --write \"{src,__tests__}/**/*.ts\"",
     "lint": "eslint . --ext .ts",
     "prepublishOnly": "yarn build",
     "prebuild": "yarn clean && yarn format && yarn lint && echo Using TypeScript && tsc --version",
-    "build": "tsc --pretty",
+    "build": "tsc --project tsconfig.build.json --pretty",
     "test": "jest --passWithNoTests",
     "coverage": "jest --coverage",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
@@ -49,6 +49,7 @@
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.12.0",
+    "tsconfig-paths-jest": "^0.0.1",
     "typescript": "^4.5.4"
   },
   "engines": {

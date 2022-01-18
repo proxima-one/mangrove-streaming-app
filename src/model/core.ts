@@ -1,4 +1,4 @@
-import * as eth from './eth';
+import * as eth from "./eth";
 
 export interface OfferList {
   inboundToken: eth.Address;
@@ -8,7 +8,7 @@ export interface OfferList {
 export interface OfferListParams {
   active?: boolean;
   fee?: eth.UInt;
-  gasbase?: eth.UInt;
+  gasbase?: eth.UInt; // todo: 24 bits
   density?: eth.UInt;
 }
 
@@ -17,8 +17,8 @@ export interface Offer {
   prev: OfferId;
   wants: eth.UInt;
   gives: eth.UInt;
-  gasprice: eth.UInt;
-  gasreq: eth.UInt;
+  gasprice: eth.UInt; // todo: 16 bits
+  gasreq: eth.UInt; // todo: 24 bits
 }
 
 export interface MangroveParams {
@@ -27,8 +27,8 @@ export interface MangroveParams {
   vault?: eth.Address;
   useOracle?: boolean;
   notify?: boolean;
-  gasmax?: eth.UInt;
-  gasprice?: eth.UInt;
+  gasmax?: eth.UInt; //todo: 24 bits
+  gasprice?: eth.UInt; //todo: 16 bits
   dead?: boolean;
 }
 
@@ -50,7 +50,7 @@ export type OrderId = string;
 export type OfferId = number;
 export type MangroveId = eth.Address;
 export type OfferFailReason =
-  | 'mgv/makerRevert'
-  | 'mgv/makerAbort'
-  | 'mgv/makerTransferFail'
-  | 'mgv/makerReceiveFail';
+  | "mgv/makerRevert"
+  | "mgv/makerAbort"
+  | "mgv/makerTransferFail"
+  | "mgv/makerReceiveFail";

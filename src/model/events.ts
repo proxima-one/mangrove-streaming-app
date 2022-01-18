@@ -1,7 +1,7 @@
-import * as eth from './eth';
-import * as core from './core';
+import * as eth from "./eth";
+import * as core from "./core";
 
-export type InputEvent = MangroveEvent & {
+export type DomainEvent = MangroveEvent & {
   tx: eth.TransactionRef;
   mangroveId: core.MangroveId; //support multiple instances in the same event stream
 };
@@ -16,7 +16,7 @@ export type MangroveEvent =
   | OrderCompleted;
 
 export interface TakerApprovalUpdated {
-  type: 'TakerApprovalUpdated';
+  type: "TakerApprovalUpdated";
 
   owner: eth.Address;
   offerList: core.OfferList;
@@ -25,27 +25,27 @@ export interface TakerApprovalUpdated {
 }
 
 export interface MakerBalanceUpdated {
-  type: 'MakerBalanceUpdated';
+  type: "MakerBalanceUpdated";
 
   maker: core.MakerId;
   amountChange: eth.Int;
 }
 
 export interface OfferListParamsUpdated {
-  type: 'OfferListParamsUpdated';
+  type: "OfferListParamsUpdated";
 
   offerList: core.OfferList;
   params: core.OfferListParams;
 }
 
 export interface MangroveParamsUpdated {
-  type: 'MangroveParamsUpdated';
+  type: "MangroveParamsUpdated";
 
   params: core.MangroveParams;
 }
 
 export interface OfferWritten {
-  type: 'OfferWritten';
+  type: "OfferWritten";
 
   offerList: core.OfferList;
   offer: core.Offer;
@@ -53,14 +53,14 @@ export interface OfferWritten {
 }
 
 export interface OfferRetracted {
-  type: 'OfferRetracted';
+  type: "OfferRetracted";
 
   offerList: core.OfferList;
   offerId: core.OfferId;
 }
 
 export interface OrderCompleted {
-  type: 'OrderCompleted';
+  type: "OrderCompleted";
 
   id: core.OrderId;
   offerList: core.OfferList;
