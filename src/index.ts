@@ -10,4 +10,3 @@ ProximaAppRuntime.initAndRun({
 }).catch((err) => {
   console.error(`ProximaApp error`, err);
 });
-("");
