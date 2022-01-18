@@ -1,3 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const tsconfig = require("./tsconfig.json")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const moduleNameMapper = require("tsconfig-paths-jest")(tsconfig)
+
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
@@ -19,6 +24,7 @@ module.exports = {
     "node"
   ],
   moduleNameMapper: {
+    ...moduleNameMapper,
     "^.+\\.(css|less|scss)$": "babel-jest"
   }
 };

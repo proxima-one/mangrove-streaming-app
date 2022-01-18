@@ -33,7 +33,7 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         .orderBy((x) => x.index)
         .value();
 
-      const mappedEvents: model.events.InputEvent[] = [];
+      const mappedEvents: model.events.DomainEvent[] = [];
 
       for (const { mangroveId, events } of groupedMangroveEvents) {
         const parseResult = mangroveLogsParser({

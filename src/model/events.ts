@@ -1,7 +1,7 @@
 import * as eth from "./eth";
 import * as core from "./core";
 
-export type InputEvent = MangroveEvent & {
+export type DomainEvent = MangroveEvent & {
   tx: eth.TransactionRef;
   mangroveId: core.MangroveId; //support multiple instances in the same event stream
 };
