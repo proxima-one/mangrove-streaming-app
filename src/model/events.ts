@@ -6,14 +6,17 @@ export type DomainEvent = MangroveEvent & {
   mangroveId: core.MangroveId; //support multiple instances in the same event stream
 };
 
-export type MangroveEvent =
+export type MangroveEvent = (
   | TakerApprovalUpdated
   | MakerBalanceUpdated
   | OfferListParamsUpdated
   | MangroveParamsUpdated
   | OfferWritten
   | OfferRetracted
-  | OrderCompleted;
+  | OrderCompleted
+) & {
+  parentOrderId?: core.OrderId; // not empty in case event is emitted in callback/posthook functions
+};
 
 export interface TakerApprovalUpdated {
   type: "TakerApprovalUpdated";

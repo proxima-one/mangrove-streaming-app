@@ -1,4 +1,4 @@
-import { parseMangroveEvents, LogParserContext } from "./mangroveLogsParser";
+import { LogParserContext, parseMangroveEvents } from "./mangroveLogsParser";
 import * as proxima from "@proxima-one/proxima-core";
 import {
   createParserRunner,
@@ -18,6 +18,9 @@ const token1 = proxima.eth.Address.fromHexString(
 );
 const token2 = proxima.eth.Address.fromHexString(
   "0x2058a9d7613eee744279e3856ef0eada5fcbaa7e"
+);
+const token3 = proxima.eth.Address.fromHexString(
+  "0x2058a9d7613eee744279e3856ef0eada5fcbaa79"
 );
 const taker1 = proxima.eth.Address.fromHexString(
   "0x3073a02460d7be1a1c9afc60a059ad8d788a4502"
@@ -79,6 +82,7 @@ describe("parseMangroveEvents", () => {
   it("should parse recursive OrderExecution events (maker executes its own order in posthook callback)", () => {
     assertParsedResult(
       context([
+        log("OrderStart", {}),
         log("OfferSuccess", {
           outbound_tkn: token1.toHexString(),
           inbound_tkn: token2.toHexString(),
@@ -87,6 +91,26 @@ describe("parseMangroveEvents", () => {
           takerWants: 100,
           takerGives: 100,
         }),
+
+        // maker's callback executes order on another token list
+        log("OrderStart", {}),
+        log("OfferSuccess", {
+          outbound_tkn: token1.toHexString(),
+          inbound_tkn: token3.toHexString(),
+          id: 5,
+          taker: maker1.toHexString(),
+          takerWants: 100,
+          takerGives: 100,
+        }),
+        log("OrderComplete", {
+          outbound_tkn: token1.toHexString(),
+          inbound_tkn: token3.toHexString(),
+          taker: maker1.toHexString(),
+          takerGot: 100,
+          takerGave: 100,
+          penalty: 0,
+        }),
+
         log("OfferFail", {
           outbound_tkn: token1.toHexString(),
           inbound_tkn: token2.toHexString(),
@@ -123,6 +147,7 @@ describe("parseMangroveEvents", () => {
           id: 4,
           prev: 0,
         }),
+        log("OrderStart", {}), // posthook's order from maker
         log("OfferSuccess", {
           outbound_tkn: token1.toHexString(),
           inbound_tkn: token2.toHexString(),
@@ -154,6 +179,27 @@ describe("parseMangroveEvents", () => {
         }),
       ]),
       events([
+        {
+          id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-2",
+          parentOrderId:
+            "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+          offerList: {
+            inboundToken: "0x2058a9d7613eee744279e3856ef0eada5fcbaa79",
+            outboundToken: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+          },
+          penalty: "0",
+          takenOffers: [
+            {
+              id: 5,
+              takerGives: "100",
+              takerWants: "100",
+            },
+          ],
+          taker: "0xcbb37575320ff499e9f69d0090b6944bc0ad7585",
+          takerGave: "100",
+          takerGot: "100",
+          type: "OrderCompleted",
+        },
         {
           type: "OrderCompleted",
           offerList: {
@@ -192,6 +238,8 @@ describe("parseMangroveEvents", () => {
         },
         {
           type: "OfferWritten",
+          parentOrderId:
+            "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
           maker: maker1.toHexString(),
           offerList: {
             inboundToken: token2.toHexString(),
@@ -202,17 +250,19 @@ describe("parseMangroveEvents", () => {
             prev: 0,
             wants: "100",
             gives: "100",
-            gasprice: "100",
-            gasreq: "100",
+            gasprice: 100,
+            gasreq: 100,
           },
         },
         {
           type: "OrderCompleted",
+          parentOrderId:
+            "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
           offerList: {
             inboundToken: token2.toHexString(),
             outboundToken: token1.toHexString(),
           },
-          id: `${txHash.toHexString()}-5`,
+          id: `${txHash.toHexString()}-9`,
           penalty: "0",
           takerGot: "100",
           takerGave: "100",

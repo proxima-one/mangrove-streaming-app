@@ -14,7 +14,7 @@ describe("MangroveAggregate", () => {
 
     beforeEach(() => {
       paramsUpdate = {
-        gasprice: "100",
+        gasprice: 100,
       };
       act = () => sut.handleParamsUpdated(paramsUpdate);
     });

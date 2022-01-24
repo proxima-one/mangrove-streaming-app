@@ -47,10 +47,8 @@ export function handleDomainEvent(
             vault: currentParams.vault,
             useOracle: currentParams.useOracle ?? false,
             notify: currentParams.notify ?? false,
-            gasmax: currentParams.gasmax ? parseInt(currentParams.gasmax) : 0,
-            gasprice: currentParams.gasprice
-              ? parseInt(currentParams.gasprice)
-              : 0,
+            gasmax: currentParams.gasmax ?? 0,
+            gasprice: currentParams.gasprice ?? 0,
             dead: currentParams.dead ?? false,
           },
         }),

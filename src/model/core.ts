@@ -8,7 +8,7 @@ export interface OfferList {
 export interface OfferListParams {
   active?: boolean;
   fee?: eth.UInt;
-  gasbase?: eth.UInt; // todo: 24 bits
+  gasbase?: number; // todo: 24 bits
   density?: eth.UInt;
 }
 
@@ -17,8 +17,8 @@ export interface Offer {
   prev: OfferId;
   wants: eth.UInt;
   gives: eth.UInt;
-  gasprice: eth.UInt; // todo: 16 bits
-  gasreq: eth.UInt; // todo: 24 bits
+  gasprice: number; // todo: 16 bits
+  gasreq: number; // todo: 24 bits
 }
 
 export interface MangroveParams {
@@ -27,8 +27,8 @@ export interface MangroveParams {
   vault?: eth.Address;
   useOracle?: boolean;
   notify?: boolean;
-  gasmax?: eth.UInt; //todo: 24 bits
-  gasprice?: eth.UInt; //todo: 16 bits
+  gasmax?: number; //todo: 24 bits
+  gasprice?: number; //todo: 16 bits
   dead?: boolean;
 }
 
