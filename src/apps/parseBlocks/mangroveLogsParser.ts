@@ -15,8 +15,7 @@ export const parseMangroveEvents = (): LogParser<
         parseApprovalEvents(),
         parseOfferWrittenEvents(),
         parseOfferRetractedEvents(),
-        parseOrderExecutionEvents({ allowEmptyOrder: false }),
-        // parseOrderExecutionEvents({ allowEmptyOrder: true }), // order without taken offers doesn't seem right to me, but it's possible when using `snipes` function with targets = []
+        parseOrderExecutionEvents(),
       ])
     ),
     (x) => x.flat()
@@ -62,7 +61,7 @@ export const parseOfferListParamsEvents = () =>
                 : undefined,
             gasbase:
               log.name == OfferListParamsEvents.SetGasbase
-                ? log.requireParam("offer_gasbase").asBigNumber().toFixed()
+                ? log.requireParam("offer_gasbase").asNumber()
                 : undefined,
             density:
               log.name == OfferListParamsEvents.SetDensity
@@ -116,11 +115,11 @@ export const parseMangroveParamsEvents = () =>
                 : undefined,
             gasmax:
               log.name == MangroveParamsEvents.SetGasmax
-                ? log.requireParam("value").asBigNumber().toFixed()
+                ? log.requireParam("value").asNumber()
                 : undefined,
             gasprice:
               log.name == MangroveParamsEvents.SetGasprice
-                ? log.requireParam("value").asBigNumber().toFixed()
+                ? log.requireParam("value").asNumber()
                 : undefined,
             dead:
               log.name == MangroveParamsEvents.NewMgv
@@ -157,8 +156,8 @@ export const parseOfferWrittenEvents = () =>
         offer: {
           wants: log.requireParam("wants").asBigNumber().toFixed(),
           gives: log.requireParam("gives").asBigNumber().toFixed(),
-          gasprice: log.requireParam("gasprice").asBigNumber().toFixed(),
-          gasreq: log.requireParam("gasreq").asBigNumber().toFixed(),
+          gasprice: log.requireParam("gasprice").asNumber(),
+          gasreq: log.requireParam("gasreq").asNumber(),
           id: log.requireParam("id").asNumber(), // 32-bits max
           prev: log.requireParam("prev").asNumber(), // 32-bits max
         },
@@ -204,33 +203,42 @@ export const parseOfferRetractedEvents = () =>
  *   - takenOffers: [{id=5}]
  * @param opts
  */
-export const parseOrderExecutionEvents = (opts: {
-  allowEmptyOrder: boolean;
-}): LogParser<model.events.MangroveEvent[]> => {
+export const parseOrderExecutionEvents = (): LogParser<
+  model.events.MangroveEvent[]
+> => {
+  const orderStartParser = parseLogs("OrderStart", (x) => x);
+  const orderCompleteParser = parseLogs("OrderComplete", (x) => x);
+  const takenOffersParser = parseTakenOffers();
+
   return (ctx) => {
     const startIndex = ctx.index;
     const txHash = ctx.txHash;
 
-    const takenOffersResult = parseTakenOffers()(ctx);
+    const orderStart = orderStartParser(ctx);
+
+    if (!orderStart.success) return orderStart;
+
+    const takenOffersResult = takenOffersParser(orderStart.ctx);
     if (!takenOffersResult.success) {
-      if (!opts.allowEmptyOrder) return failure(ctx, "no taken offers");
+      return takenOffersResult;
     }
 
-    const orderCompletedResult = parseOrderCompletedLog()(
-      takenOffersResult.ctx
-    );
-    if (!orderCompletedResult.success)
-      return failure(ctx, "no OrderComplete log");
+    const orderCompletedResult = orderCompleteParser(takenOffersResult.ctx);
+    if (!orderCompletedResult.success) return orderCompletedResult;
 
     const log = orderCompletedResult.value;
-    const takenOffers = takenOffersResult.success
-      ? takenOffersResult.value
-      : [];
+    const takenOffers = takenOffersResult.value;
 
+    const orderId = `${txHash.toHexString()}-${startIndex}`;
     return success(orderCompletedResult.ctx, [
+      ...takenOffers
+        .flatMap((x) => x.callbackEvents)
+        .map((x) => {
+          return { ...x, parentOrderId: orderId };
+        }),
       {
         type: "OrderCompleted",
-        id: `${txHash.toHexString()}-${startIndex}`,
+        id: orderId,
         offerList: extractOfferList(log),
         penalty: log.requireParam("penalty").asBigNumber().toFixed(),
         takerGave: log.requireParam("takerGave").asBigNumber().toFixed(),
@@ -238,12 +246,14 @@ export const parseOrderExecutionEvents = (opts: {
         taker: log.requireParam("taker").asString(),
         takenOffers: takenOffers.map((x) => x.offer),
       },
-      ...takenOffers.flatMap((x) => x.posthookEvents),
+      ...takenOffers
+        .flatMap((x) => x.posthookEvents)
+        .map((x) => {
+          return { ...x, parentOrderId: orderId };
+        }),
     ]);
   };
 };
-
-const parseOrderCompletedLog = () => parseLogs("OrderComplete", (log) => log);
 
 const extractOfferList = (
   log: proxima.eth.ContractEventPayload
@@ -254,22 +264,28 @@ const extractOfferList = (
   };
 };
 
+// [...Maker's Callback Events]
 // TakenOffer
-//   [...TakenOffers]
+//   [...TakenOffers] <--- RECURSIVE
+// [...Posthook Events]
 // ? PosthookFailed (offerId)
 const parseTakenOffers = (): LogParser<ParsedTakenOffer[]> => (ctx) => {
-  const currentTakenOfferResult = parseTakenOffer()(ctx);
+  const mangroveEventsParser = parseMangroveEvents();
+  const takenOfferParser = parseTakenOffer();
+  const posthookFailParser = parsePosthookFailed();
 
-  if (!currentTakenOfferResult.success) {
-    return failure(ctx, currentTakenOfferResult.reason);
-  }
+  const callbackEvents = mangroveEventsParser(ctx);
+  if (!callbackEvents.success) return callbackEvents;
+
+  const currentTakenOfferResult = takenOfferParser(callbackEvents.ctx);
+  if (!currentTakenOfferResult.success) return success(ctx, []); // don't parse callbackEvents and fallback
 
   const restOffersResult = parseTakenOffers()(currentTakenOfferResult.ctx);
-  const restOffers = restOffersResult.success ? restOffersResult.value : [];
+  if (!restOffersResult.success) return restOffersResult;
 
+  const restOffers = restOffersResult.value;
   const currentOffer = currentTakenOfferResult.value;
-
-  const posthookFail = parsePosthookFailed()(currentTakenOfferResult.value.id)(
+  const posthookFail = posthookFailParser(currentTakenOfferResult.value.id)(
     restOffersResult.ctx
   );
 
@@ -278,15 +294,19 @@ const parseTakenOffers = (): LogParser<ParsedTakenOffer[]> => (ctx) => {
       {
         offer: { ...currentOffer, posthookFailed: true },
         posthookEvents: [],
+        callbackEvents: callbackEvents.value,
       },
       ...restOffers,
     ]);
 
   const posthookEvents = parseMangroveEvents()(restOffersResult.ctx);
+  if (!posthookEvents.success) return posthookEvents;
+
   return success(posthookEvents.ctx, [
     {
       offer: currentOffer,
-      posthookEvents: posthookEvents.success ? posthookEvents.value : [],
+      posthookEvents: posthookEvents.value,
+      callbackEvents: callbackEvents.value,
     },
     ...restOffers,
   ]);
@@ -294,6 +314,7 @@ const parseTakenOffers = (): LogParser<ParsedTakenOffer[]> => (ctx) => {
 
 interface ParsedTakenOffer {
   offer: model.core.TakenOffer;
+  callbackEvents: model.events.MangroveEvent[];
   posthookEvents: model.events.MangroveEvent[];
 }
 

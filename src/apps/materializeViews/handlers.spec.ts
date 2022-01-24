@@ -49,8 +49,8 @@ describe("handleDomainEvent", () => {
       mangroveId: mangroveAddress.toHexString(),
       params: {
         dead: false,
-        gasprice: "100",
-        gasmax: "50",
+        gasprice: 100,
+        gasmax: 50,
       },
       tx: txRef,
     });
@@ -59,7 +59,7 @@ describe("handleDomainEvent", () => {
       type: "MangroveParamsUpdated",
       mangroveId: mangroveAddress.toHexString(),
       params: {
-        gasprice: "150", // increase
+        gasprice: 150, // increase
       },
       tx: txRef,
     });
@@ -83,7 +83,7 @@ describe("handleDomainEvent", () => {
       mangroveId: mangroveAddress.toHexString(),
       params: {
         dead: false,
-        gasprice: "100",
+        gasprice: 100,
       },
       tx: txRef,
     });
@@ -92,7 +92,7 @@ describe("handleDomainEvent", () => {
       type: "MangroveParamsUpdated",
       mangroveId: mangroveAddress.toHexString(),
       params: {
-        gasprice: "150", // increase
+        gasprice: 150, // increase
       },
       tx: txRef,
     });
@@ -102,7 +102,7 @@ describe("handleDomainEvent", () => {
         type: "MangroveParamsUpdated",
         mangroveId: mangroveAddress.toHexString(),
         params: {
-          gasprice: "150", // increase
+          gasprice: 150, // increase
         },
         tx: txRef,
       },

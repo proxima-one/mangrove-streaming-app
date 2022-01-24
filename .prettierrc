@@ -3,5 +3,6 @@
   "semi": true,
   "quoteProps": "as-needed",
   "singleQuote": false,
-  "trailingComma": "es5"
+  "trailingComma": "es5",
+  "arrowParens": "always"
 }
