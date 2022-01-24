@@ -60,6 +60,6 @@
     "preset": "<rootDir>/"
   },
   "_moduleAliases": {
-    "@": "dist"
+    "@": ""
   }
 }
