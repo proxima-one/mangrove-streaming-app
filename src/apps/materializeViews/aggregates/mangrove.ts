@@ -1,7 +1,7 @@
 import * as proxima from "@proxima-one/proxima-core";
 import * as _ from "lodash";
-import * as model from "@/model";
-import { AggregateAware } from "@/aggregateModel";
+import * as model from "model";
+import { AggregateAware } from "aggregateModel";
 
 export class MangroveAggregate {
   private _state: State;

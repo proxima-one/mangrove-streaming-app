@@ -314,6 +314,7 @@ export const mangrove = [
     name: "OrderComplete",
     type: "event",
   },
+  { anonymous: false, inputs: [], name: "OrderStart", type: "event" },
   {
     anonymous: false,
     inputs: [

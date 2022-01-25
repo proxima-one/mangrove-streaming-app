@@ -1,9 +1,9 @@
 import * as proxima from "@proxima-one/proxima-core";
-import * as model from "@/model";
+import * as model from "model";
 import * as utils from "@proxima-one/proxima-utils";
 import * as views from "./views";
 import * as aggregates from "./aggregates";
-import * as aggregatesModel from "@/aggregateModel";
+import * as aggregatesModel from "aggregateModel";
 
 const domainEventMatcher =
   utils.createPatternMatcher<model.events.DomainEvent>();
