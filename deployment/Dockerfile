@@ -22,6 +22,7 @@ ENV NODE_ENV production
 RUN --mount=type=secret,id=npmrc,dst=/root/.npmrc \
   yarn install --production --ignore-optional
 
-COPY --from=build /app/dist ./dist/
+COPY --from=build /app/dist .
+ENV NODE_PATH /app
 ENV VERSION $BUILD_VERSION
-ENTRYPOINT ["dumb-init", "node", "./dist/index.js"]
+ENTRYPOINT ["dumb-init", "node", "./index.js"]
