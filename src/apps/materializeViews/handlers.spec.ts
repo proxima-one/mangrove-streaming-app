@@ -1,7 +1,7 @@
 import { handleDomainEvent } from "./handlers";
-import * as aggregatesModel from "@/aggregateModel";
+import * as aggregatesModel from "../../aggregateModel";
 import * as proxima from "@proxima-one/proxima-core";
-import * as model from "@/model";
+import * as model from "../../model";
 import * as views from "./views";
 
 describe("handleDomainEvent", () => {

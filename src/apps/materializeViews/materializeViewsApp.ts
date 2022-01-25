@@ -1,6 +1,6 @@
 import * as proxima from "@proxima-one/proxima-core";
-import * as model from "@/model";
-import * as aggregatesModel from "@/aggregateModel";
+import * as model from "model";
+import * as aggregatesModel from "aggregateModel";
 import { handleDomainEvent } from "./handlers";
 import { State } from "./state";
 

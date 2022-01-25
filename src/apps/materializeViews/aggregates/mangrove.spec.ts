@@ -1,5 +1,5 @@
 import * as proxima from "@proxima-one/proxima-core";
-import * as model from "@/model";
+import * as model from "model";
 import { MangroveAggregate, MangroveId, updateParams } from "./mangrove";
 
 describe("MangroveAggregate", () => {

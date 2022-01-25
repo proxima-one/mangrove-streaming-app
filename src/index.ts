@@ -1,4 +1,6 @@
-require("module-alias/register");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+// const moduleAlias = require("module-alias");
+// moduleAlias.addAlias()
 
 import { ProximaAppRuntime } from "@proxima-one/proxima-app-runtime";
 import { ParseBlocksApp } from "./apps/parseBlocks";

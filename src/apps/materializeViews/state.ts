@@ -1,4 +1,4 @@
-import * as aggregatesModel from "@/aggregateModel";
+import * as aggregatesModel from "aggregateModel";
 import * as proxima from "@proxima-one/proxima-core";
 
 export class State {

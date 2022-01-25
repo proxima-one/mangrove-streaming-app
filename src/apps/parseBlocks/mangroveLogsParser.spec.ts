@@ -278,4 +278,35 @@ describe("parseMangroveEvents", () => {
       ])
     );
   });
+
+  it("should parse empty order", () => {
+    assertParsedResult(
+      context([
+        log("OrderStart", {}),
+        log("OrderComplete", {
+          outbound_tkn: token1.toHexString(),
+          inbound_tkn: token2.toHexString(),
+          taker: taker1.toHexString(),
+          takerGot: 100,
+          takerGave: 100,
+          penalty: 0,
+        }),
+      ]),
+      events([
+        {
+          type: "OrderCompleted",
+          offerList: {
+            inboundToken: token2.toHexString(),
+            outboundToken: token1.toHexString(),
+          },
+          id: `${txHash.toHexString()}-0`,
+          penalty: "0",
+          takerGot: "100",
+          takerGave: "100",
+          taker: taker1.toHexString(),
+          takenOffers: [],
+        },
+      ])
+    );
+  });
 });
