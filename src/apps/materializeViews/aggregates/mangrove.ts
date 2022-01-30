@@ -27,11 +27,7 @@ export class MangroveId
   public readonly aggregate = MangroveAggregate;
   public readonly aggregateType = "mangrove";
 
-  private constructor(public readonly value: string) {}
-
-  public static fromAddress(address: proxima.eth.Address): MangroveId {
-    return new MangroveId(address.toHexString());
-  }
+  public constructor(public readonly value: string) {}
 }
 
 interface State {

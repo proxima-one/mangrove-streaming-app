@@ -15,13 +15,51 @@ export function handleDomainEvent(
 ): ReadonlyArray<proxima.documents.DocumentUpdate> {
   return domainEventMatcher({
     OrderCompleted: (e) => {
+      // TODO: implement, change offer state as well (deprovisioning and gives = 0 to delete offer, also from list)
       return [];
     },
     OfferRetracted: (e) => {
-      return [];
+      const key = model.OfferListKey.fromOfferList(e.offerList);
+      const offerId = new aggregates.OfferId(e.mangroveId, key, e.offerId);
+
+      const offerList = aggregatesPool.load(
+        new aggregates.OfferListId(e.mangroveId, key)
+      );
+      const offerListOffers = aggregatesPool.mutate(
+        new aggregates.OfferListOffersId(e.mangroveId, key),
+        (x) => x.removeOffer(e.offerId),
+        undo
+      );
+
+      const offer = aggregatesPool.mutate(offerId, (x) => x.remove());
+
+      return [
+        views.offer(offer).setContent(),
+        views.offerList(offerList, offerListOffers).setContent(),
+      ];
     },
     OfferWritten: (e) => {
-      return [];
+      const key = model.OfferListKey.fromOfferList(e.offerList);
+      const offerId = new aggregates.OfferId(e.mangroveId, key, e.offer.id);
+
+      const offerList = aggregatesPool.load(
+        new aggregates.OfferListId(e.mangroveId, key)
+      );
+      const offerListOffers = aggregatesPool.mutate(
+        new aggregates.OfferListOffersId(e.mangroveId, key),
+        (x) => x.writeOffer(e.offer.id, e.offer.prev),
+        undo
+      );
+
+      const offer = aggregatesPool.mutate(
+        offerId,
+        (x) => x.update(e.maker, e.offer),
+        undo
+      );
+      return [
+        views.offer(offer).setContent(),
+        views.offerList(offerList, offerListOffers).setContent(),
+      ];
     },
     TakerApprovalUpdated: (e) => {
       return [];
@@ -42,9 +80,7 @@ export function handleDomainEvent(
       return [views.maker(maker).setContent()];
     },
     MangroveParamsUpdated: (e) => {
-      const mangroveId = aggregates.MangroveId.fromAddress(
-        proxima.eth.Address.fromHexString(e.mangroveId)
-      );
+      const mangroveId = new aggregates.MangroveId(e.mangroveId);
       const mangrove = aggregatesPool.mutate(
         mangroveId,
         (x) => x.updateParams(e.params),
@@ -53,18 +89,18 @@ export function handleDomainEvent(
       return [views.mangrove(mangrove).setContent()];
     },
     OfferListParamsUpdated: (e) => {
-      const offerListId = new aggregates.OfferListId(
-        e.mangroveId,
-        model.OfferListKey.fromOfferList(e.offerList)
-      );
+      const key = model.OfferListKey.fromOfferList(e.offerList);
 
       const offerList = aggregatesPool.mutate(
-        offerListId,
+        new aggregates.OfferListId(e.mangroveId, key),
         (x) => x.updateParams(e.params),
         undo
       );
+      const offerListOffers = aggregatesPool.load(
+        new aggregates.OfferListOffersId(e.mangroveId, key)
+      );
 
-      return [views.offerList(offerList).setContent()];
+      return [views.offerList(offerList, offerListOffers).setContent()];
     },
   })(payload);
 }

@@ -1,6 +1,7 @@
 import { DocumentUpdateBuilder, ViewBase } from "./types";
 import * as aggregates from "../aggregates";
 
+const topOffersCount = 100;
 export interface OfferListView extends ViewBase {
   mangroveId: string;
   inboundToken: string;
@@ -16,7 +17,8 @@ export interface OfferListView extends ViewBase {
 }
 
 export function offerList(
-  offerList: aggregates.OfferListAggregate
+  offerList: aggregates.OfferListAggregate,
+  offerListOffers: aggregates.OfferListOffersAggregate
 ): DocumentUpdateBuilder<OfferListView> {
   const params = offerList.state.params;
   return new DocumentUpdateBuilder(offerList.id.value, "OfferList", {
@@ -29,7 +31,16 @@ export function offerList(
     },
     inboundToken: offerList.id.key.inboundToken.toHexString(),
     outboundToken: offerList.id.key.outboundToken.toHexString(),
-    offersCount: 0,
-    topOffers: [],
+    offersCount: offerListOffers.state.offers.length,
+    topOffers: offerListOffers.state.offers
+      .slice(0, topOffersCount)
+      .map(
+        (offerNumber) =>
+          new aggregates.OfferId(
+            offerList.id.mangroveId,
+            offerList.id.key,
+            offerNumber
+          ).value
+      ),
   });
 }

@@ -28,25 +28,22 @@ export class AggregatesPool {
   ): TAggregate {
     if (undo) {
       this.rollback(id);
-      return this.load(id, id.aggregate);
+      return this.load(id);
     } else {
-      const aggregate = this.load(id, id.aggregate);
+      const aggregate = this.load(id);
       mutator(aggregate);
       this.store(aggregate);
       return aggregate;
     }
   }
 
-  private load<
+  public load<
     TId extends AggregateId,
     TState,
     TAggregate extends Aggregate<TId, TState>
-  >(
-    id: TId,
-    constructor: AggregateConstructor<TId, TState, TAggregate>
-  ): TAggregate {
+  >(id: TId & AggregateAware<TId, TState, TAggregate>): TAggregate {
     const state = this.stateStore.get(id);
-    return new constructor(id, state);
+    return new id.aggregate(id, state);
   }
 
   private store<
