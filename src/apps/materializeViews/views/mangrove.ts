@@ -1,5 +1,6 @@
 import { JsonObject } from "@proxima-one/proxima-core";
 import * as aggregates from "../aggregates";
+import { DocumentUpdateBuilder } from "./types";
 
 export interface MangroveView extends JsonObject {
   params: {
@@ -14,9 +15,11 @@ export interface MangroveView extends JsonObject {
   };
 }
 
-export function mangrove(mangrove: aggregates.MangroveAggregate): MangroveView {
+export function mangrove(
+  mangrove: aggregates.MangroveAggregate
+): DocumentUpdateBuilder<MangroveView> {
   const params = mangrove.state.params;
-  return {
+  return new DocumentUpdateBuilder(mangrove.id.value, "Mangrove", {
     params: {
       governance: params.governance,
       monitor: params.monitor,
@@ -27,5 +30,5 @@ export function mangrove(mangrove: aggregates.MangroveAggregate): MangroveView {
       gasprice: params.gasprice ?? 0,
       dead: params.dead ?? false,
     },
-  };
+  });
 }

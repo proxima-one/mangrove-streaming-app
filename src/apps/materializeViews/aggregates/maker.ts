@@ -27,13 +27,13 @@ export class MakerId implements AggregateAware<MakerId, State, MakerAggregate> {
   public readonly aggregate = MakerAggregate;
   public readonly aggregateType = "maker";
 
-  private constructor(public readonly value: string) {}
+  public readonly value: string;
 
-  public static create(
-    mangrove: model.core.MangroveId,
-    makerAddress: proxima.eth.Address
-  ): MakerId {
-    return new MakerId(`${mangrove}-${makerAddress.toHexString()}`);
+  public constructor(
+    public readonly mangroveId: model.core.MangroveId,
+    public readonly makerAddress: proxima.eth.Address
+  ) {
+    this.value = `${mangroveId}-${makerAddress.toHexString()}`;
   }
 }
 
