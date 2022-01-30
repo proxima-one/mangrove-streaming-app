@@ -1,5 +1,5 @@
 import { StreamClient } from "@proximaone/stream-client-js";
-import { mergeMap } from "rxjs";
+import { map } from "rxjs";
 
 async function main() {
   const client = new StreamClient("streamdb.cluster.prod.proxima.one:443");
@@ -8,16 +8,14 @@ async function main() {
   const mangroveEvents = client
     .streamMessages("mangrove-domain-events")
     .pipe(
-      mergeMap((response) =>
-        response.messagesList.map((x) => {
-          return {
-            payload: decodeJson(x.payload),
-            id: x.id, // event id, can be used to continue streaming
-            undo: x.header?.undo == true,
-            timestamp: x.timestamp,
-          };
-        })
-      )
+      map(msg => {
+        return {
+          payload: decodeJson(msg.payload),
+          id: msg.id, // event id, can be used to continue streaming
+          undo: msg.header?.undo == true,
+          timestamp: msg.timestamp,
+        };
+      })
     );
 
   mangroveEvents.subscribe(x => console.log(x));
