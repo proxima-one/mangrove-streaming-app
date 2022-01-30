@@ -49,7 +49,7 @@ export class MaterializeViewsApp extends proxima.EventStreamingAppBase<
     eventList: proxima.EventList<model.events.DomainEvent>,
     state: State
   ): proxima.ApplyEventsResult {
-    const aggregatesMutator = new aggregatesModel.AggregatesMutator(
+    const aggregatesMutator = new aggregatesModel.AggregatesPool(
       state.aggregatesState
     );
     const documentUpdates = eventList.items.flatMap((x) =>

@@ -16,7 +16,7 @@ describe("MangroveAggregate", () => {
       paramsUpdate = {
         gasprice: 100,
       };
-      act = () => sut.handleParamsUpdated(paramsUpdate);
+      act = () => sut.updateParams(paramsUpdate);
     });
 
     describe("when state is empty", () => {

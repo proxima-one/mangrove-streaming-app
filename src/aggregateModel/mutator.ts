@@ -6,7 +6,7 @@ import {
   AggregateStateStore,
 } from "./types";
 
-export class AggregatesMutator {
+export class AggregatesPool {
   public constructor(private readonly stateStore: AggregateStateStore) {}
 
   /**

@@ -6,7 +6,7 @@ import * as views from "./views";
 
 describe("handleDomainEvent", () => {
   let aggregatesState: aggregatesModel.AggregatesState;
-  let mutator: aggregatesModel.AggregatesMutator;
+  let mutator: aggregatesModel.AggregatesPool;
   let producedDocumentUpdates: proxima.documents.DocumentUpdate[];
 
   const mangroveAddress = proxima.eth.Address.fromHexString(
@@ -23,7 +23,7 @@ describe("handleDomainEvent", () => {
 
   beforeEach(() => {
     aggregatesState = new aggregatesModel.AggregatesState();
-    mutator = new aggregatesModel.AggregatesMutator(aggregatesState);
+    mutator = new aggregatesModel.AggregatesPool(aggregatesState);
     producedDocumentUpdates = [];
   });
 

@@ -47,3 +47,8 @@ export interface OrderView extends ViewBase {
   mangroveId: string;
   // todo:...
 }
+
+export interface MakerView extends ViewBase {
+  mangroveId: string;
+  balance: string;
+}

@@ -14,7 +14,7 @@ export class MangroveAggregate {
     this._state = state ?? { params: {} };
   }
 
-  public handleParamsUpdated(paramsUpdate: model.core.MangroveParams) {
+  public updateParams(paramsUpdate: model.core.MangroveParams) {
     this._state = {
       params: updateParams(this._state.params, paramsUpdate),
     };
@@ -34,7 +34,7 @@ export class MangroveId
   }
 }
 
-export interface State {
+interface State {
   params: model.core.MangroveParams;
 }
 
