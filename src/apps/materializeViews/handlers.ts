@@ -13,6 +13,7 @@ export function handleDomainEvent(
   aggregatesPool: aggregatesModel.AggregatesPool,
   { undo, timestamp, payload }: proxima.Event<model.events.DomainEvent>
 ): ReadonlyArray<proxima.documents.DocumentUpdate> {
+  console.log(JSON.stringify(payload));
   return domainEventMatcher({
     OrderCompleted: (e) => {
       // TODO: implement, change offer state as well (deprovisioning and gives = 0 to delete offer, also from list)

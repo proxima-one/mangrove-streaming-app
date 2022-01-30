@@ -27,6 +27,7 @@
     "test": "jest --passWithNoTests",
     "coverage": "jest --coverage",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register src/dev.ts",
     "start:app": "yarn start app start --",
     "watch": "yarn build -- --watch",
     "watch:test": "jest --watch"

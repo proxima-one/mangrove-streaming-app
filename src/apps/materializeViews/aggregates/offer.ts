@@ -24,9 +24,6 @@ export class OfferAggregate {
   }
 
   public remove() {
-    if (this._state == undefined)
-      throw new Error("can't remove not existing order");
-
     this._state = undefined;
   }
 

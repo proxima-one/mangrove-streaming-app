@@ -29,7 +29,7 @@ export class OfferListOffersAggregate {
   public removeOffer(id: model.core.OfferId) {
     const idx = this._state.offers.findIndex((x) => x == id);
     if (idx < 0)
-      throw new Error(`cant' find offer ${id} to delete`);
+      return;
 
     this._state = {
       ...this._state,
