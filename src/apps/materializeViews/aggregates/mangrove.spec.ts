@@ -16,12 +16,12 @@ describe("MangroveAggregate", () => {
       paramsUpdate = {
         gasprice: 100,
       };
-      act = () => sut.handleParamsUpdated(paramsUpdate);
+      act = () => sut.updateParams(paramsUpdate);
     });
 
     describe("when state is empty", () => {
       beforeEach(() => {
-        sut = new MangroveAggregate(MangroveId.fromAddress(addr));
+        sut = new MangroveAggregate(new MangroveId(addr.toHexString()));
       });
 
       it("should create new state and set params", () => {

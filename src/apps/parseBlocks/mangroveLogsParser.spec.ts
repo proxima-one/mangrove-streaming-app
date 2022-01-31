@@ -187,17 +187,19 @@ describe("parseMangroveEvents", () => {
             inboundToken: "0x2058a9d7613eee744279e3856ef0eada5fcbaa79",
             outboundToken: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
           },
-          penalty: "0",
-          takenOffers: [
-            {
-              id: 5,
-              takerGives: "100",
-              takerWants: "100",
-            },
-          ],
-          taker: "0xcbb37575320ff499e9f69d0090b6944bc0ad7585",
-          takerGave: "100",
-          takerGot: "100",
+          order: {
+            penalty: "0",
+            takenOffers: [
+              {
+                id: 5,
+                takerGives: "100",
+                takerWants: "100",
+              },
+            ],
+            taker: "0xcbb37575320ff499e9f69d0090b6944bc0ad7585",
+            takerGave: "100",
+            takerGot: "100",
+          },
           type: "OrderCompleted",
         },
         {
@@ -207,34 +209,36 @@ describe("parseMangroveEvents", () => {
             outboundToken: token1.toHexString(),
           },
           id: `${txHash.toHexString()}-0`,
-          penalty: "0",
-          takerGot: "100",
-          takerGave: "100",
-          taker: taker1.toHexString(),
-          takenOffers: [
-            {
-              id: 1,
-              posthookFailed: true,
-              takerWants: "100",
-              takerGives: "100",
-            },
-            {
-              id: 2,
-              takerWants: "100",
-              takerGives: "100",
-              failReason: "mgv/makerRevert",
-            },
-            {
-              id: 3,
-              takerWants: "100",
-              takerGives: "100",
-            },
-            {
-              id: 4,
-              takerWants: "100",
-              takerGives: "100",
-            },
-          ],
+          order: {
+            penalty: "0",
+            takerGot: "100",
+            takerGave: "100",
+            taker: taker1.toHexString(),
+            takenOffers: [
+              {
+                id: 1,
+                posthookFailed: true,
+                takerWants: "100",
+                takerGives: "100",
+              },
+              {
+                id: 2,
+                takerWants: "100",
+                takerGives: "100",
+                failReason: "mgv/makerRevert",
+              },
+              {
+                id: 3,
+                takerWants: "100",
+                takerGives: "100",
+              },
+              {
+                id: 4,
+                takerWants: "100",
+                takerGives: "100",
+              },
+            ],
+          }
         },
         {
           type: "OfferWritten",
@@ -263,17 +267,19 @@ describe("parseMangroveEvents", () => {
             outboundToken: token1.toHexString(),
           },
           id: `${txHash.toHexString()}-9`,
-          penalty: "0",
-          takerGot: "100",
-          takerGave: "100",
-          taker: maker1.toHexString(),
-          takenOffers: [
-            {
-              id: 5,
-              takerWants: "100",
-              takerGives: "100",
-            },
-          ],
+          order: {
+            penalty: "0",
+            takerGot: "100",
+            takerGave: "100",
+            taker: maker1.toHexString(),
+            takenOffers: [
+              {
+                id: 5,
+                takerWants: "100",
+                takerGives: "100",
+              },
+            ],
+          }
         },
       ])
     );
@@ -300,11 +306,13 @@ describe("parseMangroveEvents", () => {
             outboundToken: token1.toHexString(),
           },
           id: `${txHash.toHexString()}-0`,
-          penalty: "0",
-          takerGot: "100",
-          takerGave: "100",
-          taker: taker1.toHexString(),
-          takenOffers: [],
+          order: {
+            penalty: "0",
+            takerGot: "100",
+            takerGave: "100",
+            taker: taker1.toHexString(),
+            takenOffers: [],
+          }
         },
       ])
     );

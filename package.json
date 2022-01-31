@@ -27,13 +27,13 @@
     "test": "jest --passWithNoTests",
     "coverage": "jest --coverage",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register src/dev.ts",
     "start:app": "yarn start app start --",
     "watch": "yarn build -- --watch",
     "watch:test": "jest --watch"
   },
   "dependencies": {
-    "@proxima-one/proxima-app-runtime": "^0.2.0-beta.6",
-    "@proxima-one/proxima-core": "^0.1.5-beta.7",
+    "@proxima-one/proxima-app-runtime": "^0.2.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

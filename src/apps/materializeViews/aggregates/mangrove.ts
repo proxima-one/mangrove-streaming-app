@@ -14,7 +14,7 @@ export class MangroveAggregate {
     this._state = state ?? { params: {} };
   }
 
-  public handleParamsUpdated(paramsUpdate: model.core.MangroveParams) {
+  public updateParams(paramsUpdate: model.core.MangroveParams) {
     this._state = {
       params: updateParams(this._state.params, paramsUpdate),
     };
@@ -27,14 +27,10 @@ export class MangroveId
   public readonly aggregate = MangroveAggregate;
   public readonly aggregateType = "mangrove";
 
-  private constructor(public readonly value: string) {}
-
-  public static fromAddress(address: proxima.eth.Address): MangroveId {
-    return new MangroveId(address.toHexString());
-  }
+  public constructor(public readonly value: string) {}
 }
 
-export interface State {
+interface State {
   params: model.core.MangroveParams;
 }
 

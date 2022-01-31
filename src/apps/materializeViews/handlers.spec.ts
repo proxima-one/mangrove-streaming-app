@@ -1,17 +1,33 @@
 import { handleDomainEvent } from "./handlers";
 import * as aggregatesModel from "../../aggregateModel";
+import * as aggregates from "./aggregates";
 import * as proxima from "@proxima-one/proxima-core";
 import * as model from "../../model";
 import * as views from "./views";
+import { OfferListKey } from "../../model";
 
 describe("handleDomainEvent", () => {
+  const token1 = proxima.eth.Address.fromHexString(
+    "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f"
+  );
+  const token2 = proxima.eth.Address.fromHexString(
+    "0x2058a9d7613eee744279e3856ef0eada5fcbaa7e"
+  );
+  const token3 = proxima.eth.Address.fromHexString(
+    "0x2058a9d7613eee744279e3856ef0eada5fcbaa79"
+  );
+  const taker1 = proxima.eth.Address.fromHexString(
+    "0x3073a02460d7be1a1c9afc60a059ad8d788a4502"
+  );
+  const maker1 = proxima.eth.Address.fromHexString(
+    "0xcbb37575320ff499e9f69d0090b6944bc0ad7585"
+  );
+
   let aggregatesState: aggregatesModel.AggregatesState;
-  let mutator: aggregatesModel.AggregatesMutator;
+  let mutator: aggregatesModel.AggregatesPool;
   let producedDocumentUpdates: proxima.documents.DocumentUpdate[];
 
-  const mangroveAddress = proxima.eth.Address.fromHexString(
-    "0xD27139C60ED051b65c3AEe193BCABFfa1067D243"
-  );
+  const mangroveId = "mangrove-tests";
   const txRef = {
     blockNumber: 1,
     blockHash:
@@ -23,7 +39,7 @@ describe("handleDomainEvent", () => {
 
   beforeEach(() => {
     aggregatesState = new aggregatesModel.AggregatesState();
-    mutator = new aggregatesModel.AggregatesMutator(aggregatesState);
+    mutator = new aggregatesModel.AggregatesPool(aggregatesState);
     producedDocumentUpdates = [];
   });
 
@@ -46,7 +62,7 @@ describe("handleDomainEvent", () => {
   it("should handle multiple MangroveParamsUpdated events", () => {
     handle({
       type: "MangroveParamsUpdated",
-      mangroveId: mangroveAddress.toHexString(),
+      mangroveId: mangroveId,
       params: {
         dead: false,
         gasprice: 100,
@@ -57,7 +73,7 @@ describe("handleDomainEvent", () => {
 
     handle({
       type: "MangroveParamsUpdated",
-      mangroveId: mangroveAddress.toHexString(),
+      mangroveId: mangroveId,
       params: {
         gasprice: 150, // increase
       },
@@ -68,7 +84,7 @@ describe("handleDomainEvent", () => {
 
     const mangroveView = result.getView<views.MangroveView>(
       "Mangrove",
-      mangroveAddress.toHexString()
+      mangroveId
     );
     expect(mangroveView).not.toBeFalsy();
 
@@ -80,7 +96,7 @@ describe("handleDomainEvent", () => {
   it("should handle MangroveParamsUpdated event rollback", () => {
     handle({
       type: "MangroveParamsUpdated",
-      mangroveId: mangroveAddress.toHexString(),
+      mangroveId: mangroveId,
       params: {
         dead: false,
         gasprice: 100,
@@ -90,7 +106,7 @@ describe("handleDomainEvent", () => {
 
     handle({
       type: "MangroveParamsUpdated",
-      mangroveId: mangroveAddress.toHexString(),
+      mangroveId: mangroveId,
       params: {
         gasprice: 150, // increase
       },
@@ -100,7 +116,7 @@ describe("handleDomainEvent", () => {
     handle(
       {
         type: "MangroveParamsUpdated",
-        mangroveId: mangroveAddress.toHexString(),
+        mangroveId: mangroveId,
         params: {
           gasprice: 150, // increase
         },
@@ -113,12 +129,134 @@ describe("handleDomainEvent", () => {
 
     const mangroveView = result.getView<views.MangroveView>(
       "Mangrove",
-      mangroveAddress.toHexString()
+      mangroveId
     );
     expect(mangroveView).not.toBeFalsy();
 
     expect(mangroveView.params.dead).toBe(false);
     expect(mangroveView.params.gasprice).toBe(100); // should be set back to 100
+  });
+
+  const offerList = {
+    inboundToken: token1.toHexString(),
+    outboundToken: token2.toHexString(),
+  };
+  it("should handle offer events", () => {
+    handle({
+      type: "OfferListParamsUpdated",
+      mangroveId: mangroveId,
+      offerList: offerList,
+      params: {
+        active: true,
+      },
+      tx: txRef,
+    });
+
+    handle({
+      type: "OfferWritten",
+      mangroveId: mangroveId,
+      offerList,
+      maker: maker1.toHexString(),
+      tx: txRef,
+      offer: {
+        id: 1,
+        gasprice: 100,
+        gasreq: 100,
+        gives: "100",
+        prev: 0,
+        wants: "100",
+      },
+    });
+
+    handle({
+      type: "OfferWritten",
+      mangroveId: mangroveId,
+      offerList,
+      maker: maker1.toHexString(),
+      tx: txRef,
+      offer: {
+        id: 2,
+        gasprice: 100,
+        gasreq: 100,
+        gives: "100",
+        prev: 0,
+        wants: "100",
+      },
+    });
+
+    // 2,3,1 now
+    handle({
+      type: "OfferWritten",
+      mangroveId: mangroveId,
+      offerList,
+      maker: maker1.toHexString(),
+      tx: txRef,
+      offer: {
+        id: 3,
+        gasprice: 100,
+        gasreq: 100,
+        gives: "100",
+        prev: 2,
+        wants: "100",
+      },
+    });
+
+    // 2,3
+    handle({
+      type: "OfferRetracted",
+      mangroveId: mangroveId,
+      offerList,
+      tx: txRef,
+      offerId: 1,
+    });
+
+    // 2 isLive = false
+    handle({
+      type: "OfferWritten",
+      mangroveId: mangroveId,
+      offerList,
+      maker: maker1.toHexString(),
+      tx: txRef,
+      offer: {
+        id: 2,
+        gasprice: 100,
+        gasreq: 100,
+        gives: "0",
+        prev: 2,
+        wants: "100",
+      },
+    });
+
+    const result = materializeViews();
+
+    const expectedOffers = [2, 3].map(
+      (offerNum) =>
+        new aggregates.OfferId(mangroveId, offerList, offerNum).value
+    );
+
+    const offerListView = result.getView<views.OfferListView>(
+      "OfferList",
+      new aggregates.OfferListId(mangroveId, {
+        inboundToken: token1.toHexString(),
+        outboundToken: token2.toHexString(),
+      }).value
+    );
+    expect(offerListView).not.toBeFalsy();
+
+    expect(offerListView.inboundToken).toEqual(token1.toHexString());
+    expect(offerListView.outboundToken).toEqual(token2.toHexString());
+    expect(offerListView.topOffers).toEqual(expectedOffers);
+    expect(offerListView.offersCount).toBe(expectedOffers.length);
+    expect(offerListView.params.active).toBe(true);
+
+    const offer2 = result.getView<views.OfferView>("Offer", expectedOffers[0]);
+    expect(offer2).not.toBeFalsy();
+    expect(offer2.live).toBe(false);
+    expect(offer2.makerId).toBe(new aggregates.MakerId(mangroveId, maker1.toHexString()).value);
+    expect(offer2.wants).toBe("100");
+    expect(offer2.gives).toBe("0");
+    expect(offer2.gasprice).toBe(100);
+    expect(offer2.gasreq).toBe(100);
   });
 });
 

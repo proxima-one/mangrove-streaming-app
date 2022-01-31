@@ -1,89 +1,149 @@
 import * as proxima from "@proxima-one/proxima-core";
-import * as model from "model";
+import * as model from "../../model";
 import * as utils from "@proxima-one/proxima-utils";
 import * as views from "./views";
 import * as aggregates from "./aggregates";
+import BigNumber from "bignumber.js";
 import * as aggregatesModel from "aggregateModel";
 
 const domainEventMatcher =
   utils.createPatternMatcher<model.events.DomainEvent>();
 
 export function handleDomainEvent(
-  aggregatesMutator: aggregatesModel.AggregatesMutator,
+  aggregatesPool: aggregatesModel.AggregatesPool,
   { undo, timestamp, payload }: proxima.Event<model.events.DomainEvent>
 ): ReadonlyArray<proxima.documents.DocumentUpdate> {
+  //console.log(JSON.stringify(payload));
   return domainEventMatcher({
     OrderCompleted: (e) => {
-      return [];
-    },
-    OfferRetracted: (e) => {
-      return [];
-    },
-    OfferWritten: (e) => {
-      return [];
-    },
-    TakerApprovalUpdated: (e) => {
-      return [];
-    },
-    MakerBalanceUpdated: (e) => {
-      return [];
-    },
-    MangroveParamsUpdated: (e) => {
-      const mangroveId = aggregates.MangroveId.fromAddress(
-        proxima.eth.Address.fromHexString(e.mangroveId)
-      );
-      const mangrove = aggregatesMutator.mutate(
-        mangroveId,
-        (x) => x.handleParamsUpdated(e.params),
+      const order = aggregatesPool.mutate(
+        new aggregates.OrderId(e.mangroveId, e.id),
+        (x) => x.create(e.offerList, e.order),
         undo
       );
-      const currentParams = mangrove.state.params;
+
+      const takenOffers: aggregates.OfferAggregate[] = [];
+      for (const offer of e.order.takenOffers) {
+        const takenOffer = aggregatesPool.mutate(
+          new aggregates.OfferId(e.mangroveId, e.offerList, offer.id),
+          (x) => x.taken({ failReason: offer.failReason }),
+          undo
+        );
+
+        takenOffers.push(takenOffer);
+      }
+
+      const offerList = aggregatesPool.load(
+        new aggregates.OfferListId(e.mangroveId, e.offerList)
+      );
+      const offerListOffers = aggregatesPool.mutate(
+        new aggregates.OfferListOffersId(e.mangroveId, e.offerList),
+        (x) => x.removeOffers(e.order.takenOffers.map((x) => x.id)),
+        undo
+      );
 
       return [
-        Views.mangrove(mangroveId.value).setContent({
-          params: {
-            governance: currentParams.governance,
-            monitor: currentParams.monitor,
-            vault: currentParams.vault,
-            useOracle: currentParams.useOracle ?? false,
-            notify: currentParams.notify ?? false,
-            gasmax: currentParams.gasmax ?? 0,
-            gasprice: currentParams.gasprice ?? 0,
-            dead: currentParams.dead ?? false,
-          },
-        }),
+        views.order(order).setContent(),
+        ...takenOffers.map((offer) => views.offer(offer).setContent()),
+        views.offerList(offerList, offerListOffers).setContent(),
       ];
     },
+    OfferRetracted: (e) => {
+      const offerId = new aggregates.OfferId(
+        e.mangroveId,
+        e.offerList,
+        e.offerId
+      );
+
+      const offerList = aggregatesPool.load(
+        new aggregates.OfferListId(e.mangroveId, e.offerList)
+      );
+      const offerListOffers = aggregatesPool.mutate(
+        new aggregates.OfferListOffersId(e.mangroveId, e.offerList),
+        (x) => x.removeOffer(e.offerId),
+        undo
+      );
+
+      const offer = aggregatesPool.mutate(offerId, (x) => x.remove());
+
+      return [
+        views.offer(offer).setContent(),
+        views.offerList(offerList, offerListOffers).setContent(),
+      ];
+    },
+    OfferWritten: (e) => {
+      const offerId = new aggregates.OfferId(
+        e.mangroveId,
+        e.offerList,
+        e.offer.id
+      );
+
+      const offerList = aggregatesPool.load(
+        new aggregates.OfferListId(e.mangroveId, e.offerList)
+      );
+      const offerListOffers = aggregatesPool.mutate(
+        new aggregates.OfferListOffersId(e.mangroveId, e.offerList),
+        (x) => x.writeOffer(e.offer.id, e.offer.prev),
+        undo
+      );
+
+      const offer = aggregatesPool.mutate(
+        offerId,
+        (x) => x.update(e.maker, e.offer),
+        undo
+      );
+      return [
+        views.offer(offer).setContent(),
+        views.offerList(offerList, offerListOffers).setContent(),
+      ];
+    },
+    TakerApprovalUpdated: (e) => {
+      const key = model.OfferListKey.fromOfferList(e.offerList);
+      const taker = aggregatesPool.mutate(
+        new aggregates.TakerId(e.mangroveId, e.owner),
+        (x) =>
+          x.updateApproval(
+            key,
+            proxima.eth.Address.fromHexString(e.spender),
+            e.amount
+          ),
+        undo
+      );
+
+      return [views.taker(taker).setContent()];
+    },
+    MakerBalanceUpdated: (e) => {
+      let amountChange = new BigNumber(e.amountChange);
+      if (undo)
+        // handle undo logically
+        amountChange = amountChange.times(-1);
+
+      const makerId = new aggregates.MakerId(e.mangroveId, e.maker);
+      const maker = aggregatesPool.mutate(makerId, (x) =>
+        x.changeBalance(amountChange)
+      );
+      return [views.maker(maker).setContent()];
+    },
+    MangroveParamsUpdated: (e) => {
+      const mangroveId = new aggregates.MangroveId(e.mangroveId);
+      const mangrove = aggregatesPool.mutate(
+        mangroveId,
+        (x) => x.updateParams(e.params),
+        undo // let the infrastructure handle state undo
+      );
+      return [views.mangrove(mangrove).setContent()];
+    },
     OfferListParamsUpdated: (e) => {
-      return [];
+      const offerList = aggregatesPool.mutate(
+        new aggregates.OfferListId(e.mangroveId, e.offerList),
+        (x) => x.updateParams(e.params),
+        undo
+      );
+      const offerListOffers = aggregatesPool.load(
+        new aggregates.OfferListOffersId(e.mangroveId, e.offerList)
+      );
+
+      return [views.offerList(offerList, offerListOffers).setContent()];
     },
   })(payload);
-}
-
-class Views {
-  public static mangrove(
-    id: model.core.MangroveId
-  ): proxima.documents.DocumentUpdateBuilder<views.MangroveView> {
-    return new proxima.documents.DocumentUpdateBuilder<views.MangroveView>(
-      new proxima.documents.DocumentMetadata(id, "Mangrove")
-    );
-  }
-
-  public static offer(
-    id: model.core.OfferId,
-    mangroveId: model.core.MangroveId
-  ): proxima.documents.DocumentUpdateBuilder<views.OfferView> {
-    return new proxima.documents.DocumentUpdateBuilder<views.OfferView>(
-      new proxima.documents.DocumentMetadata(id.toString(), "Offer")
-    );
-  }
-
-  public static offerList(
-    id: model.core.OfferList,
-    mangroveId: model.core.MangroveId
-  ): proxima.documents.DocumentUpdateBuilder<views.OfferView> {
-    return new proxima.documents.DocumentUpdateBuilder<views.OfferView>(
-      new proxima.documents.DocumentMetadata(id.toString(), "Offer")
-    );
-  }
 }

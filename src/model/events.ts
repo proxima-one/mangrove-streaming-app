@@ -67,11 +67,7 @@ export interface OrderCompleted {
 
   id: core.OrderId;
   offerList: core.OfferList;
-  taker: core.TakerId;
-  takerGot: eth.UInt;
-  takerGave: eth.UInt;
-  penalty: eth.UInt;
-  takenOffers: core.TakenOffer[];
+  order: core.Order;
 }
 
 //
