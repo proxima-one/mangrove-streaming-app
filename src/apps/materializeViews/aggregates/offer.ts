@@ -12,7 +12,9 @@ export class OfferAggregate {
   }
 
   public get isLive(): boolean {
-    return this._state ? new BigNumber(this._state.offer.gives).isGreaterThan(new BigNumber(0)) : false;
+    return this._state
+      ? new BigNumber(this._state.offer.gives).isGreaterThan(new BigNumber(0))
+      : false;
   }
 
   public get isDeprovisioned(): boolean {

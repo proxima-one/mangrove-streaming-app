@@ -19,17 +19,16 @@ export class OfferListOffersAggregate {
     this._state = {
       ...this._state,
       offers: [
-        ...this._state.offers.slice(0, idx + 1).filter(x => x != id),
+        ...this._state.offers.slice(0, idx + 1).filter((x) => x != id),
         id,
-        ...this._state.offers.slice(idx + 1).filter(x => x != id),
+        ...this._state.offers.slice(idx + 1).filter((x) => x != id),
       ],
     };
   }
 
   public removeOffer(id: model.core.OfferId) {
     const idx = this._state.offers.findIndex((x) => x == id);
-    if (idx < 0)
-      return;
+    if (idx < 0) return;
 
     this._state = {
       ...this._state,

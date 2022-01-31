@@ -137,7 +137,6 @@ describe("handleDomainEvent", () => {
     expect(mangroveView.params.gasprice).toBe(100); // should be set back to 100
   });
 
-
   const offerList = {
     inboundToken: token1.toHexString(),
     outboundToken: token2.toHexString(),
@@ -165,7 +164,7 @@ describe("handleDomainEvent", () => {
         gasreq: 100,
         gives: "100",
         prev: 0,
-        wants: "100"
+        wants: "100",
       },
     });
 
@@ -181,7 +180,7 @@ describe("handleDomainEvent", () => {
         gasreq: 100,
         gives: "100",
         prev: 0,
-        wants: "100"
+        wants: "100",
       },
     });
 
@@ -198,7 +197,7 @@ describe("handleDomainEvent", () => {
         gasreq: 100,
         gives: "100",
         prev: 2,
-        wants: "100"
+        wants: "100",
       },
     });
 
@@ -224,17 +223,25 @@ describe("handleDomainEvent", () => {
         gasreq: 100,
         gives: "0",
         prev: 2,
-        wants: "100"
+        wants: "100",
       },
     });
 
     const result = materializeViews();
 
-    const expectedOffers = [2,3].map(offerNum => new aggregates.OfferId(mangroveId, OfferListKey.fromOfferList(offerList), offerNum).value);
+    const expectedOffers = [2, 3].map(
+      (offerNum) =>
+        new aggregates.OfferId(
+          mangroveId,
+          OfferListKey.fromOfferList(offerList),
+          offerNum
+        ).value
+    );
 
     const offerListView = result.getView<views.OfferListView>(
       "OfferList",
-      new aggregates.OfferListId(mangroveId, new OfferListKey(token1, token2)).value,
+      new aggregates.OfferListId(mangroveId, new OfferListKey(token1, token2))
+        .value
     );
     expect(offerListView).not.toBeFalsy();
 

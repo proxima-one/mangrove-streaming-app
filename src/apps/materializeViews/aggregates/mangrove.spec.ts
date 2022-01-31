@@ -21,7 +21,7 @@ describe("MangroveAggregate", () => {
 
     describe("when state is empty", () => {
       beforeEach(() => {
-        sut = new MangroveAggregate(MangroveId.fromAddress(addr));
+        sut = new MangroveAggregate(new MangroveId(addr.toHexString()));
       });
 
       it("should create new state and set params", () => {

@@ -1,6 +1,7 @@
 import * as proxima from "@proxima-one/proxima-core";
 import * as model from "model";
 import * as _ from "lodash";
+import { AggregateAware } from "../../../aggregateModel";
 
 export class TakerAggregate {
   private _state: State;
@@ -14,14 +15,14 @@ export class TakerAggregate {
   }
 
   public updateApproval(
-    poolKey: model.OfferListKey,
+    offerListKey: model.OfferListKey,
     spender: proxima.eth.Address,
     amount: model.eth.UInt
   ) {
     this._state = {
       approvals: updateApproval(
         this._state.approvals,
-        poolKey,
+        offerListKey,
         spender,
         amount
       ),
@@ -51,10 +52,16 @@ export function updateApproval(
   });
 }
 
-export class TakerId {
-  private constructor(public readonly value: string) {}
+export class TakerId implements AggregateAware<TakerId, State, TakerAggregate> {
+  public readonly aggregate = TakerAggregate;
+  public readonly aggregateType = "maker";
 
-  public static create(taker: proxima.eth.Address): TakerId {
-    return new TakerId(taker.toHexString());
+  public readonly value: string;
+
+  public constructor(
+    public readonly mangroveId: model.core.MangroveId,
+    public readonly takerAddress: proxima.eth.Address
+  ) {
+    this.value = `${mangroveId}-${takerAddress.toHexString()}`;
   }
 }

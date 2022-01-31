@@ -12,10 +12,10 @@ appHost.start({
   args: {},
   source: {
     db: "kafka-main-prod",
-    streams: ["mangrove4-domain-events"]
+    streams: ["mangrove4-domain-events"],
   },
   target: {
     db: "kafka-dev",
     namespace: id,
-  }
+  },
 });

@@ -13,7 +13,7 @@ export function handleDomainEvent(
   aggregatesPool: aggregatesModel.AggregatesPool,
   { undo, timestamp, payload }: proxima.Event<model.events.DomainEvent>
 ): ReadonlyArray<proxima.documents.DocumentUpdate> {
-  console.log(JSON.stringify(payload));
+  //console.log(JSON.stringify(payload));
   return domainEventMatcher({
     OrderCompleted: (e) => {
       // TODO: implement, change offer state as well (deprovisioning and gives = 0 to delete offer, also from list)
@@ -63,7 +63,22 @@ export function handleDomainEvent(
       ];
     },
     TakerApprovalUpdated: (e) => {
-      return [];
+      const key = model.OfferListKey.fromOfferList(e.offerList);
+      const taker = aggregatesPool.mutate(
+        new aggregates.TakerId(
+          e.mangroveId,
+          proxima.eth.Address.fromHexString(e.owner)
+        ),
+        (x) =>
+          x.updateApproval(
+            key,
+            proxima.eth.Address.fromHexString(e.spender),
+            e.amount
+          ),
+        undo
+      );
+
+      return [views.taker(taker).setContent()];
     },
     MakerBalanceUpdated: (e) => {
       let amountChange = new BigNumber(e.amountChange);
