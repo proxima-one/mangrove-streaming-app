@@ -1,6 +1,5 @@
 import * as proxima from "@proxima-one/proxima-core";
 import { OfferListOffersAggregate, OfferListOffersId } from "./offerListOffers";
-import { OfferListKey } from "../../../model";
 
 describe("OfferListOffersAggregate", () => {
   const token1 = proxima.eth.Address.fromHexString(
@@ -9,10 +8,10 @@ describe("OfferListOffersAggregate", () => {
   const token2 = proxima.eth.Address.fromHexString(
     "0x2058a9d7613eee744279e3856ef0eada5fcbaa7e"
   );
-  const id = new OfferListOffersId(
-    "mangrove-unit-tests",
-    new OfferListKey(token1, token2)
-  );
+  const id = new OfferListOffersId("mangrove-unit-tests", {
+    inboundToken: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+    outboundToken: "0x2058a9d7613eee744279e3856ef0eada5fcbaa7e",
+  });
   it("should add and remove offers", () => {
     const sut = new OfferListOffersAggregate(id);
 

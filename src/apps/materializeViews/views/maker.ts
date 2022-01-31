@@ -10,7 +10,7 @@ export function maker(
   maker: aggregates.MakerAggregate
 ): DocumentUpdateBuilder<MakerView> {
   return new DocumentUpdateBuilder(maker.id.value, "Maker", {
-    mangroveId: maker.id.mangroveId,
+    mangroveId: maker.id.mangrove,
     balance: maker.state.balance,
   });
 }

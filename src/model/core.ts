@@ -32,6 +32,14 @@ export interface MangroveParams {
   dead?: boolean;
 }
 
+export interface Order {
+  taker: TakerId;
+  takerGot: eth.UInt;
+  takerGave: eth.UInt;
+  penalty: eth.UInt;
+  takenOffers: TakenOffer[];
+}
+
 export interface TakenOffer {
   id: OfferId;
   takerWants: eth.UInt;

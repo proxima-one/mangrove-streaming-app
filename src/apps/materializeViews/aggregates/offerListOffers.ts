@@ -1,7 +1,7 @@
 import * as proxima from "@proxima-one/proxima-core";
 import * as _ from "lodash";
-import * as model from "model";
-import { AggregateAware } from "aggregateModel";
+import * as model from "../../../model";
+import { AggregateAware } from "../../../aggregateModel";
 
 export class OfferListOffersAggregate {
   private _state: State;
@@ -26,16 +26,17 @@ export class OfferListOffersAggregate {
     };
   }
 
-  public removeOffer(id: model.core.OfferId) {
-    const idx = this._state.offers.findIndex((x) => x == id);
-    if (idx < 0) return;
-
+  public removeOffers(ids: model.core.OfferId[]) {
     this._state = {
       ...this._state,
-      offers: [
-        ...this._state.offers.slice(0, idx),
-        ...this._state.offers.slice(idx + 1),
-      ],
+      offers: this._state.offers.filter((x) => !ids.includes(x)),
+    };
+  }
+
+  public removeOffer(id: model.core.OfferId) {
+    this._state = {
+      ...this._state,
+      offers: this._state.offers.filter((x) => x != id),
     };
   }
 }
@@ -48,10 +49,12 @@ export class OfferListOffersId
   public readonly value: string;
 
   public constructor(
-    public readonly mangroveId: model.core.MangroveId,
-    public readonly key: model.OfferListKey
+    public readonly mangrove: model.core.MangroveId,
+    public readonly offerList: model.core.OfferList
   ) {
-    this.value = `${mangroveId}-${key.toString()}`;
+    this.value = `${mangrove}-${model.OfferListKey.fromOfferList(
+      offerList
+    ).toString()}`;
   }
 }
 

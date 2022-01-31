@@ -1,7 +1,7 @@
 import * as proxima from "@proxima-one/proxima-core";
 import * as _ from "lodash";
-import * as model from "model";
-import { AggregateAware } from "aggregateModel";
+import * as model from "../../../model";
+import { AggregateAware } from "../../../aggregateModel";
 import BigNumber from "bignumber.js";
 
 export class OfferAggregate {
@@ -38,6 +38,21 @@ export class OfferAggregate {
       this._state = { ...this._state, offer: offer };
     }
   }
+
+  public taken(opts: { failReason: model.core.OfferFailReason | undefined }) {
+    if (this._state == undefined) throw new Error("not created");
+
+    const deprovision = opts.failReason != undefined;
+
+    this._state = {
+      ...this._state,
+      offer: {
+        ...this._state.offer,
+        gives: new BigNumber(0).toFixed(),
+        gasprice: deprovision ? 0 : this._state.offer.gasprice,
+      },
+    };
+  }
 }
 
 export class OfferId implements AggregateAware<OfferId, State, OfferAggregate> {
@@ -46,11 +61,13 @@ export class OfferId implements AggregateAware<OfferId, State, OfferAggregate> {
   public readonly value: string;
 
   public constructor(
-    public readonly mangroveId: model.core.MangroveId,
-    public readonly key: model.OfferListKey,
+    public readonly mangrove: model.core.MangroveId,
+    public readonly offerList: model.core.OfferList,
     public readonly number: model.core.OfferId
   ) {
-    this.value = `${mangroveId}-${key.toString()}-${number}`;
+    this.value = `${mangrove}-${model.OfferListKey.fromOfferList(
+      offerList
+    ).toString()}-${number}`;
   }
 }
 

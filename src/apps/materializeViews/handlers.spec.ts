@@ -231,17 +231,15 @@ describe("handleDomainEvent", () => {
 
     const expectedOffers = [2, 3].map(
       (offerNum) =>
-        new aggregates.OfferId(
-          mangroveId,
-          OfferListKey.fromOfferList(offerList),
-          offerNum
-        ).value
+        new aggregates.OfferId(mangroveId, offerList, offerNum).value
     );
 
     const offerListView = result.getView<views.OfferListView>(
       "OfferList",
-      new aggregates.OfferListId(mangroveId, new OfferListKey(token1, token2))
-        .value
+      new aggregates.OfferListId(mangroveId, {
+        inboundToken: token1.toHexString(),
+        outboundToken: token2.toHexString(),
+      }).value
     );
     expect(offerListView).not.toBeFalsy();
 
@@ -254,7 +252,7 @@ describe("handleDomainEvent", () => {
     const offer2 = result.getView<views.OfferView>("Offer", expectedOffers[0]);
     expect(offer2).not.toBeFalsy();
     expect(offer2.live).toBe(false);
-    expect(offer2.maker).toBe(maker1.toHexString());
+    expect(offer2.makerId).toBe(new aggregates.MakerId(mangroveId, maker1.toHexString()).value);
     expect(offer2.wants).toBe("100");
     expect(offer2.gives).toBe("0");
     expect(offer2.gasprice).toBe(100);

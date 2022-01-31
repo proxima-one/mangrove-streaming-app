@@ -16,18 +16,50 @@ export function handleDomainEvent(
   //console.log(JSON.stringify(payload));
   return domainEventMatcher({
     OrderCompleted: (e) => {
-      // TODO: implement, change offer state as well (deprovisioning and gives = 0 to delete offer, also from list)
-      return [];
-    },
-    OfferRetracted: (e) => {
-      const key = model.OfferListKey.fromOfferList(e.offerList);
-      const offerId = new aggregates.OfferId(e.mangroveId, key, e.offerId);
+      const order = aggregatesPool.mutate(
+        new aggregates.OrderId(e.mangroveId, e.id),
+        (x) => x.create(e.offerList, e.order),
+        undo
+      );
+
+      const takenOffers: aggregates.OfferAggregate[] = [];
+      for (const offer of e.order.takenOffers) {
+        const takenOffer = aggregatesPool.mutate(
+          new aggregates.OfferId(e.mangroveId, e.offerList, offer.id),
+          (x) => x.taken({ failReason: offer.failReason }),
+          undo
+        );
+
+        takenOffers.push(takenOffer);
+      }
 
       const offerList = aggregatesPool.load(
-        new aggregates.OfferListId(e.mangroveId, key)
+        new aggregates.OfferListId(e.mangroveId, e.offerList)
       );
       const offerListOffers = aggregatesPool.mutate(
-        new aggregates.OfferListOffersId(e.mangroveId, key),
+        new aggregates.OfferListOffersId(e.mangroveId, e.offerList),
+        (x) => x.removeOffers(e.order.takenOffers.map((x) => x.id)),
+        undo
+      );
+
+      return [
+        views.order(order).setContent(),
+        ...takenOffers.map((offer) => views.offer(offer).setContent()),
+        views.offerList(offerList, offerListOffers).setContent(),
+      ];
+    },
+    OfferRetracted: (e) => {
+      const offerId = new aggregates.OfferId(
+        e.mangroveId,
+        e.offerList,
+        e.offerId
+      );
+
+      const offerList = aggregatesPool.load(
+        new aggregates.OfferListId(e.mangroveId, e.offerList)
+      );
+      const offerListOffers = aggregatesPool.mutate(
+        new aggregates.OfferListOffersId(e.mangroveId, e.offerList),
         (x) => x.removeOffer(e.offerId),
         undo
       );
@@ -40,14 +72,17 @@ export function handleDomainEvent(
       ];
     },
     OfferWritten: (e) => {
-      const key = model.OfferListKey.fromOfferList(e.offerList);
-      const offerId = new aggregates.OfferId(e.mangroveId, key, e.offer.id);
+      const offerId = new aggregates.OfferId(
+        e.mangroveId,
+        e.offerList,
+        e.offer.id
+      );
 
       const offerList = aggregatesPool.load(
-        new aggregates.OfferListId(e.mangroveId, key)
+        new aggregates.OfferListId(e.mangroveId, e.offerList)
       );
       const offerListOffers = aggregatesPool.mutate(
-        new aggregates.OfferListOffersId(e.mangroveId, key),
+        new aggregates.OfferListOffersId(e.mangroveId, e.offerList),
         (x) => x.writeOffer(e.offer.id, e.offer.prev),
         undo
       );
@@ -65,10 +100,7 @@ export function handleDomainEvent(
     TakerApprovalUpdated: (e) => {
       const key = model.OfferListKey.fromOfferList(e.offerList);
       const taker = aggregatesPool.mutate(
-        new aggregates.TakerId(
-          e.mangroveId,
-          proxima.eth.Address.fromHexString(e.owner)
-        ),
+        new aggregates.TakerId(e.mangroveId, e.owner),
         (x) =>
           x.updateApproval(
             key,
@@ -86,10 +118,7 @@ export function handleDomainEvent(
         // handle undo logically
         amountChange = amountChange.times(-1);
 
-      const makerId = new aggregates.MakerId(
-        e.mangroveId,
-        proxima.eth.Address.fromHexString(e.maker)
-      );
+      const makerId = new aggregates.MakerId(e.mangroveId, e.maker);
       const maker = aggregatesPool.mutate(makerId, (x) =>
         x.changeBalance(amountChange)
       );
@@ -105,15 +134,13 @@ export function handleDomainEvent(
       return [views.mangrove(mangrove).setContent()];
     },
     OfferListParamsUpdated: (e) => {
-      const key = model.OfferListKey.fromOfferList(e.offerList);
-
       const offerList = aggregatesPool.mutate(
-        new aggregates.OfferListId(e.mangroveId, key),
+        new aggregates.OfferListId(e.mangroveId, e.offerList),
         (x) => x.updateParams(e.params),
         undo
       );
       const offerListOffers = aggregatesPool.load(
-        new aggregates.OfferListOffersId(e.mangroveId, key)
+        new aggregates.OfferListOffersId(e.mangroveId, e.offerList)
       );
 
       return [views.offerList(offerList, offerListOffers).setContent()];

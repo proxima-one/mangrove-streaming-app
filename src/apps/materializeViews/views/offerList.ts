@@ -22,23 +22,23 @@ export function offerList(
 ): DocumentUpdateBuilder<OfferListView> {
   const params = offerList.state.params;
   return new DocumentUpdateBuilder(offerList.id.value, "OfferList", {
-    mangroveId: offerList.id.mangroveId,
+    mangroveId: offerList.id.mangrove,
     params: {
       active: params.active,
       fee: params.fee,
       gasbase: params.gasbase,
       density: params.density,
     },
-    inboundToken: offerList.id.key.inboundToken.toHexString(),
-    outboundToken: offerList.id.key.outboundToken.toHexString(),
+    inboundToken: offerList.id.offerList.inboundToken,
+    outboundToken: offerList.id.offerList.outboundToken,
     offersCount: offerListOffers.state.offers.length,
     topOffers: offerListOffers.state.offers
       .slice(0, topOffersCount)
       .map(
         (offerNumber) =>
           new aggregates.OfferId(
-            offerList.id.mangroveId,
-            offerList.id.key,
+            offerList.id.mangrove,
+            offerList.id.offerList,
             offerNumber
           ).value
       ),

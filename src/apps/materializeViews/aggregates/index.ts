@@ -4,3 +4,4 @@ export { TakerId, TakerAggregate } from "./taker";
 export { OfferListId, OfferListAggregate } from "./offerList";
 export { OfferListOffersId, OfferListOffersAggregate } from "./offerListOffers";
 export { OfferId, OfferAggregate } from "./offer";
+export { OrderId, OrderAggregate } from "./order";

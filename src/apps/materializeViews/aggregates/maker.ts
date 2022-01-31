@@ -30,10 +30,10 @@ export class MakerId implements AggregateAware<MakerId, State, MakerAggregate> {
   public readonly value: string;
 
   public constructor(
-    public readonly mangroveId: model.core.MangroveId,
-    public readonly makerAddress: proxima.eth.Address
+    public readonly mangrove: model.core.MangroveId,
+    public readonly maker: model.core.MakerId
   ) {
-    this.value = `${mangroveId}-${makerAddress.toHexString()}`;
+    this.value = `${mangrove}-${maker}`;
   }
 }
 

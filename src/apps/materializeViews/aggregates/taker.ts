@@ -59,9 +59,9 @@ export class TakerId implements AggregateAware<TakerId, State, TakerAggregate> {
   public readonly value: string;
 
   public constructor(
-    public readonly mangroveId: model.core.MangroveId,
-    public readonly takerAddress: proxima.eth.Address
+    public readonly mangrove: model.core.MangroveId,
+    public readonly taker: model.core.TakerId
   ) {
-    this.value = `${mangroveId}-${takerAddress.toHexString()}`;
+    this.value = `${mangrove}-${taker}`;
   }
 }

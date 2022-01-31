@@ -25,7 +25,7 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         .groupBy((x) => x.payload.address.toHexString())
         .map((values, key) => {
           return {
-            mangroveId: key,
+            mangroveId: key.substring(0, 6),
             events: values,
             index: values[0].index,
           };

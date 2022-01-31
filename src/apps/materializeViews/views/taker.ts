@@ -11,7 +11,7 @@ export function taker(
   taker: aggregates.TakerAggregate
 ): DocumentUpdateBuilder<TakerView> {
   return new DocumentUpdateBuilder(taker.id.value, "Taker", {
-    mangroveId: taker.id.mangroveId,
+    mangroveId: taker.id.mangrove,
     approvals: taker.state.approvals,
   });
 }

@@ -240,11 +240,13 @@ export const parseOrderExecutionEvents = (): LogParser<
         type: "OrderCompleted",
         id: orderId,
         offerList: extractOfferList(log),
-        penalty: log.requireParam("penalty").asBigNumber().toFixed(),
-        takerGave: log.requireParam("takerGave").asBigNumber().toFixed(),
-        takerGot: log.requireParam("takerGot").asBigNumber().toFixed(),
-        taker: log.requireParam("taker").asString(),
-        takenOffers: takenOffers.map((x) => x.offer),
+        order: {
+          penalty: log.requireParam("penalty").asBigNumber().toFixed(),
+          takerGave: log.requireParam("takerGave").asBigNumber().toFixed(),
+          takerGot: log.requireParam("takerGot").asBigNumber().toFixed(),
+          taker: log.requireParam("taker").asString(),
+          takenOffers: takenOffers.map((x) => x.offer),
+        },
       },
       ...takenOffers
         .flatMap((x) => x.posthookEvents)

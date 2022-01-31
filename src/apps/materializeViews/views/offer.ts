@@ -3,16 +3,16 @@ import * as aggregates from "../aggregates";
 import BigNumber from "bignumber.js";
 
 export interface OfferView extends ViewBase {
-  live: boolean;
-  deprovisioned: boolean;
-
-  maker: string;
+  makerId: string;
   mangroveId: string;
   prev: string;
   wants: string;
   gives: string;
   gasprice: number;
   gasreq: number;
+
+  live: boolean;
+  deprovisioned: boolean;
 }
 
 export function offer(
@@ -25,19 +25,20 @@ export function offer(
     offerState == undefined
       ? undefined
       : {
-          mangroveId: offer.id.mangroveId,
+          mangroveId: offer.id.mangrove,
           gives: offerState.offer.gives,
           wants: offerState.offer.wants,
           prev: new aggregates.OfferId(
-            offer.id.mangroveId,
-            offer.id.key,
+            offer.id.mangrove,
+            offer.id.offerList,
             offerState.offer.prev
           ).value,
           gasprice: offerState.offer.gasprice,
           gasreq: offerState.offer.gasreq,
           deprovisioned: offer.isDeprovisioned,
           live: offer.isLive,
-          maker: offerState.maker,
+          makerId: new aggregates.MakerId(offer.id.mangrove, offerState.maker)
+            .value,
         }
   );
 }

@@ -1,6 +1,6 @@
 import * as proxima from "@proxima-one/proxima-core";
 import * as _ from "lodash";
-import * as model from "model";
+import * as model from "../../../model";
 import { AggregateAware } from "aggregateModel";
 
 export class OfferListAggregate {
@@ -29,10 +29,12 @@ export class OfferListId
   public readonly value: string;
 
   public constructor(
-    public readonly mangroveId: model.core.MangroveId,
-    public readonly key: model.OfferListKey
+    public readonly mangrove: model.core.MangroveId,
+    public readonly offerList: model.core.OfferList
   ) {
-    this.value = `${mangroveId}-${key.toString()}`;
+    this.value = `${mangrove}-${model.OfferListKey.fromOfferList(
+      offerList
+    ).toString()}`;
   }
 }
 
