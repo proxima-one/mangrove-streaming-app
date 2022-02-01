@@ -20,7 +20,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"{src,__tests__}/**/*.ts\"",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint ./src --ext .ts",
     "prepublishOnly": "yarn build",
     "prebuild": "yarn clean && yarn format && yarn lint && echo Using TypeScript && tsc --version",
     "build": "tsc --project tsconfig.build.json --pretty",
