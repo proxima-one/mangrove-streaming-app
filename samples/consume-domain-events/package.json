@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@proximaone/stream-client-js": "^0.3.0"
+    "@proximaone/stream-client-js": "^0.3.1"
   },
   "devDependencies": {
     "ts-node": "^10.4.0",
