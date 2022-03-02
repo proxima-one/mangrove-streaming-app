@@ -33,7 +33,7 @@
     "watch:test": "jest --watch"
   },
   "dependencies": {
-    "@proxima-one/proxima-app-runtime": "^0.2.0",
+    "@proxima-one/proxima-app-runtime": "^0.2.3",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
