@@ -2,10 +2,14 @@ export interface Context {
   index: number;
 }
 
-export type Parser<T, TContext extends Context> = (ctx: TContext) => Result<T, TContext>;
+export type Parser<T, TContext extends Context> = (
+  ctx: TContext
+) => Result<T, TContext>;
 
 // our result types
-export type Result<T, TContext extends Context> = Success<T, TContext> | Failure<TContext>;
+export type Result<T, TContext extends Context> =
+  | Success<T, TContext>
+  | Failure<TContext>;
 
 // on success we'll return a value of type T, and a new Ctx
 // (position in the string) to continue parsing from
@@ -23,11 +27,17 @@ export type Failure<TContext extends Context> = Readonly<{
 }>;
 
 // some convenience methods to build `Result`s for us
-export function success<T, TContext extends Context>(ctx: TContext, value: T): Success<T, TContext> {
+export function success<T, TContext extends Context>(
+  ctx: TContext,
+  value: T
+): Success<T, TContext> {
   return { success: true, value, ctx };
 }
 
-export function failure<TContext extends Context>(ctx: TContext, reason: string): Failure<TContext> {
+export function failure<TContext extends Context>(
+  ctx: TContext,
+  reason: string
+): Failure<TContext> {
   return { success: false, reason: reason, ctx };
 }
 
@@ -35,8 +45,10 @@ export function failure<TContext extends Context>(ctx: TContext, reason: string)
 // or return the failure that got furthest in the input string.
 // which failure to return is a matter of taste, we prefer the furthest failure because.
 // it tends be the most useful / complete error message.
-export function any<T, TContext extends Context>(parsers: Parser<T, TContext>[]): Parser<T, TContext> {
-  return ctx => {
+export function any<T, TContext extends Context>(
+  parsers: Parser<T, TContext>[]
+): Parser<T, TContext> {
+  return (ctx) => {
     let furthestRes: Result<T, TContext> | null = null;
     for (const parser of parsers) {
       const res = parser(ctx);
@@ -49,13 +61,17 @@ export function any<T, TContext extends Context>(parsers: Parser<T, TContext>[])
 }
 
 // match a parser, or succeed with null
-export function optional<T, TContext extends Context>(parser: Parser<T, TContext>): Parser<T | null, TContext> {
-  return any([parser, ctx => success(ctx, null)]);
+export function optional<T, TContext extends Context>(
+  parser: Parser<T, TContext>
+): Parser<T | null, TContext> {
+  return any([parser, (ctx) => success(ctx, null)]);
 }
 
 // look for 0 or more of something, until we can't parse any more. note that this function never fails, it will instead succeed with an empty array.
-export function many<T, TContext extends Context>(parser: Parser<T, TContext>): Parser<T[], TContext> {
-  return ctx => {
+export function many<T, TContext extends Context>(
+  parser: Parser<T, TContext>
+): Parser<T[], TContext> {
+  return (ctx) => {
     const values: T[] = [];
     let nextCtx = ctx;
     while (true) {
@@ -69,11 +85,13 @@ export function many<T, TContext extends Context>(parser: Parser<T, TContext>): 
 }
 
 // look for an exact sequence of parsers, or fail
-export function seq<T, TContext extends Context>(parsers: (Parser<T, TContext> | undefined)[]): Parser<T[], TContext> {
-  return ctx => {
+export function seq<T, TContext extends Context>(
+  parsers: (Parser<T, TContext> | undefined)[]
+): Parser<T[], TContext> {
+  return (ctx) => {
     const values: T[] = [];
     let nextCtx = ctx;
-    for (const parser of parsers.filter(x => x) as Parser<T, TContext>[]) {
+    for (const parser of parsers.filter((x) => x) as Parser<T, TContext>[]) {
       const res = parser(nextCtx);
       if (!res.success) return res;
       values.push(res.value);
@@ -84,10 +102,12 @@ export function seq<T, TContext extends Context>(parsers: (Parser<T, TContext> |
 }
 
 // a convenience method that will map a Success to callback, to let us do common things like build AST nodes from input strings.
-export function map<A, B, TContext extends Context>(parser: Parser<A, TContext>, fn: (val: A) => B): Parser<B, TContext> {
-  return ctx => {
+export function map<A, B, TContext extends Context>(
+  parser: Parser<A, TContext>,
+  fn: (val: A) => B
+): Parser<B, TContext> {
+  return (ctx) => {
     const res = parser(ctx);
     return res.success ? success(res.ctx, fn(res.value)) : res;
   };
 }
-

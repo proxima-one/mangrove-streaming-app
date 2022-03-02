@@ -19,21 +19,21 @@
   "types": "dist/index",
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
-    "format": "prettier --write \"{src,__tests__}/**/*.ts\" --single-quote --trailing-comma es5",
-    "lint": "eslint . --ext .ts",
+    "format": "prettier --write \"{src,__tests__}/**/*.ts\"",
+    "lint": "eslint ./src --ext .ts",
     "prepublishOnly": "yarn build",
     "prebuild": "yarn clean && yarn format && yarn lint && echo Using TypeScript && tsc --version",
-    "build": "tsc --pretty",
+    "build": "tsc --project tsconfig.build.json --pretty",
     "test": "jest --passWithNoTests",
     "coverage": "jest --coverage",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register src/dev.ts",
     "start:app": "yarn start app start --",
     "watch": "yarn build -- --watch",
     "watch:test": "jest --watch"
   },
   "dependencies": {
-    "@proxima-one/proxima-app-runtime": "^0.2.0-beta.2",
-    "@proxima-one/proxima-core": "^0.1.5-beta.6",
+    "@proxima-one/proxima-app-runtime": "^0.2.3",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

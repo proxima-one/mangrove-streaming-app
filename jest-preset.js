@@ -18,6 +18,7 @@ module.exports = {
     "json",
     "node"
   ],
+  roots: ["<rootDir>/src"],
   moduleNameMapper: {
     "^.+\\.(css|less|scss)$": "babel-jest"
   }

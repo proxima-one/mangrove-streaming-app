@@ -1,7 +1,7 @@
-import * as proxima from '@proxima-one/proxima-core';
-import * as input from '../input';
-import * as _ from 'lodash';
-import { PoolKey } from '../pool';
+import * as proxima from "@proxima-one/proxima-core";
+import * as model from "model";
+import * as _ from "lodash";
+import { AggregateAware } from "../../../aggregateModel";
 
 export class TakerAggregate {
   private _state: State;
@@ -15,14 +15,14 @@ export class TakerAggregate {
   }
 
   public updateApproval(
-    poolKey: PoolKey,
+    offerListKey: model.OfferListKey,
     spender: proxima.eth.Address,
-    amount: input.eth.UInt
+    amount: model.eth.UInt
   ) {
     this._state = {
       approvals: updateApproval(
         this._state.approvals,
-        poolKey,
+        offerListKey,
         spender,
         amount
       ),
@@ -37,13 +37,13 @@ export interface State {
   approvals: Approvals;
 }
 
-type Approvals = Record<string, Record<string, input.eth.UInt>>;
+type Approvals = Record<string, Record<string, model.eth.UInt>>;
 
 export function updateApproval(
   approvals: Approvals,
-  poolKey: PoolKey,
+  poolKey: model.OfferListKey,
   spender: proxima.eth.Address,
-  amount: input.eth.UInt
+  amount: model.eth.UInt
 ): Approvals {
   return _.merge({}, approvals, {
     [poolKey.toString()]: {
@@ -52,10 +52,16 @@ export function updateApproval(
   });
 }
 
-export class TakerId {
-  private constructor(public readonly value: string) {}
+export class TakerId implements AggregateAware<TakerId, State, TakerAggregate> {
+  public readonly aggregate = TakerAggregate;
+  public readonly aggregateType = "maker";
 
-  public static create(taker: proxima.eth.Address): TakerId {
-    return new TakerId(taker.toHexString());
+  public readonly value: string;
+
+  public constructor(
+    public readonly mangrove: model.core.MangroveId,
+    public readonly taker: model.core.TakerId
+  ) {
+    this.value = `${mangrove}-${taker}`;
   }
 }
