@@ -238,7 +238,7 @@ describe("parseMangroveEvents", () => {
                 takerGives: "100",
               },
             ],
-          }
+          },
         },
         {
           type: "OfferWritten",
@@ -279,7 +279,7 @@ describe("parseMangroveEvents", () => {
                 takerGives: "100",
               },
             ],
-          }
+          },
         },
       ])
     );
@@ -312,7 +312,7 @@ describe("parseMangroveEvents", () => {
             takerGave: "100",
             taker: taker1.toHexString(),
             takenOffers: [],
-          }
+          },
         },
       ])
     );

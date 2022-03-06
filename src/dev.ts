@@ -10,10 +10,9 @@ appHost.start({
   dryRun: false,
   id: id,
   args: {
-    addresses:
-      {
-        mangrove: "0x6f531931A7EaefB95307CcD93a348e4C27F62DCF"
-      },
+    addresses: {
+      mangrove: "0x6f531931A7EaefB95307CcD93a348e4C27F62DCF",
+    },
     blockIndexer: "amur",
     network: "polygon-mumbai",
     startBlock: "24053512",

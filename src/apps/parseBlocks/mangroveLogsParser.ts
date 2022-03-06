@@ -346,7 +346,9 @@ const parseOfferFail = () =>
       id: payload.requireParam("id").asNumber(),
       takerWants: payload.requireParam("takerWants").asBigNumber().toFixed(),
       takerGives: payload.requireParam("takerGives").asBigNumber().toFixed(),
-      failReason: payload.requireParam("mgvData").asString() as model.core.OfferFailReason,
+      failReason: payload
+        .requireParam("mgvData")
+        .asString() as model.core.OfferFailReason,
     };
   });
 
