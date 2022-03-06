@@ -252,7 +252,9 @@ describe("handleDomainEvent", () => {
     const offer2 = result.getView<views.OfferView>("Offer", expectedOffers[0]);
     expect(offer2).not.toBeFalsy();
     expect(offer2.live).toBe(false);
-    expect(offer2.makerId).toBe(new aggregates.MakerId(mangroveId, maker1.toHexString()).value);
+    expect(offer2.makerId).toBe(
+      new aggregates.MakerId(mangroveId, maker1.toHexString()).value
+    );
     expect(offer2.wants).toBe("100");
     expect(offer2.gives).toBe("0");
     expect(offer2.gasprice).toBe(100);

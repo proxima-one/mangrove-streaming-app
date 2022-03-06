@@ -4,15 +4,24 @@ import { MaterializeViewsApp } from "./apps/materializeViews";
 
 const appHost = buildAppHost();
 
-const id = "dev1";
+const id = "mangrove-parseblocks-dev-02";
 appHost.start({
-  app: MaterializeViewsApp,
+  app: ParseBlocksApp,
   dryRun: false,
   id: id,
-  args: {},
+  args: {
+    addresses: {
+      mangrove: "0x6f531931A7EaefB95307CcD93a348e4C27F62DCF",
+    },
+    blockIndexer: "amur",
+    network: "polygon-mumbai",
+    startBlock: "24053512",
+    initialOffset: 24053512,
+    outputStream: "domain-events",
+  },
   source: {
-    db: "kafka-main-prod",
-    streams: ["mangrove4-domain-events"],
+    db: "kafka-amur",
+    streams: ["polygon-mumbai-blockindex"],
   },
   target: {
     db: "kafka-dev",
