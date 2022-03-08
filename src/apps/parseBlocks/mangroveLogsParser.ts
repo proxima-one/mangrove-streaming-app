@@ -85,40 +85,42 @@ enum MangroveParamsEvents {
   Kill = "Kill",
 }
 
-function extractParams(log: proxima.eth.ContractEventPayload): model.core.MangroveParams {
+function extractParams(
+  log: proxima.eth.ContractEventPayload
+): model.core.MangroveParams {
   return {
     governance:
       log.name == MangroveParamsEvents.SetGovernance
         ? log.requireParam("value").asString()
         : undefined,
-        monitor:
-    log.name == MangroveParamsEvents.SetMonitor
-      ? log.requireParam("value").asString()
-      : undefined,
-      vault:
-    log.name == MangroveParamsEvents.SetVault
-      ? log.requireParam("value").asString()
-      : undefined,
-      useOracle:
-    log.name == MangroveParamsEvents.SetUseOracle
-      ? log.requireParam("value").asBool()
-      : undefined,
-      notify:
-    log.name == MangroveParamsEvents.SetNotify
-      ? log.requireParam("value").asBool()
-      : undefined,
-      gasmax:
-    log.name == MangroveParamsEvents.SetGasmax
-      ? log.requireParam("value").asNumber()
-      : undefined,
-      gasprice:
-    log.name == MangroveParamsEvents.SetGasprice
-      ? log.requireParam("value").asNumber()
-      : undefined,
-      dead:
-    log.name == MangroveParamsEvents.NewMgv
-      ? false
-      : log.name == "Kill"
+    monitor:
+      log.name == MangroveParamsEvents.SetMonitor
+        ? log.requireParam("value").asString()
+        : undefined,
+    vault:
+      log.name == MangroveParamsEvents.SetVault
+        ? log.requireParam("value").asString()
+        : undefined,
+    useOracle:
+      log.name == MangroveParamsEvents.SetUseOracle
+        ? log.requireParam("value").asBool()
+        : undefined,
+    notify:
+      log.name == MangroveParamsEvents.SetNotify
+        ? log.requireParam("value").asBool()
+        : undefined,
+    gasmax:
+      log.name == MangroveParamsEvents.SetGasmax
+        ? log.requireParam("value").asNumber()
+        : undefined,
+    gasprice:
+      log.name == MangroveParamsEvents.SetGasprice
+        ? log.requireParam("value").asNumber()
+        : undefined,
+    dead:
+      log.name == MangroveParamsEvents.NewMgv
+        ? false
+        : log.name == "Kill"
         ? true
         : undefined,
   };

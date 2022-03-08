@@ -5,6 +5,7 @@ import * as views from "./views";
 import * as aggregates from "./aggregates";
 import BigNumber from "bignumber.js";
 import * as aggregatesModel from "aggregateModel";
+import { strict as assert } from "assert";
 
 const domainEventMatcher =
   utils.createPatternMatcher<model.events.DomainEvent>();
@@ -14,8 +15,13 @@ export function handleDomainEvent(
   { undo, timestamp, payload }: proxima.Event<model.events.DomainEvent>
 ): ReadonlyArray<proxima.documents.DocumentUpdate> {
   //console.log(JSON.stringify(payload));
+
   return domainEventMatcher({
+    MangroveCreated: (e) => {
+      return [];
+    },
     OrderCompleted: (e) => {
+      assert(e.mangroveId);
       const order = aggregatesPool.mutate(
         new aggregates.OrderId(e.mangroveId, e.id),
         (x) => x.create(e.offerList, e.order),
@@ -49,6 +55,7 @@ export function handleDomainEvent(
       ];
     },
     OfferRetracted: (e) => {
+      assert(e.mangroveId);
       const offerId = new aggregates.OfferId(
         e.mangroveId,
         e.offerList,
@@ -72,6 +79,7 @@ export function handleDomainEvent(
       ];
     },
     OfferWritten: (e) => {
+      assert(e.mangroveId);
       const offerId = new aggregates.OfferId(
         e.mangroveId,
         e.offerList,
@@ -98,6 +106,7 @@ export function handleDomainEvent(
       ];
     },
     TakerApprovalUpdated: (e) => {
+      assert(e.mangroveId);
       const key = model.OfferListKey.fromOfferList(e.offerList);
       const taker = aggregatesPool.mutate(
         new aggregates.TakerId(e.mangroveId, e.owner),
@@ -113,6 +122,7 @@ export function handleDomainEvent(
       return [views.taker(taker).setContent()];
     },
     MakerBalanceUpdated: (e) => {
+      assert(e.mangroveId);
       let amountChange = new BigNumber(e.amountChange);
       if (undo)
         // handle undo logically
@@ -125,6 +135,7 @@ export function handleDomainEvent(
       return [views.maker(maker).setContent()];
     },
     MangroveParamsUpdated: (e) => {
+      assert(e.mangroveId);
       const mangroveId = new aggregates.MangroveId(e.mangroveId);
       const mangrove = aggregatesPool.mutate(
         mangroveId,
@@ -134,6 +145,7 @@ export function handleDomainEvent(
       return [views.mangrove(mangrove).setContent()];
     },
     OfferListParamsUpdated: (e) => {
+      assert(e.mangroveId);
       const offerList = aggregatesPool.mutate(
         new aggregates.OfferListId(e.mangroveId, e.offerList),
         (x) => x.updateParams(e.params),

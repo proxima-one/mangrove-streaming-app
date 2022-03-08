@@ -17,14 +17,16 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
     mangrove: proxima.eth.ContractMetadata.fromAbi(abi.mangrove),
     oracle: proxima.eth.ContractMetadata.fromAbi(abi.oracle),
   },
-  initialEvents: ({args}) => {
+  initialEvents: ({ args }) => {
     assert(args.addresses.mangrove);
     const chainlistId = (args as Args).chainlistId;
 
     assert(chainlistId);
 
-    const mangroveAddresses = Array.isArray(args.addresses.mangrove) ? args.addresses.mangrove : [args.addresses.mangrove];
-    return mangroveAddresses.map<MangroveCreated>(address => {
+    const mangroveAddresses = Array.isArray(args.addresses.mangrove)
+      ? args.addresses.mangrove
+      : [args.addresses.mangrove];
+    return mangroveAddresses.map<MangroveCreated>((address) => {
       return {
         type: "MangroveCreated",
         id: mangroveId(args.network, address),
@@ -32,12 +34,12 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         chain: {
           name: args.network,
           chainlistId: parseInt(chainlistId),
-        }
-      }
+        },
+      };
     });
   },
   map: {
-    tx: ({ tx, block, args}) => {
+    tx: ({ tx, block, args }) => {
       const txRef = {
         blockNumber: block.header.number,
         blockHash: block.header.hash.toHexString(),
