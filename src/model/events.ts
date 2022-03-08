@@ -2,14 +2,15 @@ import * as eth from "./eth";
 import * as core from "./core";
 
 export type DomainEvent = MangroveEvent & {
-  tx: eth.TransactionRef;
-  mangroveId: core.MangroveId; //support multiple instances in the same event stream
+  tx?: eth.TransactionRef;
+  mangroveId?: core.MangroveId; //support multiple instances in the same event stream
 };
 
 export type MangroveEvent = (
   | TakerApprovalUpdated
   | MakerBalanceUpdated
   | OfferListParamsUpdated
+  | MangroveCreated
   | MangroveParamsUpdated
   | OfferWritten
   | OfferRetracted
@@ -45,6 +46,17 @@ export interface MangroveParamsUpdated {
   type: "MangroveParamsUpdated";
 
   params: core.MangroveParams;
+}
+
+export interface MangroveCreated {
+  type: "MangroveCreated";
+
+  id: string;
+  chain: {
+    name: string;
+    chainlistId: number;
+  };
+  address: string;
 }
 
 export interface OfferWritten {

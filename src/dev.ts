@@ -4,7 +4,7 @@ import { MaterializeViewsApp } from "./apps/materializeViews";
 
 const appHost = buildAppHost();
 
-const id = "mangrove-parseblocks-dev-02";
+const id = "mangrove-parseblocks-dev-03";
 appHost.start({
   app: ParseBlocksApp,
   dryRun: false,
@@ -15,6 +15,7 @@ appHost.start({
     },
     blockIndexer: "amur",
     network: "polygon-mumbai",
+    chainlistId: "80001",
     startBlock: "24053512",
     initialOffset: 24053512,
     outputStream: "domain-events",
