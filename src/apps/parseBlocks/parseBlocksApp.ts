@@ -47,10 +47,6 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         from: tx.original.data.from.toHexString(),
       };
 
-      if (txRef.txHash == "0x99e48250217b52af71399976e83138e2530c10ebe733dc15bca7fb88e333741f") {
-        console.log(tx);
-      }
-
       const mangroveEvents = [
         ...toArray(tx.contractEvents.mangrove4),
         ...toArray(tx.contractEvents.mangrove5),
