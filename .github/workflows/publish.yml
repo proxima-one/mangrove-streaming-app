@@ -1,33 +1,40 @@
 name: publish
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - master
-      - dev
+
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - master
 env:
   REPO_NAME: proxima.one/streaming-app
   TAG_PREFIX: mangrove-
 
 jobs:
   publish:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
-          #cache: 'yarn'
+          node-version: '16.x'
 
       - name: "Setup npm" # Add our registry to npm config
         run: |
           npm set @proxima-one:registry=https://npm.pkg.github.com
           npm set "//npm.pkg.github.com/:_authToken=${{ secrets.CI_NPM_TOKEN }}"
 
-      - name: Build image
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Test
+        run: yarn test
+
+      - name: Build Image
         run: |
           VERSION=$(cat ./VERSION)
           DOCKER_BUILDKIT=1 docker build . --build-arg BUILD_VERSION=$VERSION --tag image --file ./deployment/Dockerfile --target prod --progress=plain --secret id=npmrc,src=$HOME/.npmrc
@@ -39,26 +46,22 @@ jobs:
         id: push-image
         run: |
           VERSION=$(cat ./VERSION)
-
-          if [ "${{ github.base_ref }}" = "master" ]; then
-            IMAGE_TAG=$TAG_PREFIX$VERSION
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            IMAGE_TAG=$TAG_PREFIX$VERSION-${GITHUB_SHA::7}
           else
-            IMAGE_TAG=$TAG_PREFIX$VERSION-beta.${GITHUB_SHA::7}
+            IMAGE_TAG=$TAG_PREFIX$VERSION
           fi
 
           IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/$REPO_NAME
-
           echo VERSION=$VERSION
           echo IMAGE_ID=$IMAGE_ID
           echo IMAGE_TAG=$IMAGE_TAG
-
           docker tag image $IMAGE_ID:$IMAGE_TAG
           docker push $IMAGE_ID:$IMAGE_TAG
-
           echo "::set-output name=RELEASED_VERSION::$VERSION"
 
       - name: Push tags
-        if: github.base_ref == 'master'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'master' }}
         uses: actions-ecosystem/action-push-tag@v1
         with:
           tag: v${{ steps.push-image.outputs.RELEASED_VERSION }}
