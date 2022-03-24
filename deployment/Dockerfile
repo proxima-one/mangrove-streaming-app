@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.3
 
-FROM node:14-alpine as build
+FROM node:16-alpine3.15 as build
 
 WORKDIR /app
 COPY ./package.json ./
@@ -12,7 +12,7 @@ COPY . .
 
 RUN yarn build
 
-FROM node:14-alpine as prod
+FROM node:16-alpine3.15 as prod
 ARG BUILD_VERSION
 WORKDIR /app
 RUN apk add dumb-init
