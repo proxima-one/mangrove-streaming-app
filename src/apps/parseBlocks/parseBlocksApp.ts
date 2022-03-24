@@ -14,18 +14,18 @@ interface Args {
 
 export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
   contracts: {
-    mangrove: proxima.eth.ContractMetadata.fromAbi(abi.mangrove),
-    oracle: proxima.eth.ContractMetadata.fromAbi(abi.oracle),
+    mangrove4: proxima.eth.ContractMetadata.fromAbi(abi.v4.mangrove),
+    mangrove5: proxima.eth.ContractMetadata.fromAbi(abi.v5.mangrove),
   },
   initialEvents: ({ args }) => {
-    assert(args.addresses.mangrove);
     const chainlistId = (args as Args).chainlistId;
 
     assert(chainlistId);
 
-    const mangroveAddresses = Array.isArray(args.addresses.mangrove)
-      ? args.addresses.mangrove
-      : [args.addresses.mangrove];
+    const mangroveAddresses = [
+      ...toArray(args.addresses.mangrove4),
+      ...toArray(args.addresses.mangrove5),
+    ];
     return mangroveAddresses.map<MangroveCreated>((address) => {
       return {
         type: "MangroveCreated",
@@ -47,8 +47,13 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         from: tx.original.data.from.toHexString(),
       };
 
+      const mangroveEvents = [
+        ...toArray(tx.contractEvents.mangrove4),
+        ...toArray(tx.contractEvents.mangrove5),
+      ];
+
       // expect contractEvents from multiple Mangrove instances
-      const groupedMangroveEvents = _.chain(tx.contractEvents.mangrove)
+      const groupedMangroveEvents = _.chain(mangroveEvents)
         .groupBy((x) => x.payload.address.toHexString())
         .map((values, key) => {
           return {
@@ -89,4 +94,12 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
 
 function mangroveId(chain: string, address: string): string {
   return `${chain}-${address.substring(0, 6)}`;
+}
+
+function toArray<T>(value: T | T[] | ReadonlyArray<T> | undefined): T[] {
+  if (value == undefined) return [];
+
+  if (Array.isArray(value)) return value;
+
+  return [value as T];
 }
