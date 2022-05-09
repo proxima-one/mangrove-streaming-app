@@ -181,8 +181,13 @@ describe("parseMangroveEvents", () => {
       events([
         {
           id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-2",
-          parentOrderId:
-            "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+          parentOrder: {
+            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+            offerList: {
+              inboundToken: token2.toHexString(),
+              outboundToken: token1.toHexString(),
+            },
+          },
           offerList: {
             inboundToken: "0x2058a9d7613eee744279e3856ef0eada5fcbaa79",
             outboundToken: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
@@ -242,8 +247,13 @@ describe("parseMangroveEvents", () => {
         },
         {
           type: "OfferWritten",
-          parentOrderId:
-            "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+          parentOrder: {
+            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+            offerList: {
+              inboundToken: token2.toHexString(),
+              outboundToken: token1.toHexString(),
+            },
+          },
           maker: maker1.toHexString(),
           offerList: {
             inboundToken: token2.toHexString(),
@@ -260,8 +270,13 @@ describe("parseMangroveEvents", () => {
         },
         {
           type: "OrderCompleted",
-          parentOrderId:
-            "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+          parentOrder: {
+            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+            offerList: {
+              inboundToken: token2.toHexString(),
+              outboundToken: token1.toHexString(),
+            },
+          },
           offerList: {
             inboundToken: token2.toHexString(),
             outboundToken: token1.toHexString(),

@@ -34,7 +34,6 @@ import {
   buildServiceProvider,
 } from "@proxima-one/proxima-app-runtime";
 import { ParseBlocksApp } from "./apps/parseBlocks";
-import { MaterializeViewsApp } from "./apps/materializeViews";
 
 const appHost = buildAppHost();
 const id = "mg-blocks-dev";
@@ -45,15 +44,16 @@ appHost.start({
   args: {
     addresses: {
       mangrove4: "0x6f531931A7EaefB95307CcD93a348e4C27F62DCF",
-      //mangrove5: "0xa34b6addf822177258cbd0a9c3a80600c1028ca8",
+      mangrove5: "0xa34b6addf822177258cbd0a9c3a80600c1028ca8",
+      mangrove6: "0xF3e339d8a0B989114412fa157Cc846ebaf4BCbd8",
     },
     skipUnknownEvents: false,
-    reset: false,
+    reset: true,
     blockIndexer: "amur",
     network: "polygon-mumbai",
     chainlistId: "80001",
-    startBlock: "24053512",
-    initialOffset: 24053512,
+    startBlock: "26224255",
+    initialOffset: 26224255,
     outputStream: "domain-events",
   },
   source: {

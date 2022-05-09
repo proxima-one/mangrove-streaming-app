@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@proxima-one/proxima-app-runtime": "^0.2.9",
+    "@proximaone/stream-schema-mangrove": "0.2.1-preview.1a2907f.2+1a2907f",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
