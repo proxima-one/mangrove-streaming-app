@@ -1,11 +1,10 @@
-import * as model from "../../model";
 import * as proxima from "@proxima-one/proxima-core";
+import * as schema from "@proximaone/stream-schema-mangrove";
 import * as _ from "lodash";
 import { any, failure, many, map, Parser, success } from "./parser";
 
-export const parseMangroveEvents = (): LogParser<
-  model.events.MangroveEvent[]
-> =>
+export type PartialMangroveEvent = Partial<schema.events.MangroveEvent>;
+export const parseMangroveEvents = (): LogParser<PartialMangroveEvent[]> =>
   map(
     many(
       any([
@@ -22,7 +21,7 @@ export const parseMangroveEvents = (): LogParser<
   );
 
 export const parseMakerBalanceEvent = () =>
-  parseLogs<model.events.MangroveEvent[]>(["Debit", "Credit"], (log) => {
+  parseLogs<PartialMangroveEvent[]>(["Debit", "Credit"], (log) => {
     let amountChange = log.requireParam("amount").asBigNumber();
     if (log.name == "Debit") amountChange = amountChange.times(-1);
 
@@ -43,35 +42,32 @@ enum OfferListParamsEvents {
 }
 
 export const parseOfferListParamsEvents = () =>
-  parseLogs<model.events.MangroveEvent[]>(
-    _.keys(OfferListParamsEvents),
-    (log) => {
-      return [
-        {
-          type: "OfferListParamsUpdated",
-          offerList: extractOfferList(log),
-          params: {
-            active:
-              log.name == OfferListParamsEvents.SetActive
-                ? log.requireParam("value").asBool()
-                : undefined,
-            fee:
-              log.name == OfferListParamsEvents.SetFee
-                ? log.requireParam("value").asBigNumber().toFixed()
-                : undefined,
-            gasbase:
-              log.name == OfferListParamsEvents.SetGasbase
-                ? log.requireParam("offer_gasbase").asNumber()
-                : undefined,
-            density:
-              log.name == OfferListParamsEvents.SetDensity
-                ? log.requireParam("value").asBigNumber().toFixed()
-                : undefined,
-          },
+  parseLogs<PartialMangroveEvent[]>(_.keys(OfferListParamsEvents), (log) => {
+    return [
+      {
+        type: "OfferListParamsUpdated",
+        offerList: extractOfferList(log),
+        params: {
+          active:
+            log.name == OfferListParamsEvents.SetActive
+              ? log.requireParam("value").asBool()
+              : undefined,
+          fee:
+            log.name == OfferListParamsEvents.SetFee
+              ? log.requireParam("value").asBigNumber().toFixed()
+              : undefined,
+          gasbase:
+            log.name == OfferListParamsEvents.SetGasbase
+              ? log.requireParam("offer_gasbase").asNumber()
+              : undefined,
+          density:
+            log.name == OfferListParamsEvents.SetDensity
+              ? log.requireParam("value").asBigNumber().toFixed()
+              : undefined,
         },
-      ];
-    }
-  );
+      },
+    ];
+  });
 
 enum MangroveParamsEvents {
   NewMgv = "NewMgv",
@@ -87,7 +83,7 @@ enum MangroveParamsEvents {
 
 function extractParams(
   log: proxima.eth.ContractEventPayload
-): model.core.MangroveParams {
+): schema.core.MangroveParams {
   return {
     governance:
       log.name == MangroveParamsEvents.SetGovernance
@@ -127,21 +123,18 @@ function extractParams(
 }
 
 export const parseMangroveParamsEvents = () =>
-  parseLogs<model.events.MangroveEvent[]>(
-    _.keys(MangroveParamsEvents),
-    (log) => {
-      const changedParams = extractParams(log);
-      return [
-        {
-          type: "MangroveParamsUpdated",
-          params: changedParams,
-        },
-      ];
-    }
-  );
+  parseLogs<PartialMangroveEvent[]>(_.keys(MangroveParamsEvents), (log) => {
+    const changedParams = extractParams(log);
+    return [
+      {
+        type: "MangroveParamsUpdated",
+        params: changedParams,
+      },
+    ];
+  });
 
 export const parseApprovalEvents = () =>
-  parseLogs<model.events.MangroveEvent[]>("Approval", (log) => {
+  parseLogs<PartialMangroveEvent[]>("Approval", (log) => {
     return [
       {
         type: "TakerApprovalUpdated",
@@ -154,7 +147,7 @@ export const parseApprovalEvents = () =>
   });
 
 export const parseOfferWrittenEvents = () =>
-  parseLogs<model.events.MangroveEvent[]>("OfferWrite", (log) => {
+  parseLogs<PartialMangroveEvent[]>("OfferWrite", (log) => {
     return [
       {
         type: "OfferWritten",
@@ -173,7 +166,7 @@ export const parseOfferWrittenEvents = () =>
   });
 
 export const parseOfferRetractedEvents = () =>
-  parseLogs<model.events.MangroveEvent[]>("OfferRetract", (log) => {
+  parseLogs<PartialMangroveEvent[]>("OfferRetract", (log) => {
     return [
       {
         type: "OfferRetracted",
@@ -211,7 +204,7 @@ export const parseOfferRetractedEvents = () =>
  * @param opts
  */
 export const parseOrderExecutionEvents = (): LogParser<
-  model.events.MangroveEvent[]
+  PartialMangroveEvent[]
 > => {
   const orderStartParser = parseLogs("OrderStart", (x) => x);
   const orderCompleteParser = parseLogs("OrderComplete", (x) => x);
@@ -236,17 +229,18 @@ export const parseOrderExecutionEvents = (): LogParser<
     const log = orderCompletedResult.value;
     const takenOffers = takenOffersResult.value;
 
+    const offerList = extractOfferList(log);
     const orderId = `${txHash.toHexString()}-${startIndex}`;
     return success(orderCompletedResult.ctx, [
       ...takenOffers
         .flatMap((x) => x.callbackEvents)
         .map((x) => {
-          return { ...x, parentOrderId: orderId };
+          return { ...x, parentOrder: { id: orderId, offerList: offerList } };
         }),
       {
         type: "OrderCompleted",
         id: orderId,
-        offerList: extractOfferList(log),
+        offerList: offerList,
         order: {
           penalty: log.requireParam("penalty").asBigNumber().toFixed(),
           takerGave: log.requireParam("takerGave").asBigNumber().toFixed(),
@@ -258,7 +252,7 @@ export const parseOrderExecutionEvents = (): LogParser<
       ...takenOffers
         .flatMap((x) => x.posthookEvents)
         .map((x) => {
-          return { ...x, parentOrderId: orderId };
+          return { ...x, parentOrder: { id: orderId, offerList: offerList } };
         }),
     ]);
   };
@@ -266,7 +260,7 @@ export const parseOrderExecutionEvents = (): LogParser<
 
 const extractOfferList = (
   log: proxima.eth.ContractEventPayload
-): model.core.OfferList => {
+): schema.core.OfferList => {
   return {
     inboundToken: log.requireParam("inbound_tkn").asString(),
     outboundToken: log.requireParam("outbound_tkn").asString(),
@@ -301,7 +295,11 @@ const parseTakenOffers = (): LogParser<ParsedTakenOffer[]> => (ctx) => {
   if (posthookFail.success)
     return success(posthookFail.ctx, [
       {
-        offer: { ...currentOffer, posthookFailed: true },
+        offer: {
+          ...currentOffer,
+          posthookFailed: true,
+          posthookData: posthookFail.value.posthookData?.toString(),
+        },
         posthookEvents: [],
         callbackEvents: callbackEvents.value,
       },
@@ -322,24 +320,29 @@ const parseTakenOffers = (): LogParser<ParsedTakenOffer[]> => (ctx) => {
 };
 
 interface ParsedTakenOffer {
-  offer: model.core.TakenOffer;
-  callbackEvents: model.events.MangroveEvent[];
-  posthookEvents: model.events.MangroveEvent[];
+  offer: schema.core.TakenOffer;
+  callbackEvents: PartialMangroveEvent[];
+  posthookEvents: PartialMangroveEvent[];
 }
 
 // PosthoookFail for specific OfferId for correct match
-const parsePosthookFailed = () => (requestedOfferId: model.core.OfferId) =>
+const parsePosthookFailed = () => (requestedOfferId: schema.core.OfferId) =>
   parseLogsIf(
     "PosthookFail",
     (log) =>
       log.requireParam("offerId").asNumber() == requestedOfferId
         ? true
         : `offerId doesn't match`,
-    () => true
+    (log) => {
+      const posthookData = log.findParam("posthookData");
+      return {
+        posthookData: posthookData ? posthookData.value : undefined,
+      };
+    }
   );
 
 const parseOfferSuccess = () =>
-  parseLogs<model.core.TakenOffer>("OfferSuccess", (payload) => {
+  parseLogs<schema.core.TakenOffer>("OfferSuccess", (payload) => {
     return {
       id: payload.requireParam("id").asNumber(),
       takerWants: payload.requireParam("takerWants").asBigNumber().toFixed(),
@@ -348,14 +351,14 @@ const parseOfferSuccess = () =>
   });
 
 const parseOfferFail = () =>
-  parseLogs<model.core.TakenOffer>("OfferFail", (payload) => {
+  parseLogs<schema.core.TakenOffer>("OfferFail", (payload) => {
     return {
       id: payload.requireParam("id").asNumber(),
       takerWants: payload.requireParam("takerWants").asBigNumber().toFixed(),
       takerGives: payload.requireParam("takerGives").asBigNumber().toFixed(),
       failReason: payload
         .requireParam("mgvData")
-        .asString() as model.core.OfferFailReason,
+        .asString() as schema.core.OfferFailReason,
     };
   });
 

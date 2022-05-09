@@ -1001,6 +1001,21 @@
     "@types/long" "^4.0.1"
     long "^4.0.0"
 
+"@proximaone/stream-schema-base@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-base/-/stream-schema-base-0.2.0.tgz#6cf8cf02aeb54c933226760cbed4b512f1097f79"
+  integrity sha512-kUJpTgnv0+LTX3BkIkSyS9xPSTqV3+PMPDVQCCkSSmMxCy1W+Aems1AqYRUTbvHC550QaQnrXSqKbY0/mvId2w==
+  dependencies:
+    bignumber.js "^9.0.1"
+    long "^4.0.0"
+
+"@proximaone/stream-schema-mangrove@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-mangrove/-/stream-schema-mangrove-0.2.1.tgz#f2527b0e99ced18eebf47bf686301e83237b8953"
+  integrity sha512-0+h1hJhjCPds+jbKAIEzlyjgt1Tr9XnO+MMIEOBKRBTswFiacggkEoehSdtNO8auuAISpHGnntmcvUTkyzkulQ==
+  dependencies:
+    "@proximaone/stream-schema-base" "^0.2.0"
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"

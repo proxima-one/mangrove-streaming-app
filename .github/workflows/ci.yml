@@ -1,0 +1,24 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - master
+
+jobs:
+  ci:
+    uses: proxima-one/github-workflows/.github/workflows/node-streaming-app.yml@master
+    with:
+      appName: mangrove
+      dockerfilePath: ./deployment/Dockerfile
+      preview: ${{ github.event_name == 'pull_request' }}
+      publish: true
+    secrets:
+      CI_NPM_TOKEN: ${{ secrets.CI_NPM_TOKEN }}
+      DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

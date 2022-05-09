@@ -1,10 +1,9 @@
 import * as proxima from "@proxima-one/proxima-core";
-import * as model from "../../model";
 import * as abi from "./abi";
+import * as schema from "@proximaone/stream-schema-mangrove";
 import * as _ from "lodash";
 import { strict as assert } from "assert";
 import { parseMangroveEvents } from "./mangroveLogsParser";
-import { MangroveCreated } from "../../model/events";
 
 const mangroveLogsParser = parseMangroveEvents();
 
@@ -16,17 +15,18 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
   contracts: {
     mangrove4: proxima.eth.ContractMetadata.fromAbi(abi.v4.mangrove),
     mangrove5: proxima.eth.ContractMetadata.fromAbi(abi.v5.mangrove),
+    mangrove6: proxima.eth.ContractMetadata.fromAbi(abi.v6.mangrove),
   },
   initialEvents: ({ args }) => {
     const chainlistId = (args as Args).chainlistId;
-
     assert(chainlistId);
 
     const mangroveAddresses = [
       ...toArray(args.addresses.mangrove4),
       ...toArray(args.addresses.mangrove5),
+      ...toArray(args.addresses.mangrove6),
     ];
-    return mangroveAddresses.map<MangroveCreated>((address) => {
+    return mangroveAddresses.map<schema.events.MangroveEvent>((address) => {
       return {
         type: "MangroveCreated",
         id: mangroveId(args.network, address),
@@ -35,16 +35,27 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
           name: args.network,
           chainlistId: parseInt(chainlistId),
         },
+        // common parts
+        chainId: parseInt(chainlistId),
+        mangroveId: mangroveId(args.network, address),
+        tx: {
+          blockNumber: 0,
+          blockHash: "0x",
+          sender: "0x",
+          txHash: "0x",
+        },
       };
     });
   },
   map: {
     tx: ({ tx, block, args }) => {
+      const chainlistId = parseInt((args as Args).chainlistId!);
+
       const txRef = {
         blockNumber: block.header.number,
         blockHash: block.header.hash.toHexString(),
         txHash: tx.original.data.hash.toHexString(),
-        from: tx.original.data.from.toHexString(),
+        sender: tx.original.data.from.toHexString(),
       };
 
       const mangroveEvents = [
@@ -65,7 +76,7 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         .orderBy((x) => x.index)
         .value();
 
-      const mappedEvents: model.events.DomainEvent[] = [];
+      const mappedEvents: schema.events.MangroveEvent[] = [];
 
       for (const { mangroveId, events } of groupedMangroveEvents) {
         const parseResult = mangroveLogsParser({
@@ -78,12 +89,14 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
           throw new Error(`Parse Mangrove Logs failed: ${parseResult.reason}`);
 
         mappedEvents.push(
-          ...parseResult.value.map((ev) =>
-            _.assign({}, ev, {
+          ...parseResult.value.map((ev) => {
+            return {
               tx: txRef,
-              mangroveId,
-            })
-          )
+              mangroveId: mangroveId,
+              chainId: chainlistId,
+              ...ev,
+            } as schema.events.MangroveEvent;
+          })
         );
       }
 

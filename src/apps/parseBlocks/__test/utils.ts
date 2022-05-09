@@ -1,8 +1,8 @@
 import BigNumber from "bignumber.js";
 import * as proxima from "@proxima-one/proxima-core";
-import * as model from "../../../model";
+import * as schema from "@proximaone/stream-schema-mangrove";
 import { Context, Parser, Result, Success } from "../parser";
-import { LogParserContext } from "../mangroveLogsParser";
+import { LogParserContext, PartialMangroveEvent } from "../mangroveLogsParser";
 
 export const createParserRunner =
   <T, TContext extends Context>(parser: Parser<T, TContext>) =>
@@ -60,8 +60,8 @@ export function parseParams(
 }
 
 export const events = (
-  events: model.events.MangroveEvent[]
-): Omit<Success<model.events.MangroveEvent[], LogParserContext>, "ctx"> => {
+  events: PartialMangroveEvent[]
+): Omit<Success<PartialMangroveEvent[], LogParserContext>, "ctx"> => {
   return {
     success: true,
     value: events,
