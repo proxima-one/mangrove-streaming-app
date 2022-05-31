@@ -29,6 +29,35 @@
 //
 // main();
 
+// import { MangroveStrategiesApp } from "./apps/strategies/strategiesParser";
+// import { buildAppHost } from "@proxima-one/proxima-app-runtime";
+// const appHost = buildAppHost();
+// const id = "alexei_temp4";
+// appHost.start({
+//   app: MangroveStrategiesApp,
+//   dryRun: false,
+//   id: id,
+//   args: {
+//     initialOffset: "26587386", //"26524069",
+//     blockIndexer: "amur",
+//     outputStream: {
+//       multiUserStrategy: "multiUserStrategies",
+//       takerStrategy: "takerStrategies",
+//     },
+//     network: "polygon-mumbai",
+//     batch: "10",
+//     readBuffer: "1000",
+//   },
+//   source: {
+//     db: "kafka-amur",
+//     streams: ["polygon-mumbai-blockindex"],
+//   },
+//   target: {
+//     db: "kafka-dev",
+//     namespace: id,
+//   },
+// });
+
 import {
   buildAppHost,
   buildServiceProvider,
