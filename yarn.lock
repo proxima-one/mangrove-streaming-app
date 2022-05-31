@@ -351,21 +351,6 @@
     "@ethersproject/properties" "^5.0.3"
     "@ethersproject/strings" "^5.0.4"
 
-"@ethersproject/abi@^5.6.3":
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/@ethersproject/abi/-/abi-5.6.3.tgz#2d643544abadf6e6b63150508af43475985c23db"
-  integrity sha512-CxKTdoZY4zDJLWXG6HzNH6znWK0M79WzzxHegDoecE3+K32pzfHOzuXg2/oGSTecZynFgpkjYXNPOqXVJlqClw==
-  dependencies:
-    "@ethersproject/address" "^5.6.1"
-    "@ethersproject/bignumber" "^5.6.2"
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/constants" "^5.6.1"
-    "@ethersproject/hash" "^5.6.1"
-    "@ethersproject/keccak256" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/properties" "^5.6.0"
-    "@ethersproject/strings" "^5.6.1"
-
 "@ethersproject/abstract-provider@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/abstract-provider/-/abstract-provider-5.6.0.tgz#0c4ac7054650dbd9c476cf5907f588bbb6ef3061"
@@ -379,19 +364,6 @@
     "@ethersproject/transactions" "^5.6.0"
     "@ethersproject/web" "^5.6.0"
 
-"@ethersproject/abstract-provider@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/abstract-provider/-/abstract-provider-5.6.1.tgz#02ddce150785caf0c77fe036a0ebfcee61878c59"
-  integrity sha512-BxlIgogYJtp1FS8Muvj8YfdClk3unZH0vRMVX791Z9INBNT/kuACZ9GzaY1Y4yFq+YSy6/w4gzj3HCRKrK9hsQ==
-  dependencies:
-    "@ethersproject/bignumber" "^5.6.2"
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/networks" "^5.6.3"
-    "@ethersproject/properties" "^5.6.0"
-    "@ethersproject/transactions" "^5.6.2"
-    "@ethersproject/web" "^5.6.1"
-
 "@ethersproject/abstract-signer@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/abstract-signer/-/abstract-signer-5.6.0.tgz#9cd7ae9211c2b123a3b29bf47aab17d4d016e3e7"
@@ -400,17 +372,6 @@
     "@ethersproject/abstract-provider" "^5.6.0"
     "@ethersproject/bignumber" "^5.6.0"
     "@ethersproject/bytes" "^5.6.0"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/properties" "^5.6.0"
-
-"@ethersproject/abstract-signer@^5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@ethersproject/abstract-signer/-/abstract-signer-5.6.2.tgz#491f07fc2cbd5da258f46ec539664713950b0b33"
-  integrity sha512-n1r6lttFBG0t2vNiI3HoWaS/KdOt8xyDjzlP2cuevlWLG6EX0OwcKLyG/Kp/cuwNxdy/ous+R/DEMdTUwWQIjQ==
-  dependencies:
-    "@ethersproject/abstract-provider" "^5.6.1"
-    "@ethersproject/bignumber" "^5.6.2"
-    "@ethersproject/bytes" "^5.6.1"
     "@ethersproject/logger" "^5.6.0"
     "@ethersproject/properties" "^5.6.0"
 
@@ -425,30 +386,12 @@
     "@ethersproject/logger" "^5.6.0"
     "@ethersproject/rlp" "^5.6.0"
 
-"@ethersproject/address@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/address/-/address-5.6.1.tgz#ab57818d9aefee919c5721d28cd31fd95eff413d"
-  integrity sha512-uOgF0kS5MJv9ZvCz7x6T2EXJSzotiybApn4XlOgoTX0xdtyVIJ7pF+6cGPxiEq/dpBiTfMiw7Yc81JcwhSYA0Q==
-  dependencies:
-    "@ethersproject/bignumber" "^5.6.2"
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/keccak256" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/rlp" "^5.6.1"
-
 "@ethersproject/base64@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/base64/-/base64-5.6.0.tgz#a12c4da2a6fb86d88563216b0282308fc15907c9"
   integrity sha512-2Neq8wxJ9xHxCF9TUgmKeSh9BXJ6OAxWfeGWvbauPh8FuHEjamgHilllx8KkSd5ErxyHIX7Xv3Fkcud2kY9ezw==
   dependencies:
     "@ethersproject/bytes" "^5.6.0"
-
-"@ethersproject/base64@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/base64/-/base64-5.6.1.tgz#2c40d8a0310c9d1606c2c37ae3092634b41d87cb"
-  integrity sha512-qB76rjop6a0RIYYMiB4Eh/8n+Hxu2NIZm8S/Q7kNo5pmZfXhHGHmS4MinUainiBC54SCyRnwzL+KZjj8zbsSsw==
-  dependencies:
-    "@ethersproject/bytes" "^5.6.1"
 
 "@ethersproject/bignumber@^5.0.7", "@ethersproject/bignumber@^5.6.0":
   version "5.6.0"
@@ -459,26 +402,10 @@
     "@ethersproject/logger" "^5.6.0"
     bn.js "^4.11.9"
 
-"@ethersproject/bignumber@^5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@ethersproject/bignumber/-/bignumber-5.6.2.tgz#72a0717d6163fab44c47bcc82e0c550ac0315d66"
-  integrity sha512-v7+EEUbhGqT3XJ9LMPsKvXYHFc8eHxTowFCG/HgJErmq4XHJ2WR7aeyICg3uTOAQ7Icn0GFHAohXEhxQHq4Ubw==
-  dependencies:
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    bn.js "^5.2.1"
-
 "@ethersproject/bytes@^5.0.4", "@ethersproject/bytes@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/bytes/-/bytes-5.6.0.tgz#81652f2a0e04533575befadce555213c11d8aa20"
   integrity sha512-3hJPlYemb9V4VLfJF5BfN0+55vltPZSHU3QKUyP9M3Y2TcajbiRrz65UG+xVHOzBereB1b9mn7r12o177xgN7w==
-  dependencies:
-    "@ethersproject/logger" "^5.6.0"
-
-"@ethersproject/bytes@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/bytes/-/bytes-5.6.1.tgz#24f916e411f82a8a60412344bf4a813b917eefe7"
-  integrity sha512-NwQt7cKn5+ZE4uDn+X5RAXLp46E1chXoaMmrxAyA0rblpxz8t58lVkrHXoRIn0lz1joQElQ8410GqhTqMOwc6g==
   dependencies:
     "@ethersproject/logger" "^5.6.0"
 
@@ -488,13 +415,6 @@
   integrity sha512-SrdaJx2bK0WQl23nSpV/b1aq293Lh0sUaZT/yYKPDKn4tlAbkH96SPJwIhwSwTsoQQZxuh1jnqsKwyymoiBdWA==
   dependencies:
     "@ethersproject/bignumber" "^5.6.0"
-
-"@ethersproject/constants@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/constants/-/constants-5.6.1.tgz#e2e974cac160dd101cf79fdf879d7d18e8cb1370"
-  integrity sha512-QSq9WVnZbxXYFftrjSjZDUshp6/eKp6qrtdBtUCm0QxCV5z1fG/w3kdlcsjMCQuQHUnAclKoK7XpXMezhRDOLg==
-  dependencies:
-    "@ethersproject/bignumber" "^5.6.2"
 
 "@ethersproject/hash@^5.0.4":
   version "5.6.0"
@@ -510,34 +430,12 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
-"@ethersproject/hash@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/hash/-/hash-5.6.1.tgz#224572ea4de257f05b4abf8ae58b03a67e99b0f4"
-  integrity sha512-L1xAHurbaxG8VVul4ankNX5HgQ8PNCTrnVXEiFnE9xoRnaUcgfD12tZINtDinSllxPLCtGwguQxJ5E6keE84pA==
-  dependencies:
-    "@ethersproject/abstract-signer" "^5.6.2"
-    "@ethersproject/address" "^5.6.1"
-    "@ethersproject/bignumber" "^5.6.2"
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/keccak256" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/properties" "^5.6.0"
-    "@ethersproject/strings" "^5.6.1"
-
 "@ethersproject/keccak256@^5.0.3", "@ethersproject/keccak256@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/keccak256/-/keccak256-5.6.0.tgz#fea4bb47dbf8f131c2e1774a1cecbfeb9d606459"
   integrity sha512-tk56BJ96mdj/ksi7HWZVWGjCq0WVl/QvfhFQNeL8fxhBlGoP+L80uDCiQcpJPd+2XxkivS3lwRm3E0CXTfol0w==
   dependencies:
     "@ethersproject/bytes" "^5.6.0"
-    js-sha3 "0.8.0"
-
-"@ethersproject/keccak256@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/keccak256/-/keccak256-5.6.1.tgz#b867167c9b50ba1b1a92bccdd4f2d6bd168a91cc"
-  integrity sha512-bB7DQHCTRDooZZdL3lk9wpL0+XuG3XLGHLh3cePnybsO3V0rdCAOQGpn/0R3aODmnTOOkCATJiD2hnL+5bwthA==
-  dependencies:
-    "@ethersproject/bytes" "^5.6.1"
     js-sha3 "0.8.0"
 
 "@ethersproject/logger@^5.0.5", "@ethersproject/logger@^5.6.0":
@@ -549,13 +447,6 @@
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/networks/-/networks-5.6.0.tgz#486d03fff29b4b6b5414d47a232ded09fe10de5e"
   integrity sha512-DaVzgyThzHgSDLuURhvkp4oviGoGe9iTZW4jMEORHDRCgSZ9K9THGFKqL+qGXqPAYLEgZTf5z2w56mRrPR1MjQ==
-  dependencies:
-    "@ethersproject/logger" "^5.6.0"
-
-"@ethersproject/networks@^5.6.3":
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/@ethersproject/networks/-/networks-5.6.3.tgz#3ee3ab08f315b433b50c99702eb32e0cf31f899f"
-  integrity sha512-QZxRH7cA5Ut9TbXwZFiCyuPchdWi87ZtVNHWZd0R6YFgYtes2jQ3+bsslJ0WdyDe0i6QumqtoYqvY3rrQFRZOQ==
   dependencies:
     "@ethersproject/logger" "^5.6.0"
 
@@ -574,14 +465,6 @@
     "@ethersproject/bytes" "^5.6.0"
     "@ethersproject/logger" "^5.6.0"
 
-"@ethersproject/rlp@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/rlp/-/rlp-5.6.1.tgz#df8311e6f9f24dcb03d59a2bac457a28a4fe2bd8"
-  integrity sha512-uYjmcZx+DKlFUk7a5/W9aQVaoEC7+1MOBgNtvNg13+RnuUwT4F0zTovC0tmay5SmRslb29V1B7Y5KCri46WhuQ==
-  dependencies:
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-
 "@ethersproject/signing-key@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/signing-key/-/signing-key-5.6.0.tgz#4f02e3fb09e22b71e2e1d6dc4bcb5dafa69ce042"
@@ -594,18 +477,6 @@
     elliptic "6.5.4"
     hash.js "1.1.7"
 
-"@ethersproject/signing-key@^5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@ethersproject/signing-key/-/signing-key-5.6.2.tgz#8a51b111e4d62e5a62aee1da1e088d12de0614a3"
-  integrity sha512-jVbu0RuP7EFpw82vHcL+GP35+KaNruVAZM90GxgQnGqB6crhBqW/ozBfFvdeImtmb4qPko0uxXjn8l9jpn0cwQ==
-  dependencies:
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/properties" "^5.6.0"
-    bn.js "^5.2.1"
-    elliptic "6.5.4"
-    hash.js "1.1.7"
-
 "@ethersproject/strings@^5.0.4", "@ethersproject/strings@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/strings/-/strings-5.6.0.tgz#9891b26709153d996bf1303d39a7f4bc047878fd"
@@ -613,15 +484,6 @@
   dependencies:
     "@ethersproject/bytes" "^5.6.0"
     "@ethersproject/constants" "^5.6.0"
-    "@ethersproject/logger" "^5.6.0"
-
-"@ethersproject/strings@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/strings/-/strings-5.6.1.tgz#dbc1b7f901db822b5cafd4ebf01ca93c373f8952"
-  integrity sha512-2X1Lgk6Jyfg26MUnsHiT456U9ijxKUybz8IM1Vih+NJxYtXhmvKBcHOmvGqpFSVJ0nQ4ZCoIViR8XlRw1v/+Cw==
-  dependencies:
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/constants" "^5.6.1"
     "@ethersproject/logger" "^5.6.0"
 
 "@ethersproject/transactions@^5.0.0-beta.135", "@ethersproject/transactions@^5.6.0":
@@ -639,21 +501,6 @@
     "@ethersproject/rlp" "^5.6.0"
     "@ethersproject/signing-key" "^5.6.0"
 
-"@ethersproject/transactions@^5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@ethersproject/transactions/-/transactions-5.6.2.tgz#793a774c01ced9fe7073985bb95a4b4e57a6370b"
-  integrity sha512-BuV63IRPHmJvthNkkt9G70Ullx6AcM+SDc+a8Aw/8Yew6YwT51TcBKEp1P4oOQ/bP25I18JJr7rcFRgFtU9B2Q==
-  dependencies:
-    "@ethersproject/address" "^5.6.1"
-    "@ethersproject/bignumber" "^5.6.2"
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/constants" "^5.6.1"
-    "@ethersproject/keccak256" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/properties" "^5.6.0"
-    "@ethersproject/rlp" "^5.6.1"
-    "@ethersproject/signing-key" "^5.6.2"
-
 "@ethersproject/web@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/web/-/web-5.6.0.tgz#4bf8b3cbc17055027e1a5dd3c357e37474eaaeb8"
@@ -664,17 +511,6 @@
     "@ethersproject/logger" "^5.6.0"
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
-
-"@ethersproject/web@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/web/-/web-5.6.1.tgz#6e2bd3ebadd033e6fe57d072db2b69ad2c9bdf5d"
-  integrity sha512-/vSyzaQlNXkO1WV+RneYKqCJwualcUdx/Z3gseVovZP0wIlOFcCE1hkRhKBH8ImKbGQbMl9EAAyJFrJu7V0aqA==
-  dependencies:
-    "@ethersproject/base64" "^5.6.1"
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/properties" "^5.6.0"
-    "@ethersproject/strings" "^5.6.1"
 
 "@google-cloud/common@^3.8.1":
   version "3.10.0"
@@ -1047,19 +883,19 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@proxima-one/proxima-app-runtime@^0.2.16":
-  version "0.2.16"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-runtime/0.2.16/91022323e551cccf8f482d82207ee4edb425e3c903dabb77ee21303a4c29b99a#7ec7e7092a496d8be537e7aab888619cf32e45f9"
-  integrity sha512-SdO45roA8+jMQkNPuqRRPcpkMk+uk31Vk3MlmUnQks2IS5VSD9IDftCkE4A8AwrzMsukzG84YJbD5Q0y+5Yp6Q==
+"@proxima-one/proxima-app-runtime@^0.2.17":
+  version "0.2.17"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-runtime/0.2.17/72fcdf206f4004250afbda9da5426e05ed1924f67618fcf28931185c23b18134#c52ec09764dfbec480682cbef9441d2175f62d08"
+  integrity sha512-KSYt9yNxESL391aDhmLAQxNrkDUKMlaDJAt7BHaenuZLLSqDhRpZdmWRQC6vToxvYv2SKeSJDcCwV1EZV1IZeg==
   dependencies:
-    "@proxima-one/proxima-block-indexer-client" "^0.1.18"
+    "@proxima-one/proxima-block-indexer-client" "^0.1.19"
     "@proxima-one/proxima-config" "^0.2.3"
-    "@proxima-one/proxima-core" "^0.2.4"
-    "@proxima-one/proxima-db-client" "^0.0.19"
-    "@proxima-one/proxima-eth" "^0.1.18"
-    "@proxima-one/proxima-kafka" "^0.1.19"
-    "@proxima-one/proxima-mongodb" "^0.1.18"
-    "@proxima-one/proxima-storage" "^0.1.19"
+    "@proxima-one/proxima-core" "^0.2.5"
+    "@proxima-one/proxima-db-client" "^0.0.20"
+    "@proxima-one/proxima-eth" "^0.1.19"
+    "@proxima-one/proxima-kafka" "^0.1.20"
+    "@proxima-one/proxima-mongodb" "^0.1.19"
+    "@proxima-one/proxima-storage" "^0.1.20"
     "@proxima-one/proxima-utils" "^0.1.5"
     bignumber.js "^9.0.1"
     commander "^8.0.0"
@@ -1069,14 +905,14 @@
     lodash "^4.17.21"
     rxjs "^7.1.0"
 
-"@proxima-one/proxima-block-indexer-client@^0.1.18":
-  version "0.1.18"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-block-indexer-client/0.1.18/4bb44277901cf783c8356f8c1fd85a8c3e423a3c912272db90e31bd10e021477#eacaa632b387818121adc803d0cb3e0d51d3845a"
-  integrity sha512-knAJ5Q3VIzpphjNgdejT8c2hMnMkgF90EA2or05H5H4YwnImTKKP+d+PgCZOWc2FV6preK3TlLhYKm3CeKteAg==
+"@proxima-one/proxima-block-indexer-client@^0.1.19":
+  version "0.1.19"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-block-indexer-client/0.1.19/ba0ed21395adec009b7682c7ecd1edbfda55648be8a74816ce80ad70c8415d74#b3eb491eb802afcc1e28769ee3a263fdc77df295"
+  integrity sha512-fO6qGcEvfaR7aSqYE97JekgybkVWH5BEBILuT6HUEratVYf1eOx+l4kvZ3RDHPdJIF+G4riQ/Ivxpupu9zhvIw==
   dependencies:
     "@grpc/grpc-js" "^1.3.7"
     "@grpc/proto-loader" "^0.6.4"
-    "@proxima-one/proxima-core" "^0.2.4"
+    "@proxima-one/proxima-core" "^0.2.5"
     "@types/long" "^4.0.1"
     long "^4.0.0"
 
@@ -1085,10 +921,10 @@
   resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-config/0.2.3/ca23b5581450de292e5f7e22a1503d44dece7758675ebb2abe8120ba608c4bba#f01b9fd69961ca925f2fe80b54305914494258c1"
   integrity sha512-PwqIf7SP/mivzgIk0JKuDJ/QOXzDrwhLsMgnk1YEKcHpOT9DNiPb7wlFo2IetdhAfGvwOukFKmtIbkXTZNQFaQ==
 
-"@proxima-one/proxima-core@^0.2.4":
-  version "0.2.4"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-core/0.2.4/960ffb6501daa08a13d9493639406d11a50501c89416be7c920b2063cabeb0bb#31975b58ea346115f7d5a9e4b1660a2272a749b0"
-  integrity sha512-MpGgGmXBCLPdZEBPCp2IjpoXcSq/9XuJOs40f4lcN/bsi1iHQuYsLgaCQA9RgE+bsAKL9/tRKyn+qThGidZ83Q==
+"@proxima-one/proxima-core@^0.2.5":
+  version "0.2.5"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-core/0.2.5/5c72492812f37b6bb855a8f6d462d335728985ccb59ebc5953f212e6de8379b2#741cbb32c00598640e75786d99996399626b1565"
+  integrity sha512-y2kIctobXxXc4DPCp1MuGJ3vhnRR00DjJSs8vJ+LtlkqufaJluv/PukH5Uqnh4oZ+D5hkaKnpk/RjtgiF9k6qA==
   dependencies:
     "@proxima-one/proxima-utils" "^0.1.5"
     bignumber.js "^9.0.1"
@@ -1097,61 +933,61 @@
     rxjs "^7.1.0"
     web3 "^1.5.2"
 
-"@proxima-one/proxima-db-client@^0.0.19":
-  version "0.0.19"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-db-client/0.0.19/2593c1ae7856caa8282d6583eabc6a2125fb30928f3ebf796942a886c883771e#151ab032337f61d97243efaa45655e5b6d404939"
-  integrity sha512-ca6EXRzbKgUblAyPFE/dPXSTpcmwTQ/DlouELbEe07AFOp4x+ag4niAfigdeXKlllp3H2+xYVDEvEkWud+yZvQ==
+"@proxima-one/proxima-db-client@^0.0.20":
+  version "0.0.20"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-db-client/0.0.20/51479b983a20327558e9a0ddc6205493759e6486d46fbf3abd7ca655ffa9d5e6#0882582fea0e4b1985ff09db2ce0ce70ac32288d"
+  integrity sha512-kOMg/VGkUPMmj84FbZgqgfV8sk7jtfrKkbln8lqGzhSgwN0uaAzc41ugGMpCHX+1xDCOl4wsuLcN1380lm88nQ==
   dependencies:
     "@grpc/grpc-js" "^1.3.2"
     "@grpc/proto-loader" "^0.6.2"
-    "@proxima-one/proxima-core" "^0.2.4"
+    "@proxima-one/proxima-core" "^0.2.5"
     "@proxima-one/proxima-utils" "^0.1.5"
     lodash "^4.17.21"
     uuid "^8.3.2"
 
-"@proxima-one/proxima-eth@^0.1.18":
-  version "0.1.18"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-eth/0.1.18/2d1262dc01e32d90f433635eba41405c1a59d1149f3e618e2d2ea594710596d7#e02cb4b337303f5837f96a513d7e05843b19b93c"
-  integrity sha512-oB4hiKQ88z7bbwayLqKIknLkumsT2QXU/N7GE63sIEq6Q6ry0u0/kH+KQgUJfyywQjwfd8pSuUpTRKIeWM8ztA==
+"@proxima-one/proxima-eth@^0.1.19":
+  version "0.1.19"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-eth/0.1.19/80f7ea8f4358ba09148dc4730bcfd738f56d648a44c9ae169db83d6bfd919dc4#bab50a4ae354062ef445f127ecae694c43863016"
+  integrity sha512-G2DiIlMj1uLsn6aGKzmMrJ6jkUf9kpsL9p8nu6bI9wSweREHLsfdpXP3k4KIFKvqcoS+qW2BU2rvVnUOEtO/6A==
   dependencies:
-    "@proxima-one/proxima-core" "^0.2.4"
+    "@proxima-one/proxima-core" "^0.2.5"
     "@proxima-one/proxima-utils" "^0.1.5"
     lodash "^4.17.21"
     rxjs "^7.1.0"
     web3 "^1.5.2"
 
-"@proxima-one/proxima-kafka@^0.1.19":
-  version "0.1.19"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-kafka/0.1.19/5c2e57a8dcd3ad48e9857715db3853afaba9011e64e7f95421e1f29a68d62180#4cd63e117f18085417c12ba2377158c0894a1771"
-  integrity sha512-C5XumSEuj9cqg79Cwbr5DA7NACy6B0JfC4eHXgfCpSg/xAtkpDXXHlBa9sIoW6l4VqDdQBhEZKOhfzA8qMDMoA==
+"@proxima-one/proxima-kafka@^0.1.20":
+  version "0.1.20"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-kafka/0.1.20/33cadc024761ee5917b4b74cc34b6864d26c8e538c2d2e923fb840e932edae8a#fa391dfd6b6fed4658f93fa9f7b464c8f75d34d1"
+  integrity sha512-OwiAOX7N6eELthHoR98g6VX1JAPZ1VUkKHdvNTNJGRAIY4rwLi1/XasAUXiqOYGZ/9UFEEB0QBklNqDAr84faw==
   dependencies:
     "@proxima-one/proxima-config" "^0.2.3"
-    "@proxima-one/proxima-core" "^0.2.4"
+    "@proxima-one/proxima-core" "^0.2.5"
     "@proxima-one/proxima-utils" "^0.1.5"
     "@types/kafkajs" "^1.9.0"
     kafkajs "^1.15.0"
     lodash "^4.17.21"
     rxjs "^7.1.0"
 
-"@proxima-one/proxima-mongodb@^0.1.18":
-  version "0.1.18"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-mongodb/0.1.18/8d571dc0e4c222d123e691e0b9ca423848d24b2fb90380da5cd68250858c2c93#9064d17b00df71af9a8f38a93551bd5d96a57963"
-  integrity sha512-BtfA+B5Xk9inyQuyOgz/WYTTRqNf20vYFF32YEwpJfX+guQC7c2JXfojuWOFxa8LzWIm+4phqn4+RVFcmYDY+Q==
+"@proxima-one/proxima-mongodb@^0.1.19":
+  version "0.1.19"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-mongodb/0.1.19/144676a72a769d021e0a19c428ff92cd2d22f320d4d8fcfd8579de33df000672#b13ccf4863142587e5cbe0f90e283584fa8275ee"
+  integrity sha512-z+Ngm/B82EZtKW76U0fEIrWUue89bpi19YmujxaFY4zY3cHZ+l16bEOPSfOxCo73dIs2GD9aU4X6zZ9BX95F2Q==
   dependencies:
-    "@proxima-one/proxima-core" "^0.2.4"
+    "@proxima-one/proxima-core" "^0.2.5"
     "@proxima-one/proxima-utils" "^0.1.5"
     lodash "^4.17.21"
     long "^4.0.0"
     mongodb "^3.6.9"
     uuid "^8.3.2"
 
-"@proxima-one/proxima-storage@^0.1.19":
-  version "0.1.19"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-storage/0.1.19/a873e0f12f8129bbf29ede32de056417112980cdaada2bda4034557abc6c3e72#9d72695986777c1b4315f8fbf956a8f9964ab54f"
-  integrity sha512-/cAnJikN08GWh1SXkDHmUYvVzSXbpIxISMSnqOzEVHh8o2ho7exuZGkE11X114I0gYRFZMW7tH/rL4sNafqbcg==
+"@proxima-one/proxima-storage@^0.1.20":
+  version "0.1.20"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-storage/0.1.20/100944d5fac72143301adc23f9418ba0bb62e315560101998e325050678629e9#28a726055f88b289b998e577d97ff7341ca50bbe"
+  integrity sha512-21wys9Ir/s3+pLRyF8gZWHuPGaZBAX6dJ83eWHQa2U6hDmWq/sXQAbVtf6yGgjgX6U+3MtffTzMfKwYDpJ/h3Q==
   dependencies:
     "@google-cloud/storage" "^5.8.5"
-    "@proxima-one/proxima-core" "^0.2.4"
+    "@proxima-one/proxima-core" "^0.2.5"
     "@proxima-one/proxima-utils" "^0.1.5"
     "@types/mime" "^2.0.3"
     aws-sdk "^2.989.0"
@@ -1813,11 +1649,6 @@ bn.js@^5.0.0, bn.js@^5.1.1, bn.js@^5.1.2, bn.js@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.2.0.tgz#358860674396c6997771a9d051fcc1b57d4ae002"
   integrity sha512-D7iWRBvnZE8ecXiLj/9wbxH7Tk79fAh8IHaTNq1RWRixsS02W+5qS+iE9yq6RYl0asXx5tw0bLhmT5pIfbSquw==
-
-bn.js@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.2.1.tgz#0bc527a6a0d18d0aa8d5b0538ce4a77dccfa7b70"
-  integrity sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==
 
 body-parser@1.19.2, body-parser@^1.16.0:
   version "1.19.2"

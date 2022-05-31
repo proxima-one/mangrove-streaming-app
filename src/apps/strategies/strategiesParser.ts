@@ -1,12 +1,8 @@
 import * as proxima from "@proxima-one/proxima-core";
-import * as ethersAbi from "@ethersproject/abi";
 import * as mangrove from "@proximaone/stream-schema-mangrove";
 import _ from "lodash";
 import { takerStrategy } from "./abi/takerStrategy";
 import { multiUserStrategy } from "./abi/multiUserStrategy";
-
-const multiUserStrategyInterface = new ethersAbi.Interface(multiUserStrategy);
-const takerStrategyInterface = new ethersAbi.Interface(takerStrategy);
 
 type OutputEvent =
   | mangrove.strategyEvents.MultiUserStrategyEvent
@@ -21,29 +17,6 @@ export const MangroveStrategiesApp = proxima.eth.parseContractLogsApp({
   },
   discover: {
     full: true,
-    event: ({ event, contractType }) => {
-      const address = event.payload.address;
-
-      if (
-        contractType == "multiUserStrategy" &&
-        looksLikeTargetEvent(event, multiUserStrategyInterface)
-      ) {
-        return {
-          multiUserStrategy: [address],
-        };
-      }
-
-      if (
-        contractType == "takerStrategy" &&
-        looksLikeTargetEvent(event, takerStrategyInterface)
-      ) {
-        return {
-          takerStrategy: [address],
-        };
-      }
-
-      return {};
-    },
   },
   map: {
     event: ({ event, tx, block, contractType, args }) => {
@@ -146,21 +119,6 @@ function mapTakerStrategyEvent(event: proxima.eth.DecodedContractEvent) {
 
 function id(chain: string, address: string, index: number): string {
   return `${chain}-${address}-${index}`;
-}
-
-function looksLikeTargetEvent(
-  event: proxima.eth.DecodedContractEvent,
-  Interface: ethersAbi.Interface
-): boolean {
-  return Object.values(Interface.events).some((eventSchema) => {
-    return (
-      event.payload.name == eventSchema.name &&
-      event.payload.params.length == eventSchema.inputs.length &&
-      event.payload.params.every(
-        (x, index) => x.name == eventSchema.inputs[index].name
-      )
-    );
-  });
 }
 
 function outputStream(
