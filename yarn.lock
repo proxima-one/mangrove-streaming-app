@@ -1010,10 +1010,10 @@
     bignumber.js "^9.0.1"
     long "^4.0.0"
 
-"@proximaone/stream-schema-mangrove@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-mangrove/-/stream-schema-mangrove-0.2.2.tgz#52663da3167531404f64c093a498b0c0be4417e4"
-  integrity sha512-Pg4dHiPDYDq6rAKHGZN2Wd0UzWfz50NzkxLZKVbi+FwrLlgbarGHfHyodkJe29JeokRGcojp9lAYAp9F8GtbaQ==
+"@proximaone/stream-schema-mangrove@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-mangrove/-/stream-schema-mangrove-0.2.3.tgz#0a15570f6b5f99d3583abd44f06a446621c9393e"
+  integrity sha512-dvJLI+/3YB7Yeh0fWrHHlk5YObXOApzGF55R0IPoz45nuyppa95HWzGSSitT3/qEcYuNL9bTOf6hWupMk2TX6w==
   dependencies:
     "@proximaone/stream-schema-base" "^0.2.0"
 

@@ -110,7 +110,7 @@ function mapTakerStrategyEvent(event: proxima.eth.DecodedContractEvent) {
         takerGot: event.payload.requireParam("takerGot").asString(),
         takerGave: event.payload.requireParam("takerGave").asString(),
         penalty: event.payload.requireParam("penalty").asString(),
-        restingOrderId: event.payload.requireParam("restingOrderId").asString(),
+        restingOrderId: event.payload.requireParam("restingOrderId").asNumber(),
       };
     default:
       return undefined;
