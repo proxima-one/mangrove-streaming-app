@@ -21,6 +21,8 @@ export const MangroveStrategiesApp = proxima.eth.parseContractLogsApp({
   map: {
     event: ({ event, tx, block, contractType, args }) => {
       const chain = args.network;
+      const chainlistId = (args as any).chainlistId;
+      const mangroveAddress = (args as any).mangroveAddress;
 
       const txRef = {
         chain: chain,
@@ -42,6 +44,8 @@ export const MangroveStrategiesApp = proxima.eth.parseContractLogsApp({
       const outputEvent = _.assign(mappedEvent, {
         tx: txRef,
         id: id(chain, event.payload.address.toHexString(), event.index),
+        chainId: parseInt(chainlistId),
+        mangroveId: mangroveId(chain, mangroveAddress),
         address: event.payload.address.toHexString(),
       }) as OutputEvent;
 
@@ -135,4 +139,8 @@ function outputStream(
     throw new Error(`OutputStream for ${contractType} is not specified`);
 
   return stream;
+}
+
+function mangroveId(chain: string, address: string): string {
+  return `${chain}-${address.substring(0, 6)}`;
 }
