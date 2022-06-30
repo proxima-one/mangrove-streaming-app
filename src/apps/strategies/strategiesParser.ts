@@ -22,7 +22,6 @@ export const MangroveStrategiesApp = proxima.eth.parseContractLogsApp({
     event: ({ event, tx, block, contractType, args }) => {
       const chain = args.network;
       const chainlistId = (args as any).chainlistId;
-      const mangroveAddress = (args as any).mangroveAddress;
 
       const txRef = {
         chain: chain,
@@ -36,8 +35,8 @@ export const MangroveStrategiesApp = proxima.eth.parseContractLogsApp({
 
       const mappedEvent =
         contractType == "multiUserStrategy"
-          ? mapMultiUserStrategyEvent(event)
-          : mapTakerStrategyEvent(event);
+          ? mapMultiUserStrategyEvent(event, chain)
+          : mapTakerStrategyEvent(event, chain);
 
       if (!mappedEvent) return [];
 
@@ -45,7 +44,6 @@ export const MangroveStrategiesApp = proxima.eth.parseContractLogsApp({
         tx: txRef,
         id: id(chain, event.payload.address.toHexString(), event.index),
         chainId: parseInt(chainlistId),
-        mangroveId: mangroveId(chain, mangroveAddress),
         address: event.payload.address.toHexString(),
       }) as OutputEvent;
 
@@ -54,12 +52,13 @@ export const MangroveStrategiesApp = proxima.eth.parseContractLogsApp({
   },
 });
 
-function mapMultiUserStrategyEvent(event: proxima.eth.DecodedContractEvent) {
+function mapMultiUserStrategyEvent(event: proxima.eth.DecodedContractEvent, chain: string) {
   switch (event.payload.name) {
     case "CreditMgvUser":
       return {
         type: "CreditMgvUser",
 
+        mangroveId: mangroveId(chain, event.payload.requireParam("mangrove").asString()),
         user: event.payload.requireParam("user").asString(),
         amount: event.payload.requireParam("amount").asString(),
       };
@@ -75,6 +74,7 @@ function mapMultiUserStrategyEvent(event: proxima.eth.DecodedContractEvent) {
       return {
         type: "DebitMgvUser",
 
+        mangroveId: mangroveId(chain, event.payload.requireParam("mangrove").asString()),
         user: event.payload.requireParam("user").asString(),
         amount: event.payload.requireParam("amount").asString(),
       };
@@ -90,6 +90,7 @@ function mapMultiUserStrategyEvent(event: proxima.eth.DecodedContractEvent) {
       return {
         type: "NewOwnedOffer",
 
+        mangroveId: mangroveId(chain, event.payload.requireParam("mangrove").asString()),
         outboundToken: event.payload.requireParam("outbound_tkn").asString(),
         inboundToken: event.payload.requireParam("inbound_tkn").asString(),
         offerId: event.payload.requireParam("offerId").asString(),
@@ -100,12 +101,13 @@ function mapMultiUserStrategyEvent(event: proxima.eth.DecodedContractEvent) {
   }
 }
 
-function mapTakerStrategyEvent(event: proxima.eth.DecodedContractEvent) {
+function mapTakerStrategyEvent(event: proxima.eth.DecodedContractEvent, chain: string) {
   switch (event.payload.name) {
     case "OrderSummary":
       return {
         type: "OrderSummary",
 
+        mangroveId: mangroveId(chain, event.payload.requireParam("mangrove").asString()),
         base: event.payload.requireParam("base").asString(),
         quote: event.payload.requireParam("quote").asString(),
         taker: event.payload.requireParam("taker").asString(),
