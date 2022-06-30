@@ -4,6 +4,12 @@ export const takerStrategy = [
     inputs: [
       {
         indexed: true,
+        internalType: "contract IMangrove",
+        name: "mangrove",
+        type: "address"
+      },
+      {
+        indexed: true,
         internalType: "address",
         name: "base",
         type: "address",

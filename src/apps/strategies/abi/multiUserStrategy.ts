@@ -4,6 +4,12 @@ export const multiUserStrategy = [
     inputs: [
       {
         indexed: true,
+        internalType: "contract IMangrove",
+        name: "mangrove",
+        type: "address"
+      },
+      {
+        indexed: true,
         internalType: "address",
         name: "user",
         type: "address",
@@ -29,7 +35,7 @@ export const multiUserStrategy = [
       },
       {
         indexed: true,
-        internalType: "address",
+        internalType: "contract IEIP20",
         name: "token",
         type: "address",
       },
@@ -46,6 +52,12 @@ export const multiUserStrategy = [
   {
     anonymous: false,
     inputs: [
+      {
+        indexed: true,
+        internalType: "contract IMangrove",
+        name: "mangrove",
+        type: "address"
+      },
       {
         indexed: true,
         internalType: "address",
@@ -90,6 +102,12 @@ export const multiUserStrategy = [
   {
     anonymous: false,
     inputs: [
+      {
+        indexed: true,
+        internalType: "contract IMangrove",
+        name: "mangrove",
+        type: "address"
+      },
       {
         indexed: true,
         internalType: "address",
