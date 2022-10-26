@@ -6,34 +6,35 @@ import {
   parseParams,
   ValueType,
 } from "./__test/utils";
+import { EthModel } from "@proxima-one/proxima-plugin-eth";
 
-const txHash = proxima.eth.Hash.fromHexString(
+const txHash = EthModel.Hash.fromHexString(
   "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200"
 );
-const mangroveId = proxima.eth.Address.fromHexString(
+const mangroveId = EthModel.Address.fromHexString(
   "0xD27139C60ED051b65c3AEe193BCABFfa1067D243"
 );
-const token1 = proxima.eth.Address.fromHexString(
+const token1 = EthModel.Address.fromHexString(
   "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f"
 );
-const token2 = proxima.eth.Address.fromHexString(
+const token2 = EthModel.Address.fromHexString(
   "0x2058a9d7613eee744279e3856ef0eada5fcbaa7e"
 );
-const token3 = proxima.eth.Address.fromHexString(
+const token3 = EthModel.Address.fromHexString(
   "0x2058a9d7613eee744279e3856ef0eada5fcbaa79"
 );
-const taker1 = proxima.eth.Address.fromHexString(
+const taker1 = EthModel.Address.fromHexString(
   "0x3073a02460d7be1a1c9afc60a059ad8d788a4502"
 );
-const maker1 = proxima.eth.Address.fromHexString(
+const maker1 = EthModel.Address.fromHexString(
   "0xcbb37575320ff499e9f69d0090b6944bc0ad7585"
 );
 
 const log = (
   name: string,
-  params: proxima.eth.EventParameter[] | Record<string, ValueType>
+  params: EthModel.LogParameter[] | Record<string, ValueType>
 ) => {
-  return new proxima.eth.ContractEventPayload(
+  return new EthModel.DecodedContractLogPayload(
     name,
     mangroveId,
     Array.isArray(params) ? params : parseParams(params)
@@ -44,12 +45,12 @@ describe("parseMangroveEvents", () => {
   const assertParsedResult = createParserRunner(parseMangroveEvents());
 
   const context = (
-    logs: proxima.eth.ContractEventPayload[]
+    logs: EthModel.DecodedContractLogPayload[]
   ): LogParserContext => {
     return {
       index: 0,
       events: logs.map(
-        (x, ind) => new proxima.eth.DecodedContractEvent(ind, x)
+        (x, ind) => new EthModel.DecodedLog(ind, x)
       ),
       txHash: txHash,
     };
