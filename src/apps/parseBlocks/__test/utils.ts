@@ -1,8 +1,7 @@
 import BigNumber from "bignumber.js";
-import * as proxima from "@proxima-one/proxima-core";
-import * as schema from "@proximaone/stream-schema-mangrove";
 import { Context, Parser, Result, Success } from "../parser";
 import { LogParserContext, PartialMangroveEvent } from "../mangroveLogsParser";
+import { EthModel } from "@proxima-one/proxima-plugin-eth";
 
 export const createParserRunner =
   <T, TContext extends Context>(parser: Parser<T, TContext>) =>
@@ -44,12 +43,12 @@ export function guessEthValueType(value: ValueType): string {
 
 export function parseParams(
   params: Record<string, ValueType>
-): proxima.eth.EventParameter[] {
-  const res: proxima.eth.EventParameter[] = [];
+): EthModel.LogParameter[] {
+  const res: EthModel.LogParameter[] = [];
   for (const [key, val] of Object.entries(params)) {
     const ethType = guessEthValueType(val);
     res.push(
-      new proxima.eth.EventParameter(
+      new EthModel.LogParameter(
         key,
         ethType,
         BigNumber.isBigNumber(val) ? val.toString() : val

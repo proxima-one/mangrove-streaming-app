@@ -1,9 +1,10 @@
-import * as proxima from "@proxima-one/proxima-core";
+import * as ethApp from "@proxima-one/proxima-app-eth";
 import * as abi from "./abi";
 import * as schema from "@proximaone/stream-schema-mangrove";
 import * as _ from "lodash";
 import { strict as assert } from "assert";
 import { parseMangroveEvents } from "./mangroveLogsParser";
+import { EthModel } from "@proxima-one/proxima-plugin-eth";
 
 const mangroveLogsParser = parseMangroveEvents();
 
@@ -11,11 +12,11 @@ interface Args {
   chainlistId?: string;
 }
 
-export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
+export const ParseBlocksApp = ethApp.parseContractLogsApp({
   contracts: {
-    mangrove4: proxima.eth.ContractMetadata.fromAbi(abi.v4.mangrove),
-    mangrove5: proxima.eth.ContractMetadata.fromAbi(abi.v5.mangrove),
-    mangrove6: proxima.eth.ContractMetadata.fromAbi(abi.v6.mangrove),
+    mangrove4: EthModel.ContractMetadata.fromAbi(abi.v4.mangrove),
+    mangrove5: EthModel.ContractMetadata.fromAbi(abi.v5.mangrove),
+    mangrove6: EthModel.ContractMetadata.fromAbi(abi.v6.mangrove),
   },
   initialEvents: ({ args }) => {
     const chainlistId = (args as Args).chainlistId;
@@ -26,26 +27,30 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
       ...toArray(args.addresses.mangrove5),
       ...toArray(args.addresses.mangrove6),
     ];
-    return mangroveAddresses.map<schema.events.MangroveEvent>((address) => {
-      return {
-        type: "MangroveCreated",
-        id: mangroveId(args.network, address),
-        address: address,
-        chain: {
-          name: args.network,
-          chainlistId: parseInt(chainlistId),
-        },
-        // common parts
-        chainId: parseInt(chainlistId),
-        mangroveId: mangroveId(args.network, address),
-        tx: {
-          blockNumber: 0,
-          blockHash: "0x",
-          sender: "0x",
-          txHash: "0x",
-        },
-      };
-    });
+    const events = mangroveAddresses.map<schema.events.MangroveEvent>(
+      (address) => {
+        return {
+          type: "MangroveCreated",
+          id: mangroveId(args.network, address),
+          address: address,
+          chain: {
+            name: args.network,
+            chainlistId: parseInt(chainlistId),
+          },
+          // common parts
+          chainId: parseInt(chainlistId),
+          mangroveId: mangroveId(args.network, address),
+          tx: {
+            blockNumber: 0,
+            blockHash: "0x",
+            sender: "0x",
+            txHash: "0x",
+          },
+        };
+      }
+    );
+
+    return events.map((ev) => ethApp.MapResult.toDefaultStream(ev));
   },
   map: {
     tx: ({ tx, block, args }) => {
@@ -59,8 +64,8 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
       };
 
       const mangroveEvents = [
-        ...toArray(tx.contractEvents.mangrove4),
-        ...toArray(tx.contractEvents.mangrove5),
+        ...toArray(tx.contractLogs.mangrove4),
+        ...toArray(tx.contractLogs.mangrove5),
       ];
 
       // expect contractEvents from multiple Mangrove instances
@@ -100,7 +105,7 @@ export const ParseBlocksApp = proxima.eth.parseContractLogsApp({
         );
       }
 
-      return mappedEvents;
+      return mappedEvents.map((ev) => ethApp.MapResult.toDefaultStream(ev));
     },
   },
 });

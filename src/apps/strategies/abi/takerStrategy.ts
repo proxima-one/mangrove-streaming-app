@@ -6,7 +6,7 @@ export const takerStrategy = [
         indexed: true,
         internalType: "contract IMangrove",
         name: "mangrove",
-        type: "address"
+        type: "address",
       },
       {
         indexed: true,

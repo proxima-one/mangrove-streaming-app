@@ -29,47 +29,39 @@
 //
 // main();
 
-// import { MangroveStrategiesApp } from "./apps/strategies/strategiesParser";
-// import { buildAppHost } from "@proxima-one/proxima-app-runtime";
-// const appHost = buildAppHost();
-// const id = "alexei_temp4";
-// appHost.start({
-//   app: MangroveStrategiesApp,
-//   dryRun: false,
-//   id: id,
-//   args: {
-//     initialOffset: "26587386", //"26524069",
-//     blockIndexer: "amur",
-//     outputStream: {
-//       multiUserStrategy: "multiUserStrategies",
-//       takerStrategy: "takerStrategies",
-//     },
-//     network: "polygon-mumbai",
-//     batch: "10",
-//     readBuffer: "1000",
-//   },
-//   source: {
-//     db: "kafka-amur",
-//     streams: ["polygon-mumbai-blockindex"],
-//   },
-//   target: {
-//     db: "kafka-dev",
-//     namespace: id,
-//   },
-// });
-
-import {
-  buildAppHost,
-  buildServiceProvider,
-} from "@proxima-one/proxima-app-runtime";
+import { buildAppHost } from "@proxima-one/proxima-app";
+import { MangroveStrategiesApp } from "./apps/strategies/strategiesParser";
 import { ParseBlocksApp } from "./apps/parseBlocks";
 
 const appHost = buildAppHost();
-const id = "mg-blocks-dev";
-appHost.start({
+
+const mangroveStrategiesApp = {
+  app: MangroveStrategiesApp,
+  dryRun: false,
+  id: "mangrove-strategies",
+  args: {
+    initialOffset: "26587386", //"26524069",
+    input: {
+      default: "polygon-mumbai-blockheader",
+    },
+    output: {
+      multiUserStrategy: "multiUserStrategies",
+      takerStrategy: "takerStrategies",
+    },
+    network: "polygon-mumbai",
+    batch: "10",
+    readBuffer: "1000",
+    chainlistId: "80001",
+    mangroveAddress: "0x6f531931a7eaefb95307ccd93a348e4c27f62dcf",
+
+    db: "streamdb-01",
+  },
+};
+
+const parseBlocksApp = {
   app: ParseBlocksApp,
   dryRun: false,
-  id: id,
+  id: "mg-blocks-dev",
   args: {
     addresses: {
       mangrove4: "0x6f531931A7EaefB95307CcD93a348e4C27F62DCF",
@@ -78,19 +70,24 @@ appHost.start({
     },
     skipUnknownEvents: false,
     reset: true,
-    blockIndexer: "amur",
     network: "polygon-mumbai",
     chainlistId: "80001",
     startBlock: "26224255",
     initialOffset: 26224255,
-    outputStream: "domain-events",
+
+    input: {
+      default: "polygon-mumbai-blockheader",
+    },
+    output: {
+      default: "domain-events",
+    },
+
+    db: "streamdb-01",
   },
-  source: {
-    db: "kafka-amur",
-    streams: ["polygon-mumbai-blockindex"],
-  },
-  target: {
-    db: "kafka-dev",
-    namespace: id,
-  },
-});
+};
+
+appHost.start(mangroveStrategiesApp);
+
+if (false) {
+  appHost.start(parseBlocksApp);
+}

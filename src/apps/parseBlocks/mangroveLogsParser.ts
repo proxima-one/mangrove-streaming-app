@@ -1,7 +1,7 @@
-import * as proxima from "@proxima-one/proxima-core";
 import * as schema from "@proximaone/stream-schema-mangrove";
 import * as _ from "lodash";
 import { any, failure, many, map, Parser, success } from "./parser";
+import { EthModel } from "@proxima-one/proxima-plugin-eth";
 
 export type PartialMangroveEvent = Partial<schema.events.MangroveEvent>;
 export const parseMangroveEvents = (): LogParser<PartialMangroveEvent[]> =>
@@ -82,7 +82,7 @@ enum MangroveParamsEvents {
 }
 
 function extractParams(
-  log: proxima.eth.ContractEventPayload
+  log: EthModel.DecodedContractLogPayload
 ): schema.core.MangroveParams {
   return {
     governance:
@@ -259,7 +259,7 @@ export const parseOrderExecutionEvents = (): LogParser<
 };
 
 const extractOfferList = (
-  log: proxima.eth.ContractEventPayload
+  log: EthModel.DecodedContractLogPayload
 ): schema.core.OfferList => {
   return {
     inboundToken: log.requireParam("inbound_tkn").asString(),
@@ -366,8 +366,8 @@ const parseTakenOffer = () => any([parseOfferSuccess(), parseOfferFail()]);
 
 // Shared functions
 export type LogParserContext = Readonly<{
-  txHash: proxima.eth.Hash;
-  events: proxima.eth.DecodedContractEvent[]; // the full input string
+  txHash: EthModel.Hash;
+  events: EthModel.DecodedLog[]; // the full input string
   index: number; // our current position in it
 }>;
 
@@ -375,15 +375,15 @@ export type LogParser<T> = Parser<T, LogParserContext>;
 
 export function parseLogs<T>(
   nameOrNames: string | string[],
-  mapFunc: (log: proxima.eth.ContractEventPayload) => T
+  mapFunc: (log: EthModel.DecodedContractLogPayload) => T
 ): LogParser<T> {
   return parseLogsIf<T>(nameOrNames, () => true, mapFunc);
 }
 
 export function parseLogsIf<T>(
   nameOrNames: string | string[],
-  ifFunc: (log: proxima.eth.ContractEventPayload) => true | string,
-  mapFunc: (log: proxima.eth.ContractEventPayload) => T
+  ifFunc: (log: EthModel.DecodedContractLogPayload) => true | string,
+  mapFunc: (log: EthModel.DecodedContractLogPayload) => T
 ): LogParser<T> {
   const names = typeof nameOrNames == "string" ? [nameOrNames] : nameOrNames;
   const failReason = `log.name not in (${names.join(",")})`;
