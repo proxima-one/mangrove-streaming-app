@@ -1,7 +1,6 @@
 import {
   Aggregate,
   AggregateAware,
-  AggregateConstructor,
   AggregateId,
   AggregateStateStore,
 } from "./types";
