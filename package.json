@@ -33,9 +33,9 @@
     "watch:test": "jest --watch"
   },
   "dependencies": {
-    "@proxima-one/proxima-app-eth": "^0.2.15",
-    "@proxima-one/proxima-app-streaming": "^0.2.12",
-    "@proxima-one/proxima-plugin-eth": "^0.1.24",
+    "@proxima-one/proxima-app-eth": "0.2.22-preview.386.0+3c08044",
+    "@proxima-one/proxima-app-streaming": "0.2.17-preview.386.0+3c08044",
+    "@proxima-one/proxima-plugin-eth": "0.1.25-preview.386.16+3c08044",
     "@proxima-one/proxima-blockchain": "^0.1.1",
     "@proximaone/stream-schema-mangrove": "^0.2.6",
     "lodash": "^4.17.21"
