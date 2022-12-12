@@ -11,13 +11,13 @@ export const takerStrategy = [
       {
         indexed: true,
         internalType: "address",
-        name: "base",
+        name: "outbound_tkn",
         type: "address",
       },
       {
         indexed: true,
         internalType: "address",
-        name: "quote",
+        name: "inbound_tkn",
         type: "address",
       },
       {
@@ -29,8 +29,38 @@ export const takerStrategy = [
       {
         indexed: false,
         internalType: "bool",
-        name: "selling",
+        name: "fillOrKill",
         type: "bool",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "takerWants",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "takerGives",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "fillWants",
+        type: "bool",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "restingOrder",
+        type: "bool",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "expiryDate",
+        type: "uint256",
       },
       {
         indexed: false,
@@ -47,7 +77,13 @@ export const takerStrategy = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "penalty",
+        name: "bounty",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "fee",
         type: "uint256",
       },
       {

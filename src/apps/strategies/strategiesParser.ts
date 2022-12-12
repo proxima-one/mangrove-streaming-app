@@ -4,15 +4,17 @@ import { EthModel } from "@proxima-one/proxima-plugin-eth";
 import _ from "lodash";
 import { takerStrategy } from "./abi/takerStrategy";
 import { multiUserStrategy } from "./abi/multiUserStrategy";
-
-type OutputEvent =
-  | mangrove.strategyEvents.MultiUserStrategyEvent
-  | mangrove.strategyEvents.TakerStrategyEvent;
+import { logIncident } from "./abi/logIncident";
+import {
+  LogIncident,
+  OrderSummary,
+} from "@proximaone/stream-schema-mangrove/dist/strategyEvents";
 
 export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
   contracts: {
     multiUserStrategy: EthModel.ContractMetadata.fromAbi(multiUserStrategy),
     takerStrategy: EthModel.ContractMetadata.fromAbi(takerStrategy),
+    logIncident: EthModel.ContractMetadata.fromAbi(logIncident),
   },
   discover: {
     full: true,
@@ -30,10 +32,32 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
         sender: tx.original.data.from.toHexString(),
       };
 
-      const mappedEvent =
-        contractType == "multiUserStrategy"
-          ? mapMultiUserStrategyEvent(log, chain)
-          : mapTakerStrategyEvent(log, chain);
+      let mappedEvent = undefined;
+      switch (contractType) {
+        case "multiUserStrategy":
+          mappedEvent = mapMultiUserStrategyEvent(log, chain);
+          break;
+        case "takerStrategy":
+          mappedEvent = mapTakerStrategyEvent(log, chain);
+          break;
+        case "logIncident":
+          mappedEvent = {
+            type: "LogIncident",
+
+            mangroveId: mangroveId(
+              chain,
+              log.payload.requireParam("mangrove").asString()
+            ),
+            outboundToken: log.payload.requireParam("outbound_tkn").asString(),
+            inboundToken: log.payload.requireParam("inbound_tkn").asString(),
+            offerId: log.payload.requireParam("offerId").asNumber(),
+            makerData: log.payload.requireParam("makerData").asString(),
+            mgvData: log.payload.requireParam("mgvData").asString(),
+          } as LogIncident;
+          break;
+        default:
+          throw new Error(`Unknown contractType: ${contractType}`);
+      }
 
       if (!mappedEvent) return [];
 
@@ -42,7 +66,7 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
         id: id(chain, log.payload.address.toHexString(), log.index),
         chainId: parseInt(chainlistId),
         address: log.payload.address.toHexString(),
-      }) as OutputEvent;
+      }) as mangrove.strategyEvents.StrategyEvent;
 
       return [ethApp.MapResult.toStream(contractType, outputEvent)];
     },
@@ -51,44 +75,6 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
 
 function mapMultiUserStrategyEvent(event: EthModel.DecodedLog, chain: string) {
   switch (event.payload.name) {
-    case "CreditMgvUser":
-      return {
-        type: "CreditMgvUser",
-
-        mangroveId: mangroveId(
-          chain,
-          event.payload.requireParam("mangrove").asString()
-        ),
-        user: event.payload.requireParam("user").asString(),
-        amount: event.payload.requireParam("amount").asString(),
-      };
-    case "CreditUserTokenBalance":
-      return {
-        type: "CreditUserTokenBalance",
-
-        user: event.payload.requireParam("user").asString(),
-        token: event.payload.requireParam("token").asString(),
-        amount: event.payload.requireParam("amount").asString(),
-      };
-    case "DebitMgvUser":
-      return {
-        type: "DebitMgvUser",
-
-        mangroveId: mangroveId(
-          chain,
-          event.payload.requireParam("mangrove").asString()
-        ),
-        user: event.payload.requireParam("user").asString(),
-        amount: event.payload.requireParam("amount").asString(),
-      };
-    case "DebitUserTokenBalance":
-      return {
-        type: "DebitUserTokenBalance",
-
-        user: event.payload.requireParam("user").asString(),
-        token: event.payload.requireParam("token").asString(),
-        amount: event.payload.requireParam("amount").asString(),
-      };
     case "NewOwnedOffer":
       return {
         type: "NewOwnedOffer",
@@ -107,7 +93,10 @@ function mapMultiUserStrategyEvent(event: EthModel.DecodedLog, chain: string) {
   }
 }
 
-function mapTakerStrategyEvent(event: EthModel.DecodedLog, chain: string) {
+function mapTakerStrategyEvent(
+  event: EthModel.DecodedLog,
+  chain: string
+): OrderSummary | undefined {
   switch (event.payload.name) {
     case "OrderSummary":
       return {
@@ -117,14 +106,19 @@ function mapTakerStrategyEvent(event: EthModel.DecodedLog, chain: string) {
           chain,
           event.payload.requireParam("mangrove").asString()
         ),
-        base: event.payload.requireParam("base").asString(),
-        quote: event.payload.requireParam("quote").asString(),
-        taker: event.payload.requireParam("taker").asString(),
-        selling: event.payload.requireParam("selling").asBool(),
-
+        outboundToken: event.payload.requireParam("outbound_tkn").asString(),
+        inboundToken: event.payload.requireParam("quote").asString(),
+        taker: event.payload.requireParam("inbound_tkn").asString(),
+        fillOrKill: event.payload.requireParam("fillOrKill").asBool(),
+        takerWants: event.payload.requireParam("takerWants").asString(),
+        takerGives: event.payload.requireParam("takerGives").asString(),
+        fillWants: event.payload.requireParam("fillWants").asBool(),
+        restingOrder: event.payload.requireParam("restingOrder").asBool(),
+        expiryDate: event.payload.requireParam("expiryDate").asNumber(),
         takerGot: event.payload.requireParam("takerGot").asString(),
         takerGave: event.payload.requireParam("takerGave").asString(),
-        penalty: event.payload.requireParam("penalty").asString(),
+        bounty: event.payload.requireParam("bounty").asString(),
+        fee: event.payload.requireParam("fee").asString(),
         restingOrderId: event.payload.requireParam("restingOrderId").asNumber(),
       };
     default:
