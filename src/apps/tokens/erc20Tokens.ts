@@ -96,7 +96,9 @@ export class Erc20TokensApp extends MapStreamEventsApp<MapStreamEventsArgs> {
     const res: StreamEvent[] = [];
 
     for (const item of typedEvents) {
-      for (const tokenId of [item.event.offerList.inboundToken, item.event.offerList.outboundToken]) {
+      const tokenIds = [item.event.offerList.inboundToken, item.event.offerList.outboundToken];
+      for (let i = 0; i < tokenIds.length; i++) {
+        const tokenId = tokenIds[i];
         const token = newTokens[tokenId];
 
         if (!token || states[tokenId]) continue;
@@ -116,7 +118,7 @@ export class Erc20TokensApp extends MapStreamEventsApp<MapStreamEventsArgs> {
               "default",
               Bytes.fromByteArray(this.serdes.output.serialize(mappedEvent))
             ),
-            item.timestamp
+            item.timestamp.addParts(i)
           )
         );
       }
