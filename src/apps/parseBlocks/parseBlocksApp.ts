@@ -72,6 +72,8 @@ export const ParseBlocksApp = ethApp.parseContractLogsApp({
         ...toArray(tx.contractLogs.mangrove7),
       ];
 
+      console.log(`got ${mangroveEvents.length} events to parse`);
+
       // expect contractEvents from multiple Mangrove instances
       const groupedMangroveEvents = _.chain(mangroveEvents)
         .groupBy((x) => x.payload.address.toHexString())
