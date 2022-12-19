@@ -836,25 +836,25 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@proxima-one/proxima-app-eth@0.2.38":
-  version "0.2.38"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-eth/0.2.38/f7636293e62235f9b31e3ed799084cd1bdd2a6ee#f7636293e62235f9b31e3ed799084cd1bdd2a6ee"
-  integrity sha512-VLxzPNNzoNKSuWzswiazQ9BOSQzsfsXM64F2kxMsm9J4ObKiT96gfDmDcR66h0I6yUWCOTmQ1hjq7We06LgFXg==
+"@proxima-one/proxima-app-eth@0.2.39":
+  version "0.2.39"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-eth/0.2.39/3b32b51e1eb20dff7c5fdbb974fd6ad1eab84bfa#3b32b51e1eb20dff7c5fdbb974fd6ad1eab84bfa"
+  integrity sha512-3XbvIsUA+gVqJJhsXtR6gKrJzG3kTZn38Zmx2PcHlIBYQyXuIAGKtrvFzZNtBRWDJEriQzpB/TzRyZb5ofMrDg==
   dependencies:
-    "@proxima-one/proxima-app-streaming" "^0.2.28"
+    "@proxima-one/proxima-app-streaming" "^0.2.29"
     "@proxima-one/proxima-plugin-eth" "^0.1.31"
     lodash "^4.17.21"
     rxjs "^7.1.0"
 
-"@proxima-one/proxima-app-streaming@^0.2.28":
-  version "0.2.28"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-streaming/0.2.28/1913dad759e36b3b153eed5f53fc37f1c384426c#1913dad759e36b3b153eed5f53fc37f1c384426c"
-  integrity sha512-0ueVXrKCVF/Yg9V3VCVExCX56wobpR6s+utyPP3+oP6OinprVR8XXFWq6FmVAvl+wz1M/za6LzlvAbQsqMkYUQ==
+"@proxima-one/proxima-app-streaming@^0.2.29":
+  version "0.2.29"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-streaming/0.2.29/93a3f860bcc804e096a55e393ca72029fa60a457#93a3f860bcc804e096a55e393ca72029fa60a457"
+  integrity sha512-5BlfZvJXQIDmuCvRyVNp3pUQdnY4/BfTE3kkXCzjPKtwRvF2dTIVyVXdmXy9P8wLJPrAomjG93aLpGUw6QhKog==
   dependencies:
     "@proxima-one/proxima-app" "^0.2.21"
     "@proxima-one/proxima-core" "^0.2.9"
     "@proxima-one/proxima-plugin-state" "^0.1.5"
-    "@proxima-one/proxima-plugin-streamdb" "^0.1.31"
+    "@proxima-one/proxima-plugin-streamdb" "^0.1.32"
     "@proxima-one/proxima-streams" "^0.2.8"
     "@proxima-one/proxima-utils" "^0.1.6"
     lodash "^4.17.21"
@@ -925,10 +925,10 @@
     protobufjs "^6.11.2"
     rxjs "^7.1.0"
 
-"@proxima-one/proxima-plugin-streamdb@^0.1.31":
-  version "0.1.31"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-plugin-streamdb/0.1.31/6c9e41bceabce5b912598b50fec9fac7c7c7acc4#6c9e41bceabce5b912598b50fec9fac7c7c7acc4"
-  integrity sha512-uT/U+8RrR35xa+wmkmRkVjZyeX1h7LdvLFb0LtjA+CrSBojkaJRbCoCaHJQEMXPgkNUfsZEfyAwk5bcxTQgAwg==
+"@proxima-one/proxima-plugin-streamdb@^0.1.32":
+  version "0.1.32"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-plugin-streamdb/0.1.32/3108813df703a9067ac869d4fb7d192f5920f42e#3108813df703a9067ac869d4fb7d192f5920f42e"
+  integrity sha512-oRMONI/XbZO3keT1rCcPXd5Mrrbb88reFS9YqMrCA0PPtdF4ivS76AAGJzXKdeEUuAGT6phcsNEfAFrNABryIA==
   dependencies:
     "@proxima-one/proxima-core" "^0.2.9"
     "@proxima-one/proxima-kafka" "^0.1.27"
@@ -974,13 +974,30 @@
     "@types/google-protobuf" "^3.15.6"
     ts-proto "^1.115.4"
 
-"@proximaone/stream-schema-base@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-base/-/stream-schema-base-0.2.0.tgz#6cf8cf02aeb54c933226760cbed4b512f1097f79"
-  integrity sha512-kUJpTgnv0+LTX3BkIkSyS9xPSTqV3+PMPDVQCCkSSmMxCy1W+Aems1AqYRUTbvHC550QaQnrXSqKbY0/mvId2w==
+"@proximaone/stream-schema-base@0.2.1-preview.66.24+b2cbf45", "@proximaone/stream-schema-base@^0.2.0", "@proximaone/stream-schema-base@^0.2.1-preview.69.26+1d425de":
+  version "0.2.1-preview.66.24"
+  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-base/-/stream-schema-base-0.2.1-preview.66.24.tgz#c125c952d0853188730a630fb3404b036fc1d9bf"
+  integrity sha512-zykOUPvY7adBJJmeT3dGBq5D1IQSjDPO2v0Qo5S6emI+cds1YnNA9Je+L+jehzA5QisiCAgU3Ir41MEg6TeJ/Q==
   dependencies:
-    bignumber.js "^9.0.1"
-    long "^4.0.0"
+    bignumber.js "^9.1.1"
+    long "^5.2.1"
+
+"@proximaone/stream-schema-eth-base@0.4.1-preview.69.122+1d425de", "@proximaone/stream-schema-eth-base@^0.4.1-preview.69.122+1d425de":
+  version "0.4.1-preview.69.122"
+  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-eth-base/-/stream-schema-eth-base-0.4.1-preview.69.122.tgz#96a214d384c1805e0cbd1eda92c870ff9a15cfc3"
+  integrity sha512-6kJTxVN3r1W2Fcq+Q2QgJ4DFLo5nNROxiMXcRQUympGhriJ5xfXgs3VLxTeyskk4pbl2FT5hCq8hgDiC8jqPxw==
+  dependencies:
+    "@proximaone/stream-schema-base" "^0.2.1-preview.69.26+1d425de"
+
+"@proximaone/stream-schema-ft@0.4.1-preview.69.122+1d425de":
+  version "0.4.1-preview.69.122"
+  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-ft/-/stream-schema-ft-0.4.1-preview.69.122.tgz#9b5c16394a7c0192ba78edf2a15ae7cc9d540f4c"
+  integrity sha512-hh38RTPJSD49Z24s5e7KjsYzW1ODFHWPawoAzj0DgJlPLPdvL0s8uuflBeqUlV8nx/FsCpM10M9zYs4X/2qLbA==
+  dependencies:
+    "@proximaone/stream-schema-base" "^0.2.1-preview.69.26+1d425de"
+    "@proximaone/stream-schema-eth-base" "^0.4.1-preview.69.122+1d425de"
+    bn.js "^5.1.1"
+    protobufjs "^7.1.2"
 
 "@proximaone/stream-schema-mangrove@^0.3.1":
   version "0.3.1"
@@ -1559,6 +1576,11 @@ bignumber.js@^9.0.0, bignumber.js@^9.0.1:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.2.tgz#71c6c6bed38de64e24a65ebe16cfcf23ae693673"
   integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
+
+bignumber.js@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.1.tgz#c4df7dc496bd849d4c9464344c1aa74228b4dac6"
+  integrity sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==
 
 blakejs@^1.1.0:
   version "1.2.1"
@@ -4203,6 +4225,11 @@ long@^5.0.0:
   resolved "https://registry.yarnpkg.com/long/-/long-5.2.0.tgz#2696dadf4b4da2ce3f6f6b89186085d94d52fd61"
   integrity sha512-9RTUNjK60eJbx3uz+TEGF7fUr29ZDxR5QzXcyDpeSfeH28S9ycINflOgOlppit5U+4kNTe83KQnMEerw7GmE8w==
 
+long@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/long/-/long-5.2.1.tgz#e27595d0083d103d2fa2c20c7699f8e0c92b897f"
+  integrity sha512-GKSNGeNAtw8IryjjkhZxuKB3JzlcLTwjtiQCHKvqQet81I93kXslhDQruGI/QsddO83mcDToBVy7GqGS/zYf/A==
+
 lowercase-keys@^1.0.0, lowercase-keys@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.1.tgz#6f9e30b47084d971a7c820ff15a6c5167b74c26f"
@@ -4845,7 +4872,7 @@ protobufjs@^6.11.3, protobufjs@^6.8.8:
     "@types/node" ">=13.7.0"
     long "^4.0.0"
 
-protobufjs@^7.0.0:
+protobufjs@^7.0.0, protobufjs@^7.1.2:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-7.1.2.tgz#a0cf6aeaf82f5625bffcf5a38b7cd2a7de05890c"
   integrity sha512-4ZPTPkXCdel3+L81yw3dG6+Kq3umdWKh7Dc7GW/CpNk4SX3hK58iPCWeCyhVTDrbkNeKrYNZ7EojM5WDaEWTLQ==

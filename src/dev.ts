@@ -32,29 +32,33 @@
 import { buildAppHost } from "@proxima-one/proxima-app";
 import { MangroveStrategiesApp } from "./apps/strategies/strategiesParser";
 import { ParseBlocksApp } from "./apps/parseBlocks";
+import { Erc20TokensApp } from "./apps/tokens/erc20Tokens";
 
 const appHost = buildAppHost();
 
 const mangroveStrategiesApp = {
   app: MangroveStrategiesApp,
-  dryRun: false,
+  dryRun: true,
   id: "mangrove-strategies",
   args: {
-    initialOffset: "26587386", //"26524069",
+    startBlock: "26587386", //"26524069",
     input: {
-      default: "polygon-mumbai-blockheader",
+      default: {
+        id: "proxima.polygon-mumbai.blocks.1_0",
+        startHeight: "26587386"
+      },
     },
     output: {
-      default: "strategies"
+      default: "strategies1"
     },
     network: "polygon-mumbai",
     stateManager: "state-manager-local",
     batch: "10",
     readBuffer: "1000",
-    chainlistId: "80001",
+    chainlistId: 80001,
     mangroveAddress: "0x6f531931a7eaefb95307ccd93a348e4c27f62dcf",
 
-    db: "streamdb-01",
+    db: "core-us",
   },
 };
 
@@ -87,7 +91,25 @@ const parseBlocksApp = {
   },
 };
 
-appHost.start(mangroveStrategiesApp);
+const tokenDiscoveryApp = {
+  app: Erc20TokensApp,
+  dryRun: true,
+  id: "mangrove-erc20-tokens",
+  args: {
+    network: "polygon-mumbai",
+    stateManager: "state-manager-local",
+    reset: false,
+    input: {
+      default: "proxima.mangrove.polygon-mumbai.domain-events.0_3",
+    },
+    output: {
+      default: "debug-mangrove-polygon-mumbai-discovery-erc20",
+    },
+    db: "core-us",
+  },
+};
+
+appHost.start(tokenDiscoveryApp);
 
 if (false) {
   appHost.start(parseBlocksApp);
