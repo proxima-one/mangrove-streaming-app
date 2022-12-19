@@ -1,4 +1,4 @@
-export const multiUserStrategy = [
+export const offerLogic = [
   {
     anonymous: false,
     inputs: [
@@ -28,12 +28,18 @@ export const multiUserStrategy = [
       },
       {
         indexed: false,
-        internalType: "address",
-        name: "owner",
-        type: "address",
+        internalType: "bytes32",
+        name: "makerData",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "mgvData",
+        type: "bytes32",
       },
     ],
-    name: "NewOwnedOffer",
+    name: "LogIncident",
     type: "event",
   },
 ];

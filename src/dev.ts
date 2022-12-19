@@ -45,8 +45,7 @@ const mangroveStrategiesApp = {
       default: "polygon-mumbai-blockheader",
     },
     output: {
-      multiUserStrategy: "multiUserStrategies",
-      takerStrategy: "takerStrategies",
+      default: "strategies"
     },
     network: "polygon-mumbai",
     stateManager: "state-manager-local",

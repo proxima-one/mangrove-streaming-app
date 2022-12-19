@@ -1,4 +1,4 @@
-export const logIncident = [
+export const forwarder = [
   {
     anonymous: false,
     inputs: [
@@ -28,18 +28,12 @@ export const logIncident = [
       },
       {
         indexed: false,
-        internalType: "bytes32",
-        name: "makerData",
-        type: "bytes32",
-      },
-      {
-        indexed: false,
-        internalType: "bytes32",
-        name: "mgvData",
-        type: "bytes32",
+        internalType: "address",
+        name: "owner",
+        type: "address",
       },
     ],
-    name: "LogIncident",
+    name: "NewOwnedOffer",
     type: "event",
   },
 ];

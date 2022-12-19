@@ -2,9 +2,9 @@ import * as ethApp from "@proxima-one/proxima-app-eth";
 import * as mangrove from "@proximaone/stream-schema-mangrove";
 import { EthModel } from "@proxima-one/proxima-plugin-eth";
 import _ from "lodash";
-import { takerStrategy } from "./abi/takerStrategy";
-import { multiUserStrategy } from "./abi/multiUserStrategy";
-import { logIncident } from "./abi/logIncident";
+import { orderLogic } from "./abi/orderLogic";
+import { forwarder } from "./abi/forwarder";
+import { offerLogic } from "./abi/offerLogic";
 import {
   LogIncident,
   OrderSummary,
@@ -12,9 +12,9 @@ import {
 
 export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
   contracts: {
-    multiUserStrategy: EthModel.ContractMetadata.fromAbi(multiUserStrategy),
-    takerStrategy: EthModel.ContractMetadata.fromAbi(takerStrategy),
-    logIncident: EthModel.ContractMetadata.fromAbi(logIncident),
+    forwarder: EthModel.ContractMetadata.fromAbi(forwarder),
+    orderLogic: EthModel.ContractMetadata.fromAbi(orderLogic),
+    offerLogic: EthModel.ContractMetadata.fromAbi(offerLogic),
   },
   discover: {
     full: true,
@@ -34,13 +34,13 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
 
       let mappedEvent = undefined;
       switch (contractType) {
-        case "multiUserStrategy":
-          mappedEvent = mapMultiUserStrategyEvent(log, chain);
+        case "forwarder":
+          mappedEvent = mapForwarderEvent(log, chain);
           break;
-        case "takerStrategy":
-          mappedEvent = mapTakerStrategyEvent(log, chain);
+        case "orderLogic":
+          mappedEvent = mapOrderLogicEvent(log, chain);
           break;
-        case "logIncident":
+        case "offerLogic":
           mappedEvent = {
             type: "LogIncident",
 
@@ -73,7 +73,7 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
   },
 });
 
-function mapMultiUserStrategyEvent(event: EthModel.DecodedLog, chain: string) {
+function mapForwarderEvent(event: EthModel.DecodedLog, chain: string) {
   switch (event.payload.name) {
     case "NewOwnedOffer":
       return {
@@ -93,7 +93,7 @@ function mapMultiUserStrategyEvent(event: EthModel.DecodedLog, chain: string) {
   }
 }
 
-function mapTakerStrategyEvent(
+function mapOrderLogicEvent(
   event: EthModel.DecodedLog,
   chain: string
 ): OrderSummary | undefined {

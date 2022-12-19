@@ -1,4 +1,4 @@
-export const takerStrategy = [
+export const orderLogic = [
   {
     anonymous: false,
     inputs: [
