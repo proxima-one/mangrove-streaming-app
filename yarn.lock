@@ -999,10 +999,10 @@
     bn.js "^5.1.1"
     protobufjs "^7.1.2"
 
-"@proximaone/stream-schema-mangrove@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-mangrove/-/stream-schema-mangrove-0.3.1.tgz#c20e1427f7403950e86724ae5a457e9190afb623"
-  integrity sha512-2OkvM1wCgwZ1aykdgCR39hKa8SybWoQl8qB8kh4G2xHNZ3oBOgMDggRstTi4tXo0OPHyp4w0G0yJpqxAJoA+tA==
+"@proximaone/stream-schema-mangrove@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-mangrove/-/stream-schema-mangrove-0.3.2.tgz#f1f526a289d8b491d071edcbf80f75b2a16476a1"
+  integrity sha512-y8xyT1iaQdqc/Wc4BNBdwSdTRsOKiaQuG3blC/4KrgNi9Zz0xp93PMBFXsdSPYhD+ulGOIJX4knDBJL95rWPlA==
   dependencies:
     "@proximaone/stream-schema-base" "^0.2.0"
 

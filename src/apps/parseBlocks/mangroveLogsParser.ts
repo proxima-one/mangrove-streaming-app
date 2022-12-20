@@ -247,6 +247,7 @@ export const parseOrderExecutionEvents = (): LogParser<
           takerGot: log.requireParam("takerGot").asBigNumber().toFixed(),
           taker: log.requireParam("taker").asString(),
           takenOffers: takenOffers.map((x) => x.offer),
+          feePaid: log.findParam("feePaid")?.asBigNumber()?.toFixed() || "",
         },
       },
       ...takenOffers

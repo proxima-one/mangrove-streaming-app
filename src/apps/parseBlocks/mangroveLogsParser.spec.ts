@@ -108,6 +108,7 @@ describe("parseMangroveEvents", () => {
           takerGot: 100,
           takerGave: 100,
           penalty: 0,
+          feePaid: 101,
         }),
 
         log("OfferFail", {
@@ -162,6 +163,7 @@ describe("parseMangroveEvents", () => {
           takerGot: 100,
           takerGave: 100,
           penalty: 0,
+          feePaid: 101,
         }),
         log("PosthookFail", {
           outbound_tkn: token1.toHexString(),
@@ -175,6 +177,7 @@ describe("parseMangroveEvents", () => {
           takerGot: 100,
           takerGave: 100,
           penalty: 0,
+          feePaid: 101,
         }),
       ]),
       events([
@@ -203,6 +206,7 @@ describe("parseMangroveEvents", () => {
             taker: "0xcbb37575320ff499e9f69d0090b6944bc0ad7585",
             takerGave: "100",
             takerGot: "100",
+            feePaid: "101"
           },
           type: "OrderCompleted",
         },
@@ -218,6 +222,7 @@ describe("parseMangroveEvents", () => {
             takerGot: "100",
             takerGave: "100",
             taker: taker1.toHexString(),
+            feePaid: "101",
             takenOffers: [
               {
                 id: 1,
@@ -286,6 +291,7 @@ describe("parseMangroveEvents", () => {
             takerGot: "100",
             takerGave: "100",
             taker: maker1.toHexString(),
+            feePaid: "101",
             takenOffers: [
               {
                 id: 5,
@@ -310,6 +316,7 @@ describe("parseMangroveEvents", () => {
           takerGot: 100,
           takerGave: 100,
           penalty: 0,
+          feePaid: 101,
         }),
       ]),
       events([
@@ -325,6 +332,7 @@ describe("parseMangroveEvents", () => {
             takerGot: "100",
             takerGave: "100",
             taker: taker1.toHexString(),
+            feePaid: "101",
             takenOffers: [],
           },
         },
