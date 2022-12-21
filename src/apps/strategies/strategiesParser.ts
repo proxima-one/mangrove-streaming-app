@@ -107,8 +107,8 @@ function mapOrderLogicEvent(
           event.payload.requireParam("mangrove").asString()
         ),
         outboundToken: event.payload.requireParam("outbound_tkn").asString(),
-        inboundToken: event.payload.requireParam("quote").asString(),
-        taker: event.payload.requireParam("inbound_tkn").asString(),
+        inboundToken: event.payload.requireParam("inbound_tkn").asString(),
+        taker: event.payload.requireParam("taker").asString(),
         fillOrKill: event.payload.requireParam("fillOrKill").asBool(),
         takerWants: event.payload.requireParam("takerWants").asString(),
         takerGives: event.payload.requireParam("takerGives").asString(),

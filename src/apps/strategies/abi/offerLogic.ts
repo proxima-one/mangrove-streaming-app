@@ -3,7 +3,7 @@ export const offerLogic = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: "contract IMangrove",
         name: "mangrove",
         type: "address",
