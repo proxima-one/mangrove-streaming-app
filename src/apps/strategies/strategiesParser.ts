@@ -7,7 +7,7 @@ import { forwarder } from "./abi/forwarder";
 import { offerLogic } from "./abi/offerLogic";
 import {
   LogIncident,
-  OrderSummary,
+  OrderSummary, SetExpiry,
 } from "@proximaone/stream-schema-mangrove/dist/strategyEvents";
 
 export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
@@ -68,7 +68,7 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
         address: log.payload.address.toHexString(),
       }) as mangrove.strategyEvents.StrategyEvent;
 
-      return [ethApp.MapResult.toStream(contractType, outputEvent)];
+      return [ethApp.MapResult.toDefaultStream(outputEvent)];
     },
   },
 });
@@ -96,7 +96,7 @@ function mapForwarderEvent(event: EthModel.DecodedLog, chain: string) {
 function mapOrderLogicEvent(
   event: EthModel.DecodedLog,
   chain: string
-): OrderSummary | undefined {
+): OrderSummary | SetExpiry | undefined {
   switch (event.payload.name) {
     case "OrderSummary":
       return {
@@ -108,6 +108,7 @@ function mapOrderLogicEvent(
         ),
         outboundToken: event.payload.requireParam("outbound_tkn").asString(),
         inboundToken: event.payload.requireParam("inbound_tkn").asString(),
+        orderId: "",
         taker: event.payload.requireParam("taker").asString(),
         fillOrKill: event.payload.requireParam("fillOrKill").asBool(),
         takerWants: event.payload.requireParam("takerWants").asString(),
@@ -120,6 +121,15 @@ function mapOrderLogicEvent(
         bounty: event.payload.requireParam("bounty").asString(),
         fee: event.payload.requireParam("fee").asString(),
         restingOrderId: event.payload.requireParam("restingOrderId").asNumber(),
+      };
+    case "SetExpiry":
+      return {
+        type: "SetExpiry",
+
+        outboundToken: event.payload.requireParam("outbound_tkn").asString(),
+        inboundToken: event.payload.requireParam("inbound_tkn").asString(),
+        offerId: event.payload.requireParam("offerId").asNumber(),
+        date: event.payload.requireParam("date").asNumber(),
       };
     default:
       return undefined;

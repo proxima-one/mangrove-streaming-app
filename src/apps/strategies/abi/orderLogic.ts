@@ -96,4 +96,35 @@ export const orderLogic = [
     name: "OrderSummary",
     type: "event",
   },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "outbound_tkn",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "inbound_tkn",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "date",
+        type: "uint256",
+      },
+    ],
+    name: "SetExpiry",
+    type: "event",
+  },
 ];
