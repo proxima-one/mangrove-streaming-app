@@ -45,11 +45,11 @@ const mangroveStrategiesApp = {
     input: {
       default: {
         id: "proxima.polygon-mumbai.blocks.1_0",
-        startHeight: "26587386"
+        startHeight: "26587386",
       },
     },
     output: {
-      default: "strategies1"
+      default: "strategies1",
     },
     network: "polygon-mumbai",
     stateManager: "state-manager-local",

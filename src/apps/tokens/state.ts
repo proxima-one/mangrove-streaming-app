@@ -19,7 +19,7 @@ export async function getStates(
   ids: string[]
 ): Promise<Lookup<boolean>> {
   const states = await stateAccessor.get(ids);
-  return mapLookup(states, buffer =>
+  return mapLookup(states, (buffer) =>
     boolSerdes.deserialize(Buffer.from(buffer))
   );
 }

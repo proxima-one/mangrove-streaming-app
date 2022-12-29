@@ -182,9 +182,9 @@ describe("parseMangroveEvents", () => {
       ]),
       events([
         {
-          id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-2",
+          id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-4",
           parentOrder: {
-            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-13",
             offerList: {
               inboundToken: token2.toHexString(),
               outboundToken: token1.toHexString(),
@@ -206,7 +206,7 @@ describe("parseMangroveEvents", () => {
             taker: "0xcbb37575320ff499e9f69d0090b6944bc0ad7585",
             takerGave: "100",
             takerGot: "100",
-            feePaid: "101"
+            feePaid: "101",
           },
           type: "OrderCompleted",
         },
@@ -216,7 +216,7 @@ describe("parseMangroveEvents", () => {
             inboundToken: token2.toHexString(),
             outboundToken: token1.toHexString(),
           },
-          id: `${txHash.toHexString()}-0`,
+          id: `${txHash.toHexString()}-13`,
           order: {
             penalty: "0",
             takerGot: "100",
@@ -252,7 +252,7 @@ describe("parseMangroveEvents", () => {
         {
           type: "OfferWritten",
           parentOrder: {
-            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-13",
             offerList: {
               inboundToken: token2.toHexString(),
               outboundToken: token1.toHexString(),
@@ -275,7 +275,7 @@ describe("parseMangroveEvents", () => {
         {
           type: "OrderCompleted",
           parentOrder: {
-            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-0",
+            id: "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200-13",
             offerList: {
               inboundToken: token2.toHexString(),
               outboundToken: token1.toHexString(),
@@ -285,7 +285,7 @@ describe("parseMangroveEvents", () => {
             inboundToken: token2.toHexString(),
             outboundToken: token1.toHexString(),
           },
-          id: `${txHash.toHexString()}-9`,
+          id: `${txHash.toHexString()}-11`,
           order: {
             penalty: "0",
             takerGot: "100",
@@ -326,7 +326,7 @@ describe("parseMangroveEvents", () => {
             inboundToken: token2.toHexString(),
             outboundToken: token1.toHexString(),
           },
-          id: `${txHash.toHexString()}-0`,
+          id: `${txHash.toHexString()}-1`,
           order: {
             penalty: "0",
             takerGot: "100",

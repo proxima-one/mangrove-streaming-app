@@ -5,16 +5,16 @@ import _ from "lodash";
 import { orderLogic } from "./abi/orderLogic";
 import { forwarder } from "./abi/forwarder";
 import { offerLogic } from "./abi/offerLogic";
-import {
-  LogIncident,
-  OrderSummary, SetExpiry,
-} from "@proximaone/stream-schema-mangrove/dist/strategyEvents";
+import { mangrove as mangroveAbi } from "./abi/mangrove";
+import { strategyEvents } from "@proximaone/stream-schema-mangrove";
+import { mangroveId, orderId } from "../../model/entities";
 
 export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
   contracts: {
     forwarder: EthModel.ContractMetadata.fromAbi(forwarder),
     orderLogic: EthModel.ContractMetadata.fromAbi(orderLogic),
     offerLogic: EthModel.ContractMetadata.fromAbi(offerLogic),
+    mangrove: EthModel.ContractMetadata.fromAbi(mangroveAbi),
   },
   discover: {
     full: true,
@@ -37,9 +37,10 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
         case "forwarder":
           mappedEvent = mapForwarderEvent(log, chain);
           break;
-        case "orderLogic":
+        case "orderLogic": {
           mappedEvent = mapOrderLogicEvent(log, chain);
           break;
+        }
         case "offerLogic":
           mappedEvent = {
             type: "LogIncident",
@@ -53,22 +54,86 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
             offerId: log.payload.requireParam("offerId").asNumber(),
             makerData: log.payload.requireParam("makerData").asString(),
             mgvData: log.payload.requireParam("mgvData").asString(),
-          } as LogIncident;
+          } as strategyEvents.LogIncident;
           break;
         default:
-          throw new Error(`Unknown contractType: ${contractType}`);
+          return [];
       }
 
       if (!mappedEvent) return [];
 
       const outputEvent = _.assign(mappedEvent, {
         tx: txRef,
-        id: id(chain, log.payload.address.toHexString(), log.index),
+        id: id(chain, tx.hash.toHexString(), log.index),
         chainId: parseInt(chainlistId),
         address: log.payload.address.toHexString(),
       }) as mangrove.strategyEvents.StrategyEvent;
 
       return [ethApp.MapResult.toDefaultStream(outputEvent)];
+
+      function mapOrderLogicEvent(
+        event: EthModel.DecodedLog,
+        chain: string
+      ): strategyEvents.OrderSummary | strategyEvents.SetExpiry | undefined {
+        switch (event.payload.name) {
+          case "OrderSummary":
+            // need to find latest OrderComplete log
+
+            const orderCompleteLog = _.findLast(
+              tx.contractLogs.mangrove ?? [],
+              (x) => x.index < event.index
+            );
+            if (!orderCompleteLog)
+              throw new Error(
+                `OrderComplete log not found in tx ${tx.hash.toHexString()}`
+              );
+
+            return {
+              type: "OrderSummary",
+
+              mangroveId: mangroveId(
+                chain,
+                event.payload.requireParam("mangrove").asString()
+              ),
+              outboundToken: event.payload
+                .requireParam("outbound_tkn")
+                .asString(),
+              inboundToken: event.payload
+                .requireParam("inbound_tkn")
+                .asString(),
+              orderId: orderId(tx.hash, orderCompleteLog),
+              taker: event.payload.requireParam("taker").asString(),
+              fillOrKill: event.payload.requireParam("fillOrKill").asBool(),
+              takerWants: event.payload.requireParam("takerWants").asString(),
+              takerGives: event.payload.requireParam("takerGives").asString(),
+              fillWants: event.payload.requireParam("fillWants").asBool(),
+              restingOrder: event.payload.requireParam("restingOrder").asBool(),
+              expiryDate: event.payload.requireParam("expiryDate").asNumber(),
+              takerGot: event.payload.requireParam("takerGot").asString(),
+              takerGave: event.payload.requireParam("takerGave").asString(),
+              bounty: event.payload.requireParam("bounty").asString(),
+              fee: event.payload.requireParam("fee").asString(),
+              restingOrderId: event.payload
+                .requireParam("restingOrderId")
+                .asNumber(),
+            };
+          case "SetExpiry":
+            return {
+              type: "SetExpiry",
+
+              outboundToken: event.payload
+                .requireParam("outbound_tkn")
+                .asString(),
+              inboundToken: event.payload
+                .requireParam("inbound_tkn")
+                .asString(),
+              offerId: event.payload.requireParam("offerId").asNumber(),
+              date: event.payload.requireParam("date").asNumber(),
+            };
+          default:
+            return undefined;
+        }
+      }
     },
   },
 });
@@ -93,53 +158,6 @@ function mapForwarderEvent(event: EthModel.DecodedLog, chain: string) {
   }
 }
 
-function mapOrderLogicEvent(
-  event: EthModel.DecodedLog,
-  chain: string
-): OrderSummary | SetExpiry | undefined {
-  switch (event.payload.name) {
-    case "OrderSummary":
-      return {
-        type: "OrderSummary",
-
-        mangroveId: mangroveId(
-          chain,
-          event.payload.requireParam("mangrove").asString()
-        ),
-        outboundToken: event.payload.requireParam("outbound_tkn").asString(),
-        inboundToken: event.payload.requireParam("inbound_tkn").asString(),
-        orderId: "",
-        taker: event.payload.requireParam("taker").asString(),
-        fillOrKill: event.payload.requireParam("fillOrKill").asBool(),
-        takerWants: event.payload.requireParam("takerWants").asString(),
-        takerGives: event.payload.requireParam("takerGives").asString(),
-        fillWants: event.payload.requireParam("fillWants").asBool(),
-        restingOrder: event.payload.requireParam("restingOrder").asBool(),
-        expiryDate: event.payload.requireParam("expiryDate").asNumber(),
-        takerGot: event.payload.requireParam("takerGot").asString(),
-        takerGave: event.payload.requireParam("takerGave").asString(),
-        bounty: event.payload.requireParam("bounty").asString(),
-        fee: event.payload.requireParam("fee").asString(),
-        restingOrderId: event.payload.requireParam("restingOrderId").asNumber(),
-      };
-    case "SetExpiry":
-      return {
-        type: "SetExpiry",
-
-        outboundToken: event.payload.requireParam("outbound_tkn").asString(),
-        inboundToken: event.payload.requireParam("inbound_tkn").asString(),
-        offerId: event.payload.requireParam("offerId").asNumber(),
-        date: event.payload.requireParam("date").asNumber(),
-      };
-    default:
-      return undefined;
-  }
-}
-
 function id(chain: string, address: string, index: number): string {
   return `${chain}-${address}-${index}`;
-}
-
-function mangroveId(chain: string, address: string): string {
-  return `${chain}-${address.substring(0, 6)}`;
 }

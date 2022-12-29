@@ -61,22 +61,33 @@ export class Erc20TokensApp extends MapStreamEventsApp<MapStreamEventsArgs> {
   ): Promise<StreamEventList> {
     if (!stateAccessor) throw new Error("State is not defined.");
     const typedEvents = events.items
-      .map(x => {
-      return {
-        event: this.serdes.input.deserialize(x.payload.data.toByteArray()),
-        timestamp: x.timestamp,
-      };
-    })
-      .filter(x => x.event.type == "OfferListParamsUpdated")
-      .map(x => {return { event: x.event as schema.events.OfferListParamsUpdated, timestamp: x.timestamp}});
+      .map((x) => {
+        return {
+          event: this.serdes.input.deserialize(x.payload.data.toByteArray()),
+          timestamp: x.timestamp,
+        };
+      })
+      .filter((x) => x.event.type == "OfferListParamsUpdated")
+      .map((x) => {
+        return {
+          event: x.event as schema.events.OfferListParamsUpdated,
+          timestamp: x.timestamp,
+        };
+      });
 
-    const tokenIds = _.uniq(typedEvents.map(x => [x.event.offerList.inboundToken, x.event.offerList.outboundToken]).flat());
+    const tokenIds = _.uniq(
+      typedEvents
+        .map((x) => [
+          x.event.offerList.inboundToken,
+          x.event.offerList.outboundToken,
+        ])
+        .flat()
+    );
 
-    if (tokenIds.length == 0)
-      return new StreamEventList([]);
+    if (tokenIds.length == 0) return new StreamEventList([]);
 
     const states = await getStates(stateAccessor, _.uniq(tokenIds));
-    const newTokenIds = tokenIds.filter(x => !states[x]);
+    const newTokenIds = tokenIds.filter((x) => !states[x]);
 
     this.logger.info(
       `found ${newTokenIds.length} new potential tokens. fetching details from the network...`
@@ -84,19 +95,22 @@ export class Erc20TokensApp extends MapStreamEventsApp<MapStreamEventsArgs> {
 
     const newTokens = toLookup(
       await this.erc20DataProvider.getTokens(
-        newTokenIds.map(x => EthModel.Address.fromHexString(x))
+        newTokenIds.map((x) => EthModel.Address.fromHexString(x))
       ),
-      x => x.id.toHexString()
+      (x) => x.id.toHexString()
     );
 
-    const validTokensCount = Object.values(newTokens).filter(x => x).length;
+    const validTokensCount = Object.values(newTokens).filter((x) => x).length;
 
     this.logger.info(`fetched ${validTokensCount} valid token details.`);
 
     const res: StreamEvent[] = [];
 
     for (const item of typedEvents) {
-      const tokenIds = [item.event.offerList.inboundToken, item.event.offerList.outboundToken];
+      const tokenIds = [
+        item.event.offerList.inboundToken,
+        item.event.offerList.outboundToken,
+      ];
       for (let i = 0; i < tokenIds.length; i++) {
         const tokenId = tokenIds[i];
         const token = newTokens[tokenId];
@@ -125,7 +139,7 @@ export class Erc20TokensApp extends MapStreamEventsApp<MapStreamEventsArgs> {
     }
 
     await stateAccessor.set(
-      mapLookup(newTokens, _ => boolSerdes.serialize(true))
+      mapLookup(newTokens, (_) => boolSerdes.serialize(true))
     );
 
     this.logger.info(`publishing ${res.length} events.`);

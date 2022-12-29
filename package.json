@@ -32,14 +32,11 @@
     "watch": "yarn build -- --watch",
     "watch:test": "jest --watch"
   },
-  "resolutions": {
-    "@proximaone/stream-schema-base": "0.2.1-preview.66.24+b2cbf45"
-  },
   "dependencies": {
     "@proxima-one/proxima-app-eth": "0.2.39",
-    "@proximaone/stream-schema-ft": "0.4.1-preview.69.122+1d425de",
-    "@proximaone/stream-schema-eth-base": "0.4.1-preview.69.122+1d425de",
-    "@proximaone/stream-schema-mangrove": "^0.3.4",
+    "@proximaone/stream-schema-ft": "^0.4.2",
+    "@proximaone/stream-schema-eth-base": "^0.4.2",
+    "@proximaone/stream-schema-mangrove": "^0.3.6",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

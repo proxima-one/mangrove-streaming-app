@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import { strict as assert } from "assert";
 import { parseMangroveEvents } from "./mangroveLogsParser";
 import { EthModel } from "@proxima-one/proxima-plugin-eth";
+import { mangroveId } from "../../model/entities";
 
 const mangroveLogsParser = parseMangroveEvents();
 
@@ -115,10 +116,6 @@ export const ParseBlocksApp = ethApp.parseContractLogsApp({
     },
   },
 });
-
-function mangroveId(chain: string, address: string): string {
-  return `${chain}-${address.substring(0, 6)}`;
-}
 
 function toArray<T>(value: T | T[] | ReadonlyArray<T> | undefined): T[] {
   if (value == undefined) return [];
