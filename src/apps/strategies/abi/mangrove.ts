@@ -1,23 +1,17 @@
-export const takerStrategy = [
+export const mangrove = [
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "contract IMangrove",
-        name: "mangrove",
+        internalType: "address",
+        name: "outbound_tkn",
         type: "address",
       },
       {
         indexed: true,
         internalType: "address",
-        name: "base",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "quote",
+        name: "inbound_tkn",
         type: "address",
       },
       {
@@ -25,12 +19,6 @@ export const takerStrategy = [
         internalType: "address",
         name: "taker",
         type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "selling",
-        type: "bool",
       },
       {
         indexed: false,
@@ -53,11 +41,11 @@ export const takerStrategy = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "restingOrderId",
+        name: "feePaid",
         type: "uint256",
       },
     ],
-    name: "OrderSummary",
+    name: "OrderComplete",
     type: "event",
   },
 ];

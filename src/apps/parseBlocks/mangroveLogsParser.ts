@@ -2,6 +2,7 @@ import * as schema from "@proximaone/stream-schema-mangrove";
 import * as _ from "lodash";
 import { any, failure, many, map, Parser, success } from "./parser";
 import { EthModel } from "@proxima-one/proxima-plugin-eth";
+import { orderId } from "../../model/entities";
 
 export type PartialMangroveEvent = Partial<schema.events.MangroveEvent>;
 export const parseMangroveEvents = (): LogParser<PartialMangroveEvent[]> =>
@@ -21,15 +22,15 @@ export const parseMangroveEvents = (): LogParser<PartialMangroveEvent[]> =>
   );
 
 export const parseMakerBalanceEvent = () =>
-  parseLogs<PartialMangroveEvent[]>(["Debit", "Credit"], (log) => {
-    let amountChange = log.requireParam("amount").asBigNumber();
-    if (log.name == "Debit") amountChange = amountChange.times(-1);
+  parseLogs<PartialMangroveEvent[]>(["Debit", "Credit"], ({ payload }) => {
+    let amountChange = payload.requireParam("amount").asBigNumber();
+    if (payload.name == "Debit") amountChange = amountChange.times(-1);
 
     return [
       {
         type: "MakerBalanceUpdated",
         amountChange: amountChange.toFixed(),
-        maker: log.requireParam("maker").asString(),
+        maker: payload.requireParam("maker").asString(),
       },
     ];
   });
@@ -42,32 +43,35 @@ enum OfferListParamsEvents {
 }
 
 export const parseOfferListParamsEvents = () =>
-  parseLogs<PartialMangroveEvent[]>(_.keys(OfferListParamsEvents), (log) => {
-    return [
-      {
-        type: "OfferListParamsUpdated",
-        offerList: extractOfferList(log),
-        params: {
-          active:
-            log.name == OfferListParamsEvents.SetActive
-              ? log.requireParam("value").asBool()
-              : undefined,
-          fee:
-            log.name == OfferListParamsEvents.SetFee
-              ? log.requireParam("value").asBigNumber().toFixed()
-              : undefined,
-          gasbase:
-            log.name == OfferListParamsEvents.SetGasbase
-              ? log.requireParam("offer_gasbase").asNumber()
-              : undefined,
-          density:
-            log.name == OfferListParamsEvents.SetDensity
-              ? log.requireParam("value").asBigNumber().toFixed()
-              : undefined,
+  parseLogs<PartialMangroveEvent[]>(
+    _.keys(OfferListParamsEvents),
+    ({ payload }) => {
+      return [
+        {
+          type: "OfferListParamsUpdated",
+          offerList: extractOfferList(payload),
+          params: {
+            active:
+              payload.name == OfferListParamsEvents.SetActive
+                ? payload.requireParam("value").asBool()
+                : undefined,
+            fee:
+              payload.name == OfferListParamsEvents.SetFee
+                ? payload.requireParam("value").asBigNumber().toFixed()
+                : undefined,
+            gasbase:
+              payload.name == OfferListParamsEvents.SetGasbase
+                ? payload.requireParam("offer_gasbase").asNumber()
+                : undefined,
+            density:
+              payload.name == OfferListParamsEvents.SetDensity
+                ? payload.requireParam("value").asBigNumber().toFixed()
+                : undefined,
+          },
         },
-      },
-    ];
-  });
+      ];
+    }
+  );
 
 enum MangroveParamsEvents {
   NewMgv = "NewMgv",
@@ -124,7 +128,7 @@ function extractParams(
 
 export const parseMangroveParamsEvents = () =>
   parseLogs<PartialMangroveEvent[]>(_.keys(MangroveParamsEvents), (log) => {
-    const changedParams = extractParams(log);
+    const changedParams = extractParams(log.payload);
     return [
       {
         type: "MangroveParamsUpdated",
@@ -134,44 +138,44 @@ export const parseMangroveParamsEvents = () =>
   });
 
 export const parseApprovalEvents = () =>
-  parseLogs<PartialMangroveEvent[]>("Approval", (log) => {
+  parseLogs<PartialMangroveEvent[]>("Approval", ({ payload }) => {
     return [
       {
         type: "TakerApprovalUpdated",
-        offerList: extractOfferList(log),
-        amount: log.requireParam("value").asBigNumber().toFixed(),
-        owner: log.requireParam("owner").asString(),
-        spender: log.requireParam("spender").asString(),
+        offerList: extractOfferList(payload),
+        amount: payload.requireParam("value").asBigNumber().toFixed(),
+        owner: payload.requireParam("owner").asString(),
+        spender: payload.requireParam("spender").asString(),
       },
     ];
   });
 
 export const parseOfferWrittenEvents = () =>
-  parseLogs<PartialMangroveEvent[]>("OfferWrite", (log) => {
+  parseLogs<PartialMangroveEvent[]>("OfferWrite", ({ payload }) => {
     return [
       {
         type: "OfferWritten",
-        offerList: extractOfferList(log),
-        maker: log.requireParam("maker").asString(),
+        offerList: extractOfferList(payload),
+        maker: payload.requireParam("maker").asString(),
         offer: {
-          wants: log.requireParam("wants").asBigNumber().toFixed(),
-          gives: log.requireParam("gives").asBigNumber().toFixed(),
-          gasprice: log.requireParam("gasprice").asNumber(),
-          gasreq: log.requireParam("gasreq").asNumber(),
-          id: log.requireParam("id").asNumber(), // 32-bits max
-          prev: log.requireParam("prev").asNumber(), // 32-bits max
+          wants: payload.requireParam("wants").asBigNumber().toFixed(),
+          gives: payload.requireParam("gives").asBigNumber().toFixed(),
+          gasprice: payload.requireParam("gasprice").asNumber(),
+          gasreq: payload.requireParam("gasreq").asNumber(),
+          id: payload.requireParam("id").asNumber(), // 32-bits max
+          prev: payload.requireParam("prev").asNumber(), // 32-bits max
         },
       },
     ];
   });
 
 export const parseOfferRetractedEvents = () =>
-  parseLogs<PartialMangroveEvent[]>("OfferRetract", (log) => {
+  parseLogs<PartialMangroveEvent[]>("OfferRetract", ({ payload }) => {
     return [
       {
         type: "OfferRetracted",
-        offerList: extractOfferList(log),
-        offerId: log.requireParam("id").asNumber(),
+        offerList: extractOfferList(payload),
+        offerId: payload.requireParam("id").asNumber(),
       },
     ];
   });
@@ -211,7 +215,6 @@ export const parseOrderExecutionEvents = (): LogParser<
   const takenOffersParser = parseTakenOffers();
 
   return (ctx) => {
-    const startIndex = ctx.index;
     const txHash = ctx.txHash;
 
     const orderStart = orderStartParser(ctx);
@@ -229,30 +232,38 @@ export const parseOrderExecutionEvents = (): LogParser<
     const log = orderCompletedResult.value;
     const takenOffers = takenOffersResult.value;
 
-    const offerList = extractOfferList(log);
-    const orderId = `${txHash.toHexString()}-${startIndex}`;
+    const offerList = extractOfferList(log.payload);
+    const id = orderId(txHash, log);
     return success(orderCompletedResult.ctx, [
       ...takenOffers
         .flatMap((x) => x.callbackEvents)
         .map((x) => {
-          return { ...x, parentOrder: { id: orderId, offerList: offerList } };
+          return { ...x, parentOrder: { id: id, offerList: offerList } };
         }),
       {
         type: "OrderCompleted",
-        id: orderId,
+        id: id,
         offerList: offerList,
         order: {
-          penalty: log.requireParam("penalty").asBigNumber().toFixed(),
-          takerGave: log.requireParam("takerGave").asBigNumber().toFixed(),
-          takerGot: log.requireParam("takerGot").asBigNumber().toFixed(),
-          taker: log.requireParam("taker").asString(),
+          penalty: log.payload.requireParam("penalty").asBigNumber().toFixed(),
+          takerGave: log.payload
+            .requireParam("takerGave")
+            .asBigNumber()
+            .toFixed(),
+          takerGot: log.payload
+            .requireParam("takerGot")
+            .asBigNumber()
+            .toFixed(),
+          taker: log.payload.requireParam("taker").asString(),
           takenOffers: takenOffers.map((x) => x.offer),
+          feePaid:
+            log.payload.findParam("feePaid")?.asBigNumber()?.toFixed() || "",
         },
       },
       ...takenOffers
         .flatMap((x) => x.posthookEvents)
         .map((x) => {
-          return { ...x, parentOrder: { id: orderId, offerList: offerList } };
+          return { ...x, parentOrder: { id: id, offerList: offerList } };
         }),
     ]);
   };
@@ -330,11 +341,11 @@ const parsePosthookFailed = () => (requestedOfferId: schema.core.OfferId) =>
   parseLogsIf(
     "PosthookFail",
     (log) =>
-      log.requireParam("offerId").asNumber() == requestedOfferId
+      log.payload.requireParam("offerId").asNumber() == requestedOfferId
         ? true
         : `offerId doesn't match`,
     (log) => {
-      const posthookData = log.findParam("posthookData");
+      const posthookData = log.payload.findParam("posthookData");
       return {
         posthookData: posthookData ? posthookData.value : undefined,
       };
@@ -342,7 +353,7 @@ const parsePosthookFailed = () => (requestedOfferId: schema.core.OfferId) =>
   );
 
 const parseOfferSuccess = () =>
-  parseLogs<schema.core.TakenOffer>("OfferSuccess", (payload) => {
+  parseLogs<schema.core.TakenOffer>("OfferSuccess", ({ payload }) => {
     return {
       id: payload.requireParam("id").asNumber(),
       takerWants: payload.requireParam("takerWants").asBigNumber().toFixed(),
@@ -351,7 +362,7 @@ const parseOfferSuccess = () =>
   });
 
 const parseOfferFail = () =>
-  parseLogs<schema.core.TakenOffer>("OfferFail", (payload) => {
+  parseLogs<schema.core.TakenOffer>("OfferFail", ({ payload }) => {
     return {
       id: payload.requireParam("id").asNumber(),
       takerWants: payload.requireParam("takerWants").asBigNumber().toFixed(),
@@ -375,29 +386,29 @@ export type LogParser<T> = Parser<T, LogParserContext>;
 
 export function parseLogs<T>(
   nameOrNames: string | string[],
-  mapFunc: (log: EthModel.DecodedContractLogPayload) => T
+  mapFunc: (log: EthModel.DecodedLog) => T
 ): LogParser<T> {
   return parseLogsIf<T>(nameOrNames, () => true, mapFunc);
 }
 
 export function parseLogsIf<T>(
   nameOrNames: string | string[],
-  ifFunc: (log: EthModel.DecodedContractLogPayload) => true | string,
-  mapFunc: (log: EthModel.DecodedContractLogPayload) => T
+  ifFunc: (log: EthModel.DecodedLog) => true | string,
+  mapFunc: (log: EthModel.DecodedLog) => T
 ): LogParser<T> {
   const names = typeof nameOrNames == "string" ? [nameOrNames] : nameOrNames;
   const failReason = `log.name not in (${names.join(",")})`;
   return (ctx) => {
     if (ctx.index >= ctx.events.length) return failure(ctx, "end of input");
 
-    const { payload } = ctx.events[ctx.index];
+    const log = ctx.events[ctx.index];
 
-    if (!names.includes(payload.name)) return failure(ctx, failReason);
+    if (!names.includes(log.payload.name)) return failure(ctx, failReason);
 
-    const conditionResult = ifFunc(payload);
+    const conditionResult = ifFunc(log);
     if (typeof conditionResult == "string")
       return failure(ctx, conditionResult);
 
-    return success({ ...ctx, index: ctx.index + 1 }, mapFunc(payload));
+    return success({ ...ctx, index: ctx.index + 1 }, mapFunc(log));
   };
 }
