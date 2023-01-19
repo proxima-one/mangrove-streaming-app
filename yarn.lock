@@ -836,24 +836,24 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@proxima-one/proxima-app-eth@0.2.39":
-  version "0.2.39"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-eth/0.2.39/3b32b51e1eb20dff7c5fdbb974fd6ad1eab84bfa#3b32b51e1eb20dff7c5fdbb974fd6ad1eab84bfa"
-  integrity sha512-3XbvIsUA+gVqJJhsXtR6gKrJzG3kTZn38Zmx2PcHlIBYQyXuIAGKtrvFzZNtBRWDJEriQzpB/TzRyZb5ofMrDg==
+"@proxima-one/proxima-app-eth@0.2.43":
+  version "0.2.43"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-eth/0.2.43/38931a70d88a6c72545d93f07709ab06d2501aee#38931a70d88a6c72545d93f07709ab06d2501aee"
+  integrity sha512-3Ys5x5nipqQ8qGq2f5ubKRBZlW18Hyk+csXF2B58oE4NE+TdLum9ccIFcKe4MjSKryw4cCayM8z2PAv4f0FEJA==
   dependencies:
-    "@proxima-one/proxima-app-streaming" "^0.2.29"
+    "@proxima-one/proxima-app-streaming" "^0.2.33"
     "@proxima-one/proxima-plugin-eth" "^0.1.31"
     lodash "^4.17.21"
     rxjs "^7.1.0"
 
-"@proxima-one/proxima-app-streaming@^0.2.29":
-  version "0.2.29"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-streaming/0.2.29/93a3f860bcc804e096a55e393ca72029fa60a457#93a3f860bcc804e096a55e393ca72029fa60a457"
-  integrity sha512-5BlfZvJXQIDmuCvRyVNp3pUQdnY4/BfTE3kkXCzjPKtwRvF2dTIVyVXdmXy9P8wLJPrAomjG93aLpGUw6QhKog==
+"@proxima-one/proxima-app-streaming@^0.2.33":
+  version "0.2.33"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-streaming/0.2.33/a487d40e86fd9a24ba16df778f2f3e5cf083ca24#a487d40e86fd9a24ba16df778f2f3e5cf083ca24"
+  integrity sha512-vaSQBLAKULKIHSfFRwaqp+bJ0hocslcgI3uOeAQuhpTTAw1RYjCnXlGJYw7PQlx4K7zPgijdFcrv+S9++n/wHg==
   dependencies:
     "@proxima-one/proxima-app" "^0.2.21"
     "@proxima-one/proxima-core" "^0.2.9"
-    "@proxima-one/proxima-plugin-state" "^0.1.5"
+    "@proxima-one/proxima-plugin-state" "^0.1.6"
     "@proxima-one/proxima-plugin-streamdb" "^0.1.32"
     "@proxima-one/proxima-streams" "^0.2.8"
     "@proxima-one/proxima-utils" "^0.1.6"
@@ -912,14 +912,14 @@
     rxjs "^7.1.0"
     web3 "1.5.2"
 
-"@proxima-one/proxima-plugin-state@^0.1.5":
-  version "0.1.5"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-plugin-state/0.1.5/4771102f6b0d99cea98849d111fe03b6fc09ea08#4771102f6b0d99cea98849d111fe03b6fc09ea08"
-  integrity sha512-Mzy6iul4gx1Sn1xpwbd/eDmKYaGNg+Do4LE1F34O1dQgaExSHu4JXLLePThJ4lzcABvlIg1ASloelE8FQdc8vA==
+"@proxima-one/proxima-plugin-state@^0.1.6":
+  version "0.1.6"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-plugin-state/0.1.6/3f3059a06f439f2039ba9aab776e9f01b6d9cfd9#3f3059a06f439f2039ba9aab776e9f01b6d9cfd9"
+  integrity sha512-4RNba6hWtoev1gSemmyPB4eKRuPtscYWDB5RHzrlxszKbfiWZy7Le+zy1E+V7alBYn0bbYDoC8x028j7p9C8Hg==
   dependencies:
     "@proxima-one/proxima-core" "^0.2.9"
     "@proxima-one/proxima-utils" "^0.1.6"
-    "@proxima-one/state-manager-client" "0.3.2"
+    "@proxima-one/state-manager-client" "^0.3.5"
     bignumber.js "^9.0.1"
     long "^4.0.0"
     protobufjs "^6.11.2"
@@ -964,10 +964,10 @@
     "@types/long" "^4.0.1"
     long "^4.0.0"
 
-"@proxima-one/state-manager-client@0.3.2":
-  version "0.3.2"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/state-manager-client/0.3.2/d4dd57bd9b20699b2f8fe25ab6f7a9acae974e2f#d4dd57bd9b20699b2f8fe25ab6f7a9acae974e2f"
-  integrity sha512-rsqG8qVeJHCFDFHVysnOnz+LTFpT6fZKnhxYB5ywE1jBTJqWdtVPRSaKP3NtfJ49gNUpKn9hL2vaaBHFZWtpkw==
+"@proxima-one/state-manager-client@^0.3.5":
+  version "0.3.5"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/state-manager-client/0.3.5/d464a3cda00efce7c43fbf41095d7a212ed34737#d464a3cda00efce7c43fbf41095d7a212ed34737"
+  integrity sha512-une0WGd9n36FlMqJL+P9oAPu6arVTHpM33L+rM04GwQ0xohjfnJ181EOtQGRUGk3bGYeZq62Uwzzs09MJC5EJQ==
   dependencies:
     "@grpc/grpc-js" "^1.6.7"
     "@proxima-one/proxima-utils" "^0.1.5"
