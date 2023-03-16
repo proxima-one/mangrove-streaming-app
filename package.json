@@ -28,6 +28,7 @@
     "coverage": "jest --coverage",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "dev": "ts-node -r tsconfig-paths/register src/dev.ts",
+    "dev-kandel": "ts-node -r tsconfig-paths/register src/dev-kandel.ts",
     "start:app": "yarn start app start --",
     "watch": "yarn build -- --watch",
     "watch:test": "jest --watch"
@@ -36,7 +37,7 @@
     "@proxima-one/proxima-app-eth": "0.2.43",
     "@proximaone/stream-schema-ft": "^0.4.2",
     "@proximaone/stream-schema-eth-base": "^0.4.2",
-    "@proximaone/stream-schema-mangrove": "^0.3.6",
+    "@proximaone/stream-schema-mangrove": "^0.3.7-preview.80.2+72eb71f",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
