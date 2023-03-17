@@ -15,21 +15,36 @@ export function parseKandelEvent(
       return {
         type: "AllBids",
       };
-    case "SetCompoundRates":
+    case "SetParams":
       return {
-        type: "SetCompoundRates",
-        compoundRateBase: payload.requireParam("compoundRateBase").asNumber(),
-        compoundRateQuote: payload.requireParam("compoundRateQuote").asNumber(),
+        type: "SetParams",
+        compoundRates: {
+          base: payload.requireParam("compoundRateBase").asNumber(),
+          quote: payload.requireParam("compoundRateQuote").asNumber(),
+        }
       };
     case "SetGasprice":
       return {
-        type: "SetGasprice",
-        value: payload.requireParam("value").asString(),
+        type: "SetParams",
+        gasPrice: payload.requireParam("value").asString(),
       };
     case "SetGasreq":
       return {
-        type: "SetGasreq",
-        value: payload.requireParam("value").asString(),
+        type: "SetParams",
+        gasReq: payload.requireParam("value").asString(),
+      };
+    case "SetGeometricParams":
+      return {
+        type: "SetParams",
+        geometric: {
+          spread: payload.requireParam("spread").asNumber(),
+          ratio: payload.requireParam("ratio").asNumber(),
+        }
+      };
+    case "SetLength":
+      return {
+        type: "SetParams",
+        length: payload.requireParam("value").asNumber(),
       };
     case "Credit":
       return {
@@ -42,17 +57,6 @@ export function parseKandelEvent(
         type: "Debit",
         token: payload.requireParam("token").asString(),
         amount: payload.requireParam("amount").asString(),
-      };
-    case "SetGeometricParams":
-      return {
-        type: "SetGeometricParams",
-        spread: payload.requireParam("spread").asNumber(),
-        ratio: payload.requireParam("ratio").asNumber(),
-      };
-    case "SetLength":
-      return {
-        type: "SetLength",
-        value: payload.requireParam("value").asNumber(),
       };
     default:
       throw new Error(`Unknown event type: ${payload.name}`);
