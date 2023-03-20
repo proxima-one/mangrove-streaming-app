@@ -6,6 +6,7 @@ import { EthModel } from "@proxima-one/proxima-plugin-eth";
 import { DiscoveredAddress } from "@proxima-one/proxima-app-eth";
 import { parseSeederEvent } from "./parseSeederEvent";
 import { parseKandelEvent } from "./parseKandelEvent";
+import { kandel } from "@proximaone/stream-schema-mangrove";
 import { TxRef } from "@proximaone/stream-schema-base";
 
 export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
@@ -35,7 +36,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
     },
   },
   map: {
-    log: ({ log, contractType, tx, block, args }) => {
+    tx: ({ tx, block, args }) => {
       const txRef: TxRef = {
         chain: args.network,
         blockNumber: block.header.number,
@@ -44,22 +45,33 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
         sender: tx.original.data.from.toHexString(),
       };
 
-      try {
+      let setParamsEvent: Partial<kandel.SetParams> | undefined = undefined;
+      let outputEvents = [];
+      for (const log of tx.flatLogs()) {
         const parseEvent = {
           seeder: parseSeederEvent,
           kandel: parseKandelEvent,
-        }[contractType];
-
-        return [
-          ethApp.MapResult.toDefaultStream(
-            _.assign(parseEvent(log), { tx: txRef })
-          ),
-        ];
-      } catch (err) {
-        console.dir(tx, { depth: 16 });
-        console.error(err);
-        throw err;
+        }[log.contractType];
+        const event = parseEvent(log.log);
+        if (event.type == "SetParams") {
+          if (setParamsEvent) {
+            setParamsEvent = _.assign(setParamsEvent, event);
+          } else {
+            setParamsEvent = event;
+          }
+        } else {
+          outputEvents.push(event);
+        }
       }
-    },
+
+      if (setParamsEvent != undefined) {
+        outputEvents.push(setParamsEvent);
+      }
+      return outputEvents.map(event =>
+        ethApp.MapResult.toDefaultStream(
+          _.assign(event, { tx: txRef })
+        ),
+      );
+    }
   },
 });
