@@ -14,6 +14,7 @@ appHost.start({
       seeder: "0xe8904c912ffe1445cfb3f6d6643db6590639910f",
     },
     network: "polygon-mumbai",
+    blockIdInput: true,
     startBlock: "33055259",
     input: {
       default: {

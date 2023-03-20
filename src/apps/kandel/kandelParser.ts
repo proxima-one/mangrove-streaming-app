@@ -46,7 +46,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
       };
 
       let setParamsEvent: Partial<kandel.SetParams> | undefined = undefined;
-      let outputEvents = [];
+      const outputEvents = [];
       for (const log of tx.flatLogs()) {
         const parseEvent = {
           seeder: parseSeederEvent,
