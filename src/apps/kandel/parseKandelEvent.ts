@@ -15,7 +15,7 @@ export function parseKandelEvent(
       return {
         type: "AllBids",
       };
-    case "SetParams":
+    case "SetCompoundRates":
       return {
         type: "SetParams",
         compoundRates: {
