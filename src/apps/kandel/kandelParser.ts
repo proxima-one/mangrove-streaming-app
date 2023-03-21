@@ -12,11 +12,12 @@ import { TxRef } from "@proximaone/stream-schema-base";
 export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
   contracts: {
     seeder: EthModel.ContractMetadata.fromAbi(abi.seeder),
+    aaveSeeder: EthModel.ContractMetadata.fromAbi(abi.seeder),
     kandel: EthModel.ContractMetadata.fromAbi(abi.kandel),
   },
   discover: {
     log: ({ log, contractType, timestamp }) => {
-      if (contractType == "seeder") {
+      if (contractType == "seeder" || contractType == "aaveSeeder") {
         let address;
         if (log.payload.name == "NewKandel") {
           address = log.payload.requireParam("kandel").asString();
@@ -50,6 +51,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
       for (const log of tx.flatLogs()) {
         const parseEvent = {
           seeder: parseSeederEvent,
+          aaveSeeder: parseSeederEvent,
           kandel: parseKandelEvent,
         }[log.contractType];
         const event = parseEvent(log.log);
