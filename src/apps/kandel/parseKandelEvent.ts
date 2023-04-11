@@ -21,7 +21,7 @@ export function parseKandelEvent(
         compoundRates: {
           base: payload.requireParam("compoundRateBase").asNumber(),
           quote: payload.requireParam("compoundRateQuote").asNumber(),
-        }
+        },
       };
     case "SetGasprice":
       return {
@@ -39,7 +39,7 @@ export function parseKandelEvent(
         geometric: {
           spread: payload.requireParam("spread").asNumber(),
           ratio: payload.requireParam("ratio").asNumber(),
-        }
+        },
       };
     case "SetLength":
       return {

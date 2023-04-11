@@ -69,11 +69,9 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
       if (setParamsEvent != undefined) {
         outputEvents.push(setParamsEvent);
       }
-      return outputEvents.map(event =>
-        ethApp.MapResult.toDefaultStream(
-          _.assign(event, { tx: txRef })
-        ),
+      return outputEvents.map((event) =>
+        ethApp.MapResult.toDefaultStream(_.assign(event, { tx: txRef }))
       );
-    }
+    },
   },
 });
