@@ -73,6 +73,7 @@ export const ParseBlocksApp = ethApp.parseContractLogsApp({
         ...toArray(tx.contractLogs.mangrove5),
         ...toArray(tx.contractLogs.mangrove6),
         ...toArray(tx.contractLogs.mangrove7),
+        ...toArray(tx.contractLogs.mangrove8),
       ];
 
       console.log(`got ${mangroveEvents.length} events to parse`);
