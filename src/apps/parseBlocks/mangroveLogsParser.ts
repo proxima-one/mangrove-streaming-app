@@ -5,7 +5,9 @@ import { EthModel } from "@proxima-one/proxima-plugin-eth";
 import { orderId } from "../../model/entities";
 
 export type PartialMangroveEvent = Partial<schema.events.MangroveEvent>;
-export const parseMangroveEvents = (): LogParser<PartialMangroveEvent[]> =>
+export const parseMangroveEvents = (
+  failWhenNoResult?: boolean
+): LogParser<PartialMangroveEvent[]> =>
   map(
     many(
       any([
@@ -16,7 +18,8 @@ export const parseMangroveEvents = (): LogParser<PartialMangroveEvent[]> =>
         parseOfferWrittenEvents(),
         parseOfferRetractedEvents(),
         parseOrderExecutionEvents(),
-      ])
+      ]),
+      failWhenNoResult
     ),
     (x) => x.flat()
   );
@@ -380,6 +383,7 @@ export type LogParserContext = Readonly<{
   txHash: EthModel.Hash;
   events: EthModel.DecodedLog[]; // the full input string
   index: number; // our current position in it
+  address?: EthModel.Address;
 }>;
 
 export type LogParser<T> = Parser<T, LogParserContext>;
@@ -404,6 +408,11 @@ export function parseLogsIf<T>(
     const log = ctx.events[ctx.index];
 
     if (!names.includes(log.payload.name)) return failure(ctx, failReason);
+    if (
+      ctx.address &&
+      log.payload.address.toHexString() != ctx.address.toHexString()
+    )
+      return failure(ctx, "wrong address");
 
     const conditionResult = ifFunc(log);
     if (typeof conditionResult == "string")

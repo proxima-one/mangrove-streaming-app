@@ -68,8 +68,10 @@ export function optional<T, TContext extends Context>(
 }
 
 // look for 0 or more of something, until we can't parse any more. note that this function never fails, it will instead succeed with an empty array.
+// function will fail when param mayFail is set to true
 export function many<T, TContext extends Context>(
-  parser: Parser<T, TContext>
+  parser: Parser<T, TContext>,
+  failWhenNoResult?: boolean
 ): Parser<T[], TContext> {
   return (ctx) => {
     const values: T[] = [];
@@ -80,6 +82,9 @@ export function many<T, TContext extends Context>(
       values.push(res.value);
       nextCtx = res.ctx;
     }
+    if (failWhenNoResult && values.length == 0)
+      return failure(nextCtx, "there are no parsed values");
+
     return success(nextCtx, values);
   };
 }
