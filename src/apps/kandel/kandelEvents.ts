@@ -43,7 +43,7 @@ export type PartialKandelEvent =
   | OfferRetracted
   | Partial<NewKandel>;
 
-enum KandelParamsEvents {
+export enum KandelParamsEvents {
   SetCompoundRates = "SetCompoundRates",
   SetGasprice = "SetGasprice",
   SetGasreq = "SetGasreq",
@@ -83,36 +83,33 @@ export const parseIndexMappingEvent = () =>
   });
 
 export const parseNewKandelEvent = () =>
-  parseLogs<PartialKandelEvent[]>(
-    ["NewKandel", "NewAaveKandel"],
-    ({ payload }) => {
-      switch (payload.name) {
-        case "NewKandel":
-          return [
-            {
-              type: "NewKandel",
-              owner: payload.requireParam("owner").asString(),
-              base: payload.requireParam("base").asString(),
-              quote: payload.requireParam("quote").asString(),
-              kandel: payload.requireParam("kandel").asString(),
-            },
-          ];
-        case "NewAaveKandel":
-          return [
-            {
-              type: "NewKandel",
-              owner: payload.requireParam("owner").asString(),
-              base: payload.requireParam("base").asString(),
-              quote: payload.requireParam("quote").asString(),
-              kandel: payload.requireParam("aaveKandel").asString(),
-              reserveId: payload.requireParam("reserveId").asString(),
-            },
-          ];
-        default:
-          throw new Error(`Unknown event type: ${payload.name}`);
-      }
-    }
+  parseLogs<PartialKandelEvent[]>(["NewKandel", "NewAaveKandel"],
+    ({ payload }) => [parseNewKandel(payload)]
   );
+
+export function parseNewKandel(payload: EthModel.DecodedContractLogPayload): Partial<NewKandel> {
+  switch (payload.name) {
+    case "NewKandel":
+      return {
+        type: "NewKandel",
+        owner: payload.requireParam("owner").asString(),
+        base: payload.requireParam("base").asString(),
+        quote: payload.requireParam("quote").asString(),
+        kandel: payload.requireParam("kandel").asString(),
+      }
+      case "NewAaveKandel":
+        return {
+          type: "NewKandel",
+          owner: payload.requireParam("owner").asString(),
+          base: payload.requireParam("base").asString(),
+          quote: payload.requireParam("quote").asString(),
+          kandel: payload.requireParam("aaveKandel").asString(),
+          reserveId: payload.requireParam("reserveId").asString(),
+        };
+      default:
+        throw new Error(`Unknown event type: ${payload.name}`);
+  }
+}
 
 export const parseSetParamsEvent = (): KandelLogParser<
   PartialKandelEvent[]

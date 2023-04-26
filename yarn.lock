@@ -836,10 +836,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@proxima-one/proxima-app-eth@0.2.56":
-  version "0.2.56"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-eth/0.2.56/8ff24a6893691820fd9c6430dce11c81edf8a511#8ff24a6893691820fd9c6430dce11c81edf8a511"
-  integrity sha512-qUZZTNrXOdHik1a0zz1rqHRjKQC1CgJARHl90YQR8BLDveX0zqcq0N7ja1h3NVyUWOol7s7PheKj6oki5RAuSA==
+"@proxima-one/proxima-app-eth@0.2.57":
+  version "0.2.57"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-eth/0.2.57/62891999869a880fd5800c15ef3b86dd00384963#62891999869a880fd5800c15ef3b86dd00384963"
+  integrity sha512-ycmZUfLYqZi5gNEX04joBn1ZtRsfFPTa1N1IiO+XRo0MfuYiqs1NALlzzZinTBOHa0EgV5anAsJb5E+zWJp0AQ==
   dependencies:
     "@proxima-one/proxima-app-streaming" "^0.2.43"
     "@proxima-one/proxima-plugin-eth" "^0.1.35"
