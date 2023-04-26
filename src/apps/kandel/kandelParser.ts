@@ -110,10 +110,14 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
           }
         }
 
-        if (newKandel && setParams) newKandel.params = setParams;
+        let skipSetParamsEvent = false;
+        if (newKandel && setParams) {
+          newKandel.params = setParams;
+          skipSetParamsEvent = true;
+        }
 
         mappedEvents.push(
-          ...parseResult.value.map((ev) => {
+          ...parseResult.value.filter(x => x.type != "SetParams" || !skipSetParamsEvent).map((ev) => {
             return {
               tx: txRef,
               chainId: chainlistId,
