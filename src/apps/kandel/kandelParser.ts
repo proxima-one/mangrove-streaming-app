@@ -19,6 +19,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
   contracts: {
     seeder: EthModel.ContractMetadata.fromAbi(abi.seeder),
     kandel: EthModel.ContractMetadata.fromAbi(abi.kandel),
+    kandelMangrove: EthModel.ContractMetadata.fromAbi(abi.kandelMangrove),
     mangrove8: EthModel.ContractMetadata.fromAbi(mangroveAbi.v8.mangrove),
   },
 
@@ -29,7 +30,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
       const mangroveAddress = args.addresses.mangrove8 as string;
       const seederLogs = [...toArray(tx.contractLogs.seeder)];
 
-      const seederMangroveAddreses = tx.contractLogs.kandel
+      const seederMangroveAddreses = tx.contractLogs.kandelMangrove
         ?.filter(x => x.payload.name == KandelParamsEvents.Mgv)
         ?.map(x => x.payload.requireParam("mgv").asString());
 
