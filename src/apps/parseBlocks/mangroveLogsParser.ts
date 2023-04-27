@@ -1,15 +1,15 @@
 import * as schema from "@proximaone/stream-schema-mangrove";
 import * as _ from "lodash";
-import { any, failure, many, map, Parser, success } from "./parser";
+import { any, failure, many, map, oneOrMore, Parser, success } from "./parser";
 import { EthModel } from "@proxima-one/proxima-plugin-eth";
 import { orderId } from "../../model/entities";
 
 export type PartialMangroveEvent = Partial<schema.events.MangroveEvent>;
 export const parseMangroveEvents = (
-  failWhenNoResult?: boolean
+  nested?: boolean
 ): LogParser<PartialMangroveEvent[]> =>
   map(
-    many(
+    (nested ? oneOrMore : many)(
       any([
         parseMakerBalanceEvent(),
         parseOfferListParamsEvents(),
@@ -19,7 +19,6 @@ export const parseMangroveEvents = (
         parseOfferRetractedEvents(),
         parseOrderExecutionEvents(),
       ]),
-      failWhenNoResult
     ),
     (x) => x.flat()
   );

@@ -1,12 +1,7 @@
-import * as proxima from "@proxima-one/proxima-core";
-import {
-  createParserRunner,
-  events,
-  parseParams,
-  ValueType,
-} from "./__test/utils";
+import { events } from "./__test__/utils";
 import { EthModel } from "@proxima-one/proxima-plugin-eth";
 import { KandelLogParserContext, parseKandelEvents } from "./kandelEvents";
+import { createParserRunner, parseParams, ValueType } from "../parseBlocks/__test/utils";
 
 const txHash = EthModel.Hash.fromHexString(
   "0x580092d68d5a92f5f9495ea15d583e3f7882eb69cda8ed9da5a79f97e0b99200"
