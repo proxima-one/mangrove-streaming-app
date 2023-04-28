@@ -94,6 +94,9 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
           mangroveAddress: EthModel.Address.fromHexString(
             args.addresses.mangrove8 as string
           ),
+          kandelAddress: EthModel.Address.fromHexString(
+            kandelAddress
+          ),
           index: 0,
           events: events,
         });

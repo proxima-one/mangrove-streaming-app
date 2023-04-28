@@ -18,6 +18,7 @@ import { EthModel } from "@proxima-one/proxima-plugin-eth";
 
 export type KandelLogParserContext = LogParserContext & {
   mangroveAddress?: EthModel.Address;
+  kandelAddress?: EthModel.Address;
   paramsProcessed?: boolean;
 };
 export type KandelLogParser<T> = Parser<T, KandelLogParserContext>;
@@ -26,7 +27,7 @@ export const parseKandelEvents = (): KandelLogParser<PartialKandelEvent[]> =>
   map(
     many(
       any([
-        parseBalanceEvent(),
+        wrapToKandelContext(parseBalanceEvent(), x => x),
         parseSetParamsEvent(),
         parsePopulateEvent(),
         parseRetractEvent(),
@@ -340,6 +341,22 @@ export function wrapToMangroveContext<
     const res = parser({
       ...ctx,
       address: ctx.mangroveAddress,
+    });
+    return res.success
+      ? success({ ...res.ctx, address: ctx.address }, fn(res.value))
+      : res;
+  };
+}
+
+export function wrapToKandelContext<
+  A,
+  B,
+  TContext extends KandelLogParserContext
+>(parser: Parser<A, TContext>, fn: (val: A) => B): Parser<B, TContext> {
+  return (ctx) => {
+    const res = parser({
+      ...ctx,
+      address: ctx.kandelAddress,
     });
     return res.success
       ? success({ ...res.ctx, address: ctx.address }, fn(res.value))
