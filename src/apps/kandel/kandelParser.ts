@@ -67,8 +67,6 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
 
       const kandelEvents = toArray(tx.contractLogs.kandel);
 
-      console.log(`got ${kandelEvents.length} kandel's events to parse`);
-
       const groupedKandelEvents = _.chain(kandelEvents)
         .groupBy((x) => x.payload.address.toHexString())
         .map((kandelEvents, key) => {
