@@ -20,7 +20,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
     seeder: EthModel.ContractMetadata.fromAbi(abi.seeder),
     kandel: EthModel.ContractMetadata.fromAbi(abi.kandel),
     kandelMangrove: EthModel.ContractMetadata.fromAbi(abi.kandelMangrove),
-    mangrove8: EthModel.ContractMetadata.fromAbi(mangroveAbi.v8.mangrove),
+    mangrove8: EthModel.ContractMetadata.fromAbi(abi.mangrove),
   },
 
   discover: {
