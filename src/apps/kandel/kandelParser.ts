@@ -77,7 +77,10 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
               const parsed = parseNewKandel(x.payload);
               return parsed.kandel == key;
             });
-          const allEvents = [...kandelEvents, ...seederEvents, ...toArray(tx.contractLogs.mangrove8)];
+
+          const allEvents = [...kandelEvents, ...seederEvents, ...toArray(tx.contractLogs.mangrove8)]
+            .sort((a, b) => a.index - b.index);
+
           return {
             kandelAddress: key,
             events: allEvents,
