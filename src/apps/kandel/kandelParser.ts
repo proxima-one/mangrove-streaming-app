@@ -1,6 +1,5 @@
 import * as _ from "lodash";
 import * as abi from "./abi";
-import * as mangroveAbi from "../parseBlocks/abi";
 import * as ethApp from "@proxima-one/proxima-app-eth";
 import { AppFactory } from "@proxima-one/proxima-app";
 import { EthModel } from "@proxima-one/proxima-plugin-eth";
@@ -9,7 +8,7 @@ import { kandel } from "@proximaone/stream-schema-mangrove";
 import { TxRef } from "@proximaone/stream-schema-base";
 import { toArray } from "lodash";
 import { KandelParamsEvents, parseKandelEvents, parseNewKandel } from "./kandelEvents";
-import { KandelEvent } from "@proximaone/stream-schema-mangrove/dist/kandel";
+import { mangroveId } from "../../model/entities";
 
 interface Args {
   chainlistId?: string;
@@ -88,12 +87,13 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
         .orderBy((x) => x.index)
         .value();
 
-      const mappedEvents: KandelEvent[] = [];
+      const mappedEvents: kandel.KandelEvent[] = [];
       for (const { kandelAddress, events } of groupedKandelEvents) {
+        const mangroveAddress = args.addresses.mangrove8 as string;
         const parseResult = parseKandelEvents()({
           txHash: tx.original.data.hash,
           mangroveAddress: EthModel.Address.fromHexString(
-            args.addresses.mangrove8 as string
+            mangroveAddress
           ),
           kandelAddress: EthModel.Address.fromHexString(
             kandelAddress
@@ -109,6 +109,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
         let newKandel = undefined;
         for (const log of parseResult.value) {
           if (log.type == "NewKandel") {
+            log.mangroveId = mangroveId(args.network, mangroveAddress);
             newKandel = log;
           } else if (log.type == "SetParams") {
             setParams = log as kandel.SetParams;
@@ -125,9 +126,10 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
           ...parseResult.value.filter(x => x.type != "SetParams" || !skipSetParamsEvent).map((ev) => {
             return {
               tx: txRef,
+              address: kandelAddress,
               chainId: chainlistId,
               ...ev,
-            } as KandelEvent;
+            } as kandel.KandelEvent;
           })
         );
       }
