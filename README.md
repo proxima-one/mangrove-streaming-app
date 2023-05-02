@@ -8,6 +8,111 @@ Check out proxima streaming app cli to get started (TODO: add link)
 
 ## Apps
 
+### parse-blocks
+
+Parses the mangrove's main contract
+
+#### Arguments
+```json
+{
+  "batch": 500,
+  "readBuffer": 10000,
+  "db": "core-us",
+  "output": {
+    "default": "proxima.mangrove.polygon-mumbai.0xad90.tokens.0_1"
+  },
+  "stateManager": "main",
+  "input": {
+    "default": {
+      "id": "proxima.mangrove.polygon-mumbai.0xad90.domain-events.0_1"
+    }
+  },
+  "network":
+  "polygon-mumbai"
+}
+```
+
+### strategies
+
+Parses strategies events
+
+#### Arguments
+```json
+{
+  "batch": 500,
+  "readBuffer": 10000,
+  "db": "core-us",
+  "output": {
+    "default": "proxima.mangrove.polygon-mumbai.strategies.0_5"
+  },
+  "stateManager": "main",
+  "input": {
+    "default": {
+      "id": "proxima.polygon-mumbai.blocks-sync.1_0",
+      "startHeight":29969278
+    }
+  },
+  "network": "polygon-mumbai",
+  "chainlistId":80001,
+  "startBlock":29969378,
+  "blockIdInput":true
+}
+```
+
+### tokens
+
+Contains ERC-20 tokens that are used in the main mangrove stream. Takes main mangrove stream as an input
+
+#### Arguments
+```json
+{
+  "batch": 500,
+  "readBuffer": 10000,
+  "db": "core-us",
+  "output": {
+    "default": "proxima.mangrove.polygon-mumbai.0xad90.tokens.0_1"
+  },
+  "stateManager":"main",
+  "input": {
+    "default": {
+      "id": "proxima.mangrove.polygon-mumbai.0xad90.domain-events.0_1"
+    }
+  },
+  "network": "polygon-mumbai"
+}
+```
+
+
+### kandel
+
+Aggregates Kandel events
+
+#### Arguments
+```json
+{
+  "batch": 500,
+  "readBuffer": 10000,
+  "db": "core-us-stage",
+  "output": {
+    "default": "proxima.mangrove.polygon-mumbai.0xad90.kandel.0_6"
+  },
+  "stateManager": "main",
+  "input": {
+    "default": {
+      "id":"proxima.polygon-mumbai.blocks-sync.1_0",
+      "startHeight":33665942,
+      "db":"core-us"
+    }
+  },
+  "network":"polygon-mumbai",
+  "addresses": {
+    "mangrove8": "0xAd90a2a9BdcB630c976CaceA1253D89edf74da5e"
+  },
+  "chainlistId":80001,
+  "startBlock":"33666042",
+  "blockIdInput":true
+}
+```
 
 ## Development
 
