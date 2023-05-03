@@ -83,6 +83,7 @@ export const ParseBlocksApp = ethApp.parseContractLogsApp({
         .groupBy((x) => x.payload.address.toHexString())
         .map((values, key) => {
           return {
+            mangroveAddress: EthModel.Address.fromHexString(key),
             mangroveId: mangroveId(args.network, key),
             events: values,
             index: values[0].index,
@@ -93,8 +94,13 @@ export const ParseBlocksApp = ethApp.parseContractLogsApp({
 
       const mappedEvents: schema.events.MangroveEvent[] = [];
 
-      for (const { mangroveId, events } of groupedMangroveEvents) {
+      for (const {
+        mangroveAddress,
+        mangroveId,
+        events,
+      } of groupedMangroveEvents) {
         const parseResult = mangroveLogsParser({
+          address: mangroveAddress,
           txHash: tx.original.data.hash,
           index: 0,
           events: events,

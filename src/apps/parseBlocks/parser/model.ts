@@ -80,6 +80,24 @@ export function many<T, TContext extends Context>(
       values.push(res.value);
       nextCtx = res.ctx;
     }
+
+    return success(nextCtx, values);
+  };
+}
+
+export function oneOrMore<T, TContext extends Context>(parser: Parser<T, TContext>): Parser<T[], TContext> {
+  return (ctx) => {
+    const values: T[] = [];
+    let nextCtx = ctx;
+    while (true) {
+      const res = parser(nextCtx);
+      if (!res.success) break;
+      values.push(res.value);
+      nextCtx = res.ctx;
+    }
+    if (values.length == 0)
+      return failure(nextCtx, "there are no parsed values");
+
     return success(nextCtx, values);
   };
 }

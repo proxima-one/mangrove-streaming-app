@@ -836,17 +836,17 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@proxima-one/proxima-app-eth@0.2.54":
-  version "0.2.54"
-  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-eth/0.2.54/65439e50e78732e9b639225e90cfcde71b0acff4#65439e50e78732e9b639225e90cfcde71b0acff4"
-  integrity sha512-cHtw8qH0Y3Z3rokIUmdq3Ee883ai4viypgPEGRk9GpHqtpTzg+6fL1py2psFSrVjX9qiuwSB9qUk9kzPZ05S7w==
+"@proxima-one/proxima-app-eth@0.2.58":
+  version "0.2.58"
+  resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-eth/0.2.58/6e71681df545f8f2e19bb8cbee5cf8dcfbd06071#6e71681df545f8f2e19bb8cbee5cf8dcfbd06071"
+  integrity sha512-zksGpIPUuAPVaRafnxCa0yNElsnBboxrFekGB3sYnSWbotfEy4JVDJ9I1cHGkM1leeG0Tl/9e9Xb0o7/JJmA6g==
   dependencies:
-    "@proxima-one/proxima-app-streaming" "^0.2.42"
+    "@proxima-one/proxima-app-streaming" "^0.2.43"
     "@proxima-one/proxima-plugin-eth" "^0.1.35"
     lodash "^4.17.21"
     rxjs "^7.1.0"
 
-"@proxima-one/proxima-app-streaming@^0.2.42":
+"@proxima-one/proxima-app-streaming@^0.2.43":
   version "0.2.43"
   resolved "https://npm.pkg.github.com/download/@proxima-one/proxima-app-streaming/0.2.43/9e5750a65db9123b2e1973790422d506b6bc3f0d#9e5750a65db9123b2e1973790422d506b6bc3f0d"
   integrity sha512-BRINSPubiJrxi/awyMbcwms12dkimTdMdCKLtB1AhvB78orP9DiGB8moRbexS+lXko59xnYQuMdIw/DO/mrEIA==
@@ -999,10 +999,10 @@
     bn.js "^5.1.1"
     protobufjs "^7.1.2"
 
-"@proximaone/stream-schema-mangrove@^0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-mangrove/-/stream-schema-mangrove-0.3.7.tgz#aabb3ac8c3b966cbf3d18b369002124681c81a60"
-  integrity sha512-NQARXjjw/ums1Ne+bCIMsiDPczGi1GKDr0mK0qQILysCY1/VOgcoqAeK2OyeX4FF3JwR1BU7FVXn5R8v88+VrA==
+"@proximaone/stream-schema-mangrove@^0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@proximaone/stream-schema-mangrove/-/stream-schema-mangrove-0.3.10.tgz#c2a9fa06dec251961f012e1eb72ae74bd677d622"
+  integrity sha512-L4JKuRme+SN/BH3n28QFlUHWKqr1n7V9UrYmLyTMJ7IGIEEwj3zMIdHuuHvTIXl0F3eJ4lPS4Nvc7M0TcSZM9Q==
   dependencies:
     "@proximaone/stream-schema-base" "^0.3.2"
 

@@ -1,13 +1,15 @@
 import * as schema from "@proximaone/stream-schema-mangrove";
 import * as _ from "lodash";
-import { any, failure, many, map, Parser, success } from "./parser";
+import { any, failure, many, map, oneOrMore, Parser, success } from "./parser";
 import { EthModel } from "@proxima-one/proxima-plugin-eth";
 import { orderId } from "../../model/entities";
 
 export type PartialMangroveEvent = Partial<schema.events.MangroveEvent>;
-export const parseMangroveEvents = (): LogParser<PartialMangroveEvent[]> =>
+export const parseMangroveEvents = (
+  nested?: boolean
+): LogParser<PartialMangroveEvent[]> =>
   map(
-    many(
+    (nested ? oneOrMore : many)(
       any([
         parseMakerBalanceEvent(),
         parseOfferListParamsEvents(),
@@ -16,7 +18,7 @@ export const parseMangroveEvents = (): LogParser<PartialMangroveEvent[]> =>
         parseOfferWrittenEvents(),
         parseOfferRetractedEvents(),
         parseOrderExecutionEvents(),
-      ])
+      ]),
     ),
     (x) => x.flat()
   );
@@ -380,6 +382,7 @@ export type LogParserContext = Readonly<{
   txHash: EthModel.Hash;
   events: EthModel.DecodedLog[]; // the full input string
   index: number; // our current position in it
+  address?: EthModel.Address;
 }>;
 
 export type LogParser<T> = Parser<T, LogParserContext>;
@@ -404,6 +407,11 @@ export function parseLogsIf<T>(
     const log = ctx.events[ctx.index];
 
     if (!names.includes(log.payload.name)) return failure(ctx, failReason);
+    if (
+      ctx.address &&
+      log.payload.address.toHexString() != ctx.address.toHexString()
+    )
+      return failure(ctx, "wrong address");
 
     const conditionResult = ifFunc(log);
     if (typeof conditionResult == "string")

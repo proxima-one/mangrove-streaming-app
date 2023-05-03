@@ -48,6 +48,7 @@ describe("parseMangroveEvents", () => {
     logs: EthModel.DecodedContractLogPayload[]
   ): LogParserContext => {
     return {
+      address: mangroveId,
       index: 0,
       events: logs.map((x, ind) => new EthModel.DecodedLog(ind, x)),
       txHash: txHash,
