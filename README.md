@@ -10,7 +10,10 @@ Check out proxima streaming app cli to get started (TODO: add link)
 
 ### parse-blocks
 
-Parses the mangrove's main contract
+Parses the mangrove's main contract. This parser is complex since custom callback can be executed after all offers in
+the order taken. This custom callback may also start new order in the same Mangrove contract, so we have to parse it
+recursively while preserving order
+
 
 #### Arguments
 ```json
@@ -34,7 +37,8 @@ Parses the mangrove's main contract
 
 ### strategies
 
-Parses strategies events
+Finds `NewOwnedOffer`, `OrderComplete`, `LogIncident`, `OrderSummary`, `SetExpiry` logs using autodiscovery mechanism.
+Maps these logs to the output stream events without aggregation
 
 #### Arguments
 ```json
