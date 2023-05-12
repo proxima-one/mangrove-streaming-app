@@ -51,6 +51,10 @@ const mangroveStrategiesApp = {
     output: {
       default: "strategies1",
     },
+    addresses: {
+      mangrove8: "0xad90a2a9bdcb630c976cacea1253d89edf74da5e",
+      mangroveOrder: "0xF511135Bc98D7a5cf694Fa6751322de93e2135dA"
+    },
     network: "polygon-mumbai",
     stateManager: "state-manager-local",
     batch: "10",
@@ -67,28 +71,28 @@ const parseBlocksApp = {
   dryRun: false,
   id: "mg-blocks-dev",
   args: {
-    addresses: {
-      mangrove4: "0x6f531931A7EaefB95307CcD93a348e4C27F62DCF",
-      mangrove5: "0xa34b6addf822177258cbd0a9c3a80600c1028ca8",
-      mangrove6: "0xF3e339d8a0B989114412fa157Cc846ebaf4BCbd8",
-    },
-    skipUnknownEvents: false,
     reset: true,
-    network: "polygon-mumbai",
-    stateManager: "state-manager-local",
-    chainlistId: "80001",
-    startBlock: "26224255",
-    initialOffset: 26224255,
-
-    input: {
-      default: "polygon-mumbai-blockheader",
-    },
+    batch: 50,
+    readBuffer: 100,
+    db: "kafka-dev-ivan",
     output: {
-      default: "domain-events",
+      default: "domain-events1",
     },
-
-    db: "streamdb-01",
+    stateManager: "state-manager-local",
+    input: {
+      default: {
+        id: "proxima.polygon-mumbai.blocks-sync.1_0",
+        startHeight: "32291088",
+        db: "core-us",
+      },
+    },
+    network: "polygon-mumbai",
+    addresses: { mangrove8: "0xAd90a2a9BdcB630c976CaceA1253D89edf74da5e" },
+    chainlistId: 80001,
+    startBlock: "32291188",
+    blockIdInput: true,
   },
+
 };
 
 const tokenDiscoveryApp = {

@@ -1,7 +1,7 @@
 import {
   LogParserContext,
   parseLogs,
-  parseMangroveEvents,
+  parseMangroveEvents, PartialMangroveEvent,
 } from "../parseBlocks/mangroveLogsParser";
 import { any, many, map, Parser, seq, success } from "../parseBlocks/parser";
 import * as _ from "lodash";
@@ -32,6 +32,7 @@ export const parseKandelEvents = (): KandelLogParser<PartialKandelEvent[]> =>
         parsePopulateEvent(),
         parseRetractEvent(),
         parseNewKandelEvent(),
+        parseIndexMappingEvent(),
       ])
     ),
     (x) => x.flat()

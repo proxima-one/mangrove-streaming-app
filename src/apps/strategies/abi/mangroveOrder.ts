@@ -1,4 +1,41 @@
-export const orderLogic = [
+export const mangroveOrder = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "contract IMangrove",
+        name: "mangrove",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "outbound_tkn",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "inbound_tkn",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "NewOwnedOffer",
+    type: "event",
+  },
   {
     anonymous: false,
     inputs: [
@@ -125,6 +162,49 @@ export const orderLogic = [
       },
     ],
     name: "SetExpiry",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "contract IMangrove",
+        name: "mangrove",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "outbound_tkn",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "inbound_tkn",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "makerData",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "mgvData",
+        type: "bytes32",
+      },
+    ],
+    name: "LogIncident",
     type: "event",
   },
 ];
