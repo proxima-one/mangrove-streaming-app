@@ -28,10 +28,8 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
       };
 
       let mappedEvent = undefined;
-      if (contractType == "mangroveOrder")
-        mappedEvent = mangroveOrder(chain)
-      else
-        return [];
+      if (contractType == "mangroveOrder") mappedEvent = mangroveOrder(chain);
+      else return [];
 
       const logMangroveOrderAddress = log.payload.address.toHexString();
       if (!mappedEvent || logMangroveOrderAddress.toLowerCase() != mangroveOrderAddress.toLowerCase())
@@ -46,78 +44,12 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
 
       return [ethApp.MapResult.toDefaultStream(outputEvent)];
 
-      function mapOrderLogicEvent(
-        event: EthModel.DecodedLog,
-        chain: string
-      ): strategyEvents.OrderSummary | strategyEvents.SetExpiry | undefined {
-        switch (event.payload.name) {
-          case "OrderSummary":
-            // filter out events with unknown mangrove or order addresses
-            const logMangroveAddress = event.payload.requireParam("mangrove").asString();
-            if (logMangroveAddress.toLowerCase() != mangroveAddress.toLowerCase())
-              return undefined;
-
-            // need to find latest OrderComplete log
-            const orderCompleteLog = _.findLast(
-              tx.contractLogs.mangrove8 ?? [],
-              (x) => x.index < event.index
-            );
-            if (!orderCompleteLog)
-              throw new Error(
-                `OrderComplete log not found in tx ${tx.hash.toHexString()}`
-              );
-
-            return {
-              type: "OrderSummary",
-
-              mangroveId: mangroveId(chain, logMangroveAddress),
-              outboundToken: event.payload
-                .requireParam("outbound_tkn")
-                .asString(),
-              inboundToken: event.payload
-                .requireParam("inbound_tkn")
-                .asString(),
-              orderId: orderId(tx.hash, orderCompleteLog),
-              taker: event.payload.requireParam("taker").asString(),
-              fillOrKill: event.payload.requireParam("fillOrKill").asBool(),
-              takerWants: event.payload.requireParam("takerWants").asString(),
-              takerGives: event.payload.requireParam("takerGives").asString(),
-              fillWants: event.payload.requireParam("fillWants").asBool(),
-              restingOrder: event.payload.requireParam("restingOrder").asBool(),
-              expiryDate: event.payload.requireParam("expiryDate").asNumber(),
-              takerGot: event.payload.requireParam("takerGot").asString(),
-              takerGave: event.payload.requireParam("takerGave").asString(),
-              bounty: event.payload.requireParam("bounty").asString(),
-              fee: event.payload.requireParam("fee").asString(),
-              restingOrderId: event.payload
-                .requireParam("restingOrderId")
-                .asNumber(),
-            };
-          case "SetExpiry":
-            return {
-              type: "SetExpiry",
-
-              outboundToken: event.payload
-                .requireParam("outbound_tkn")
-                .asString(),
-              inboundToken: event.payload
-                .requireParam("inbound_tkn")
-                .asString(),
-              offerId: event.payload.requireParam("offerId").asNumber(),
-              date: event.payload.requireParam("date").asNumber(),
-            };
-          default:
-            return undefined;
-        }
-      }
-
       function mangroveOrder(chain: string) {
-        const logMangroveAddress = log.payload.requireParam("mangrove").asString();
-        if (logMangroveAddress.toLowerCase() != mangroveAddress.toLowerCase())
-          return undefined;
-
         switch (log.payload.name) {
           case "NewOwnedOffer":
+            let logMangroveAddress = log.payload.requireParam("mangrove").asString();
+            if (logMangroveAddress.toLowerCase() != mangroveAddress.toLowerCase())
+              return undefined;
             return {
               type: "NewOwnedOffer",
 
@@ -128,6 +60,9 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
               owner: log.payload.requireParam("owner").asString(),
             };
           case "LogIncident":
+            logMangroveAddress = log.payload.requireParam("mangrove").asString();
+            if (logMangroveAddress.toLowerCase() != mangroveAddress.toLowerCase())
+              return undefined;
             return {
               type: "LogIncident",
 
@@ -139,6 +74,9 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
               mgvData: log.payload.requireParam("mgvData").asString(),
             } as strategyEvents.LogIncident;
           case "OrderSummary":
+            logMangroveAddress = log.payload.requireParam("mangrove").asString();
+            if (logMangroveAddress.toLowerCase() != mangroveAddress.toLowerCase())
+              return undefined;
             // need to find latest OrderComplete log
             const orderCompleteLog = _.findLast(
               tx.contractLogs.mangrove8 ?? [],
