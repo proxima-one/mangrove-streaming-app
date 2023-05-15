@@ -46,8 +46,8 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
 
       function mangroveOrder(chain: string) {
         switch (log.payload.name) {
-          case "NewOwnedOffer":
-            let logMangroveAddress = log.payload.requireParam("mangrove").asString();
+          case "NewOwnedOffer": {
+            const logMangroveAddress = log.payload.requireParam("mangrove").asString();
             if (logMangroveAddress.toLowerCase() != mangroveAddress.toLowerCase())
               return undefined;
             return {
@@ -59,8 +59,9 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
               offerId: log.payload.requireParam("offerId").asString(),
               owner: log.payload.requireParam("owner").asString(),
             };
-          case "LogIncident":
-            logMangroveAddress = log.payload.requireParam("mangrove").asString();
+          }
+          case "LogIncident": {
+            const logMangroveAddress = log.payload.requireParam("mangrove").asString();
             if (logMangroveAddress.toLowerCase() != mangroveAddress.toLowerCase())
               return undefined;
             return {
@@ -73,8 +74,9 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
               makerData: log.payload.requireParam("makerData").asString(),
               mgvData: log.payload.requireParam("mgvData").asString(),
             } as strategyEvents.LogIncident;
-          case "OrderSummary":
-            logMangroveAddress = log.payload.requireParam("mangrove").asString();
+          }
+          case "OrderSummary": {
+            const logMangroveAddress = log.payload.requireParam("mangrove").asString();
             if (logMangroveAddress.toLowerCase() != mangroveAddress.toLowerCase())
               return undefined;
             // need to find latest OrderComplete log
@@ -105,6 +107,7 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
               fee: log.payload.requireParam("fee").asString(),
               restingOrderId: log.payload.requireParam("restingOrderId").asNumber(),
             };
+          }
           case "SetExpiry":
             return {
               type: "SetExpiry",
