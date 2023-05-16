@@ -32,6 +32,8 @@ export const parseKandelEvents = (): KandelLogParser<PartialKandelEvent[]> =>
         parsePopulateEvent(),
         parseRetractEvent(),
         parseNewKandelEvent(),
+        wrapToMangroveContext(parseMangroveEvents(true), x => []),
+        parseIndexMappingEvent(),
       ])
     ),
     (x) => x.flat()
@@ -97,18 +99,18 @@ export function parseNewKandel(payload: EthModel.DecodedContractLogPayload): Par
         base: payload.requireParam("base").asString(),
         quote: payload.requireParam("quote").asString(),
         kandel: payload.requireParam("kandel").asString(),
-      }
-      case "NewAaveKandel":
-        return {
-          type: "NewKandel",
-          owner: payload.requireParam("owner").asString(),
-          base: payload.requireParam("base").asString(),
-          quote: payload.requireParam("quote").asString(),
-          kandel: payload.requireParam("aaveKandel").asString(),
-          reserveId: payload.requireParam("reserveId").asString(),
-        };
-      default:
-        throw new Error(`Unknown event type: ${payload.name}`);
+      };
+    case "NewAaveKandel":
+      return {
+        type: "NewKandel",
+        owner: payload.requireParam("owner").asString(),
+        base: payload.requireParam("base").asString(),
+        quote: payload.requireParam("quote").asString(),
+        kandel: payload.requireParam("aaveKandel").asString(),
+        reserveId: payload.requireParam("reserveId").asString(),
+      };
+    default:
+      throw new Error(`Unknown event type: ${payload.name}`);
   }
 }
 

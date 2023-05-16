@@ -22,22 +22,28 @@ recursively while preserving order
   "readBuffer": 10000,
   "db": "core-us",
   "output": {
-    "default": "proxima.mangrove.polygon-mumbai.0xad90.tokens.0_1"
+    "default": "proxima.mangrove.polygon-mumbai.0xad90.domain-events.0_1"
   },
   "stateManager": "main",
   "input": {
     "default": {
-      "id": "proxima.mangrove.polygon-mumbai.0xad90.domain-events.0_1"
+      "id": "proxima.polygon-mumbai.blocks-sync.1_0",
+      "startHeight": 32291088
     }
   },
-  "network":
-  "polygon-mumbai"
+  "network": "polygon-mumbai",
+  "addresses": {
+    "mangrove8": "0xAd90a2a9BdcB630c976CaceA1253D89edf74da5e"
+  },
+  "chainlistId": 80001,
+  "startBlock": "32291188",
+  "blockIdInput": true
 }
 ```
 
 ### strategies
 
-Finds `NewOwnedOffer`, `OrderComplete`, `LogIncident`, `OrderSummary`, `SetExpiry` logs using autodiscovery mechanism.
+Finds `NewOwnedOffer`, `OrderComplete`, `LogIncident`, `OrderSummary`, `SetExpiry`
 Maps these logs to the output stream events without aggregation
 
 #### Arguments
@@ -55,6 +61,10 @@ Maps these logs to the output stream events without aggregation
       "id": "proxima.polygon-mumbai.blocks-sync.1_0",
       "startHeight":29969278
     }
+  },
+  "addresses": {
+    "mangrove8": "0xad90a2a9bdcb630c976cacea1253d89edf74da5e",
+    "mangroveOrder": "0xF511135Bc98D7a5cf694Fa6751322de93e2135dA"
   },
   "network": "polygon-mumbai",
   "chainlistId":80001,
