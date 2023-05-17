@@ -9,6 +9,7 @@ import { TxRef } from "@proximaone/stream-schema-base";
 import { toArray } from "lodash";
 import { KandelParamsEvents, parseKandelEvents, parseNewKandel } from "./kandelEvents";
 import { mangroveId } from "../../model/entities";
+import { getMangroveVersion } from "../../common/helpers";
 
 interface Args {
   chainlistId?: string;
@@ -19,14 +20,16 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
     seeder: EthModel.ContractMetadata.fromAbi(abi.seeder),
     kandel: EthModel.ContractMetadata.fromAbi(abi.kandel),
     kandelMangrove: EthModel.ContractMetadata.fromAbi(abi.kandelMangrove),
-    mangrove8: EthModel.ContractMetadata.fromAbi(abi.mangrove),
+    mangrove8: EthModel.ContractMetadata.fromAbi(abi.mangrove8),
+    mangrove9: EthModel.ContractMetadata.fromAbi(abi.mangrove9),
   },
 
   discover: {
     full: true,
-    skipDiscovery: ["kandel", "mangrove8"],
+    skipDiscovery: ["kandel", "mangrove8", "mangrove9"],
     tx: ({ tx, timestamp, args }) => {
-      const mangroveAddress = args.addresses.mangrove8 as string;
+      const mangroveVersion = getMangroveVersion(args);
+      const mangroveAddress = args.addresses[mangroveVersion] as string;
       const seederLogs = [...toArray(tx.contractLogs.seeder)];
 
       const seederMangroveAddreses = tx.contractLogs.kandelMangrove
@@ -55,6 +58,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
   },
   map: {
     tx: ({ tx, block, args }) => {
+      const mangroveVersion = getMangroveVersion(args);
       const chainlistId = parseInt((args as Args).chainlistId!);
       const txRef: TxRef = {
         chain: args.network,
@@ -65,18 +69,20 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
       };
 
       const kandelEvents = toArray(tx.contractLogs.kandel);
-
       const groupedKandelEvents = _.chain(kandelEvents)
         .groupBy((x) => x.payload.address.toHexString())
         .map((kandelEvents, key) => {
-          const seederEvents = toArray(tx.contractLogs.seeder)
-            .filter(x => {
-              const parsed = parseNewKandel(x.payload);
-              return parsed.kandel == key;
-            });
+          const seederEvents = toArray(tx.contractLogs.seeder).filter((x) => {
+            const parsed = parseNewKandel(x.payload);
+            return parsed.kandel == key;
+          });
 
-          const allEvents = [...kandelEvents, ...seederEvents, ...toArray(tx.contractLogs.mangrove8)]
-            .sort((a, b) => a.index - b.index);
+          const allEvents = [
+            ...kandelEvents,
+            ...seederEvents,
+            ...toArray(tx.contractLogs.mangrove8),
+            ...toArray(tx.contractLogs.mangrove9),
+          ].sort((a, b) => a.index - b.index);
 
           return {
             kandelAddress: key,
@@ -89,15 +95,11 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
 
       const mappedEvents: kandel.KandelEvent[] = [];
       for (const { kandelAddress, events } of groupedKandelEvents) {
-        const mangroveAddress = args.addresses.mangrove8 as string;
+        const mangroveAddress = args.addresses[mangroveVersion] as string;
         const parseResult = parseKandelEvents()({
           txHash: tx.original.data.hash,
-          mangroveAddress: EthModel.Address.fromHexString(
-            mangroveAddress
-          ),
-          kandelAddress: EthModel.Address.fromHexString(
-            kandelAddress
-          ),
+          mangroveAddress: EthModel.Address.fromHexString(mangroveAddress),
+          kandelAddress: EthModel.Address.fromHexString(kandelAddress),
           index: 0,
           events: events,
         });
@@ -108,7 +110,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
         let setParams = undefined;
         let newKandel = undefined;
         for (const log of parseResult.value) {
-          if (log.type == "NewKandel") {
+          if (log.type == "NewKandel" || log.type == "NewAaveKandel") {
             log.mangroveId = mangroveId(args.network, mangroveAddress);
             newKandel = log;
           } else if (log.type == "SetParams") {
@@ -123,14 +125,16 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
         }
 
         mappedEvents.push(
-          ...parseResult.value.filter(x => x.type != "SetParams" || !skipSetParamsEvent).map((ev) => {
-            return {
-              tx: txRef,
-              address: kandelAddress,
-              chainId: chainlistId,
-              ...ev,
-            } as kandel.KandelEvent;
-          })
+          ...parseResult.value
+            .filter((x) => x.type != "SetParams" || !skipSetParamsEvent)
+            .map((ev) => {
+              return {
+                tx: txRef,
+                address: kandelAddress,
+                chainId: chainlistId,
+                ...ev,
+              } as kandel.KandelEvent;
+            })
         );
       }
 
