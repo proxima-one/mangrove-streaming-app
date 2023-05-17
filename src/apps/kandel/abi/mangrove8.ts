@@ -1,4 +1,4 @@
-export const mangrove = [
+export const mangrove8 = [
   {
     anonymous: false,
     inputs: [

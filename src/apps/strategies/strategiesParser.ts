@@ -6,17 +6,20 @@ import { mangroveOrder } from "./abi/mangroveOrder";
 import { mangrove as mangroveAbi } from "./abi/mangrove";
 import { strategyEvents } from "@proximaone/stream-schema-mangrove";
 import { mangroveId, orderId } from "../../model/entities";
+import { getMangroveVersion } from "../../common/helpers";
 
 export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
   contracts: {
     mangroveOrder: EthModel.ContractMetadata.fromAbi(mangroveOrder),
     mangrove8: EthModel.ContractMetadata.fromAbi(mangroveAbi),
+    mangrove9: EthModel.ContractMetadata.fromAbi(mangroveAbi),
   },
   map: {
     log: ({ log, tx, block, contractType, args }) => {
+      const mangroveVersion = getMangroveVersion(args);
       const chain = args.network;
       const chainlistId = (args as any).chainlistId;
-      const mangroveAddress = args.addresses.mangrove8 as string;
+      const mangroveAddress = args.addresses[mangroveVersion] as string;
       const mangroveOrderAddress = args.addresses.mangroveOrder as string;
 
       const txRef = {
@@ -81,7 +84,7 @@ export const MangroveStrategiesApp = ethApp.parseContractLogsApp({
               return undefined;
             // need to find latest OrderComplete log
             const orderCompleteLog = _.findLast(
-              tx.contractLogs.mangrove8 ?? [],
+              tx.contractLogs[mangroveVersion] ?? [],
               (x) => x.index < log.index
             );
             if (!orderCompleteLog)

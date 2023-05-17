@@ -18,7 +18,7 @@ export const parseMangroveEvents = (
         parseOfferWrittenEvents(),
         parseOfferRetractedEvents(),
         parseOrderExecutionEvents(),
-      ]),
+      ])
     ),
     (x) => x.flat()
   );
@@ -178,6 +178,7 @@ export const parseOfferRetractedEvents = () =>
         type: "OfferRetracted",
         offerList: extractOfferList(payload),
         offerId: payload.requireParam("id").asNumber(),
+        deprovision: payload.findParam("deprovision")?.asBool()
       },
     ];
   });

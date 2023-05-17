@@ -102,7 +102,7 @@ export function parseNewKandel(payload: EthModel.DecodedContractLogPayload): Par
       };
     case "NewAaveKandel":
       return {
-        type: "NewKandel",
+        type: "NewAaveKandel",
         owner: payload.requireParam("owner").asString(),
         base: payload.requireParam("base").asString(),
         quote: payload.requireParam("quote").asString(),

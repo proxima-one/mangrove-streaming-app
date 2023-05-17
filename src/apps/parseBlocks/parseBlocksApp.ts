@@ -20,6 +20,7 @@ export const ParseBlocksApp = ethApp.parseContractLogsApp({
     mangrove6: EthModel.ContractMetadata.fromAbi(abi.v6.mangrove),
     mangrove7: EthModel.ContractMetadata.fromAbi(abi.v7.mangrove),
     mangrove8: EthModel.ContractMetadata.fromAbi(abi.v8.mangrove),
+    mangrove9: EthModel.ContractMetadata.fromAbi(abi.v9.mangrove),
   },
   initialEvents: ({ args }) => {
     const chainlistId = (args as Args).chainlistId;
@@ -31,6 +32,7 @@ export const ParseBlocksApp = ethApp.parseContractLogsApp({
       ...toArray(args.addresses.mangrove6),
       ...toArray(args.addresses.mangrove7),
       ...toArray(args.addresses.mangrove8),
+      ...toArray(args.addresses.mangrove9),
     ];
     const events = mangroveAddresses.map<schema.events.MangroveEvent>(
       (address) => {
@@ -74,6 +76,7 @@ export const ParseBlocksApp = ethApp.parseContractLogsApp({
         ...toArray(tx.contractLogs.mangrove6),
         ...toArray(tx.contractLogs.mangrove7),
         ...toArray(tx.contractLogs.mangrove8),
+        ...toArray(tx.contractLogs.mangrove9),
       ];
 
       console.log(`got ${mangroveEvents.length} events to parse`);
