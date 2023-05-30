@@ -25,7 +25,7 @@ export const KandelParserApp: AppFactory = ethApp.parseContractLogsApp({
   },
 
   discover: {
-    discoveryTypes: ["seeder", "kandelMangrove"],
+    fullDiscoveryContractTypes: ["seeder", "kandelMangrove"],
     tx: ({ tx, timestamp, args }) => {
       const mangroveVersion = getMangroveVersion(args);
       const mangroveAddress = args.addresses[mangroveVersion] as string;
