@@ -34,7 +34,7 @@
     "watch:test": "jest --watch"
   },
   "dependencies": {
-    "@proxima-one/proxima-app-eth": "0.3.3",
+    "@proxima-one/proxima-app-eth": "1.0.0",
     "@proximaone/stream-schema-eth-base": "^0.4.2",
     "@proximaone/stream-schema-ft": "^0.4.2",
     "@proximaone/stream-schema-mangrove": "^0.4.1",
