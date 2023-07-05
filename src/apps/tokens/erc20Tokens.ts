@@ -58,7 +58,7 @@ export class Erc20TokensApp extends MapStreamEventsApp<MapStreamEventsArgs> {
   protected async mapEvents(
     events: StreamEventList,
     stateAccessor?: StateAccessor
-  ): Promise<StreamEventList> {
+  ): Promise<{ events: StreamEventList; processed: number }> {
     if (!stateAccessor) throw new Error("State is not defined.");
     const typedEvents = events.items
       .map((x) => {
@@ -84,7 +84,8 @@ export class Erc20TokensApp extends MapStreamEventsApp<MapStreamEventsArgs> {
         .flat()
     );
 
-    if (tokenIds.length == 0) return new StreamEventList([]);
+    if (tokenIds.length == 0)
+      return { events: new StreamEventList([]), processed: events.items.length };
 
     const states = await getStates(stateAccessor, _.uniq(tokenIds));
     const newTokenIds = tokenIds.filter((x) => !states[x]);
@@ -144,6 +145,6 @@ export class Erc20TokensApp extends MapStreamEventsApp<MapStreamEventsArgs> {
 
     this.logger.info(`publishing ${res.length} events.`);
 
-    return new StreamEventList(res);
+    return { events: new StreamEventList(res), processed: events.items.length };
   }
 }
